@@ -1,3 +1,6 @@
 knn: fold 0
 knn: fold 1
 knn: fold 2
+knn: fold 3
+knn: fold 4
+knn: refit and student-test evaluation
