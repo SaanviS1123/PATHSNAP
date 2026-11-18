@@ -12,7 +12,7 @@ load_dotenv()
 API_URL = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/")
 st.set_page_config(page_title="PATHSNAP · Route Lab", page_icon="🧭", layout="wide")
 st.markdown("""<style>
-.block-container {padding-top:2rem; max-width:1450px}
+.block-container {padding-top:4rem; max-width:1450px}
 h1 {letter-spacing:-.045em} [data-testid="stMetric"] {background:#f0f5f3;padding:14px;border-radius:10px}
 </style>""", unsafe_allow_html=True)
 st.caption("PATHSNAP / ROUTE LAB")

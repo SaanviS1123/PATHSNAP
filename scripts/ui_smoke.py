@@ -26,6 +26,21 @@ def main():
         def select(index,value):
             page.get_by_role('combobox').nth(index).click()
             page.get_by_role('option',name=value,exact=True).click()
+        def capture(name, heading):
+            page.get_by_text(heading,exact=True).evaluate("el => el.scrollIntoView({block:'start'})")
+            page.locator('[data-testid="stMain"]').evaluate("el => el.scrollBy(0,-75)")
+            frame=map_ready()
+            # Let every visible basemap tile settle, not just the first tile.
+            loaded=frame.locator('.leaflet-container').evaluate("""el => new Promise(resolve => {
+                const start=Date.now(); const poll=()=>{
+                    const images=[...el.querySelectorAll('img.leaflet-tile')];
+                    if(images.length && images.every(img=>img.complete && img.naturalWidth>0)) return resolve(true);
+                    if(Date.now()-start>20000) return resolve(false);
+                    setTimeout(poll,100);
+                }; poll();
+            })""")
+            page.screenshot(path=str(figures/name),full_page=False)
+            return loaded
         def map_ready():
             page.locator('iframe:visible').first.wait_for(timeout=60000)
             frame=page.frame_locator('iframe:visible').first
@@ -45,8 +60,7 @@ def main():
             rows.append(dict(trip_id=trip,model='best',status='pass',map_layers=labels.splitlines()))
             if trip=='00000056':
                 # Wait for basemap images as well as route geometry.
-                frame.locator('.leaflet-tile-loaded').first.wait_for(timeout=30000)
-                page.screenshot(path=str(figures/'dashboard_best.png'),full_page=True)
+                assert capture('dashboard_best.png',f'Trip {trip} · Selected best · tuned + calibrated Histogram Boosting'), 'Largest-trip basemap tiles did not load'
             print(f'UI PASS {trip}/best',flush=True)
         # The actual batch button must advance through every model and finish.
         select(0,trips[0])
@@ -57,8 +71,8 @@ def main():
         # Check all six rows actually arrived in the live comparison dataframe.
         table=page.locator('[data-testid="stDataFrame"]:visible').first
         expect(table).to_be_visible()
-        page.get_by_text('This trip · live model comparison',exact=True).scroll_into_view_if_needed()
-        page.screenshot(path=str(figures/'dashboard_models.png'),full_page=True)
+        page.get_by_text('Running Selected best',exact=False).wait_for(state='hidden',timeout=15000)
+        assert capture('dashboard_models.png','This trip · live model comparison'), 'Comparison basemap tiles did not load'
         labels=['K-Nearest Neighbours','Multi-Layer Perceptron','Logistic Regression','Random Forest','Histogram Boosting · baseline','Selected best · tuned + calibrated Histogram Boosting']
         for label in labels:
             select(1,label)

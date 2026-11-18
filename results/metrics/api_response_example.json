@@ -1,0 +1,25 @@
+{
+  "trip_id": "00000000",
+  "model": "best",
+  "status": "success",
+  "n_observations": 2503,
+  "timing_ms": 1022.0664999214932,
+  "metrics": {
+    "classifier": {
+      "sequence_precision": 0.4853801169590643,
+      "sequence_recall": 0.9273743016759777,
+      "sequence_f1": 0.637236084452975,
+      "route_continuity": 0.9548361310951239,
+      "pointwise_accuracy": 0.9252896524170995
+    },
+    "viterbi": {
+      "sequence_precision": 0.8160377358490566,
+      "sequence_recall": 0.9664804469273743,
+      "sequence_f1": 0.8849104859335039,
+      "route_continuity": 0.996802557953637,
+      "pointwise_accuracy": 0.9596484218937276
+    },
+    "n_known_obs": 2503,
+    "n_unknown_obs": 0
+  }
+}
