@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import joblib
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
@@ -30,7 +31,9 @@ class CandidateScorer:
         if self.preprocessor != "passthrough":
             X = self.preprocessor.transform(X)
         probs = self.estimator.predict_proba(X)
-        return probs[:, list(self.estimator.classes_).index(1)]
+        positive = probs[:, list(self.estimator.classes_).index(1)]
+        # Keep Viterbi log emissions finite for trees that vote exactly 0 or 1.
+        return np.clip(positive, 1e-12, 1 - 1e-12)
 
 
 def load_training_data(path: str | Path = TRAIN_PATH):
@@ -73,8 +76,8 @@ def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str
         raise ValueError("Trained classifier has no positive class 1")
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
-    joblib.dump(CandidateScorer(estimator, preprocessor, features), out / "model.joblib")
-    joblib.dump(preprocessor, out / "preprocessor.joblib")
+    joblib.dump(CandidateScorer(estimator, preprocessor, features), out / "model.joblib", compress=3)
+    joblib.dump(preprocessor, out / "preprocessor.joblib", compress=3)
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8")) if SCHEMA_PATH.exists() else {}
     schema_version = schema.get("version", 1)
     existing_schema = SCHEMA_PATH if SCHEMA_PATH.exists() else None
@@ -95,6 +98,14 @@ def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str
         "feature_columns": features,
         "train_rows": len(frame), "train_trips": int(frame.trip_id.nunique()),
         "metrics": metrics or {},
+        "probability_calibration": {
+            "posthoc_calibration": "none",
+            "cv_brier_score": (metrics or {}).get("cv_brier_score"),
+            "cv_ece_10": (metrics or {}).get("cv_ece_10"),
+            "student_brier_score": (metrics or {}).get("student_brier_score"),
+            "student_ece_10": (metrics or {}).get("student_ece_10"),
+            "scorer_probability_clipping": [1e-12, 1 - 1e-12],
+        },
         "probability_output": "predict_proba class 1; apply preprocessor.joblib first",
     }
     (out / "model_card.json").write_text(json.dumps(card, indent=2, default=str) + "\n", encoding="utf-8")

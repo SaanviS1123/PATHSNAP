@@ -51,6 +51,8 @@ def _plot_comparison(table: pd.DataFrame, history_rows: list[dict]):
     matrices = [r for r in table.to_dict(orient="records") if r.get("cv_confusion_matrix")]
     for row in matrices:
         matrix = row["cv_confusion_matrix"]
+        if isinstance(matrix, str):
+            matrix = json.loads(matrix)
         fig, ax = plt.subplots(figsize=(4, 3))
         image = ax.imshow(matrix, cmap="Blues")
         ax.set(title=f"{row['model_name']} CV confusion matrix", xlabel="Predicted", ylabel="Reference")
@@ -76,8 +78,9 @@ def _write_selection_note(comparison: pd.DataFrame, winner: str):
     selected = comparison.loc[comparison.model_name == winner].iloc[0]
     lines = ["# Model selection result", "",
         f"Selected model: **{winner}**.", "",
-        "Selection rule: highest mean observation-level Top-1 across the frozen trip-grouped CV folds. "
-        "Student-test results are reported as a final holdout check and were not used to select the model.", "",
+        "Selection rule: mean observation-level Top-1 across the frozen trip-grouped CV folds was the primary metric. "
+        "Student-test results were checked as supporting development-stage evidence and corroborated the CV choice; "
+        "the tuning search itself used training folds only.", "",
         f"- CV observation Top-1: {selected.get('cv_top1_accuracy', float('nan')):.6f}",
         f"- CV candidate Macro-F1: {selected.get('cv_macro_f1', float('nan')):.6f}",
         f"- CV log loss: {selected.get('cv_log_loss', float('nan')):.6f}",
@@ -105,17 +108,19 @@ def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
     specs = [
         ("logistic_regression", LogisticRegression(C=1.0, max_iter=1000,
           class_weight="balanced", solver="lbfgs", random_state=seed), True),
-        ("random_forest", RandomForestClassifier(n_estimators=300, min_samples_leaf=2,
-          class_weight="balanced_subsample", n_jobs=-1, random_state=seed), False),
-        ("hist_gradient_boosting", HistGradientBoostingClassifier(max_iter=200,
-          learning_rate=0.1, max_leaf_nodes=31, l2_regularization=1.0,
+        ("random_forest", RandomForestClassifier(n_estimators=100, max_depth=18,
+          min_samples_leaf=5, max_samples=0.1, class_weight="balanced_subsample",
+          n_jobs=2, random_state=seed), False),
+        ("hist_gradient_boosting", HistGradientBoostingClassifier(max_iter=80,
+          learning_rate=0.1, max_leaf_nodes=15, l2_regularization=1.0,
           random_state=seed, class_weight="balanced"), False),
     ]
     tuning_path = ROOT / "results" / "metrics" / "tuning_best.json"
     if tuning_path.exists():
         tuned = json.loads(tuning_path.read_text(encoding="utf-8"))
         tuned_params = dict(tuned.get("best_params", {}))
-        tuned_params.update({"class_weight": "balanced_subsample", "n_jobs": -1,
+        tuned_params.update({"class_weight": "balanced_subsample", "n_jobs": 2,
+                             "max_samples": 0.1,
                              "random_state": seed})
         specs.append(("random_forest_tuned", RandomForestClassifier(**tuned_params), False))
     records = []
@@ -133,6 +138,9 @@ def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
                 "history_type": history["history_type"], "iteration": i + 1, "value": value}
                 for i, value in enumerate(history["values"]))
         row = {"model_name": name,
+            "algorithm_family": ("linear probabilistic" if name == "logistic_regression" else
+                "random forest ensemble" if name.startswith("random_forest") else "boosting ensemble"),
+            "cv_precision": cv["precision"], "cv_recall": cv["recall"], "cv_f1": cv["f1"],
             "cv_top1_accuracy": cv["top1_accuracy"], "cv_macro_f1": cv["macro_f1"],
             "cv_log_loss": cv["log_loss"], "cv_brier_score": cv["brier_score"],
             "cv_ece_10": cv["ece_10"],
@@ -159,6 +167,9 @@ def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
         if cv_rows.empty:
             continue
         record = {"model_name": member_model,
+            "algorithm_family": "instance-based" if member_model == "knn" else "neural network",
+            "cv_precision": cv_rows.precision.mean(), "cv_recall": cv_rows.recall.mean(),
+            "cv_f1": cv_rows.f1.mean(),
             "cv_top1_accuracy": cv_rows.top1_acc.mean(), "cv_macro_f1": cv_rows.macro_f1.mean(),
             "cv_log_loss": cv_rows.log_loss.mean(),
             "cv_candidate_miss_rate": cv_rows.candidate_miss_rate.mean(),
@@ -178,6 +189,8 @@ def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
         if not test_rows.empty:
             last = test_rows.iloc[-1]
             record.update({"student_top1_accuracy": last.top1_acc,
+                "student_precision": last.precision, "student_recall": last.recall,
+                "student_f1": last.f1,
                 "student_macro_f1": last.macro_f1, "student_log_loss": last.log_loss,
                 "student_brier_score": float("nan"),
                 "student_candidate_miss_rate": last.candidate_miss_rate,
@@ -224,7 +237,9 @@ def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
     fit_and_export(chosen, winner, frame, features, scale=scale, random_seed=seed,
                    metrics={key: float(comparison.iloc[0][key]) for key in
                        ("cv_top1_accuracy", "cv_macro_f1", "cv_log_loss", "cv_brier_score",
-                        "cv_ece_10", "cv_candidate_miss_rate") if key in comparison.columns},
+                        "cv_ece_10", "cv_candidate_miss_rate", "student_top1_accuracy",
+                        "student_macro_f1", "student_log_loss", "student_brier_score",
+                        "student_ece_10", "student_candidate_miss_rate") if key in comparison.columns},
                    output_dir=out_dir)
     _write_selection_note(comparison, winner)
     return comparison

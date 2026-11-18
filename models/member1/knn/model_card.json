@@ -1,0 +1,63 @@
+{
+  "name": "knn",
+  "schema_version": "member1-v1",
+  "seed": 42,
+  "configuration": {
+    "algorithm": "kd_tree",
+    "leaf_size": 40,
+    "metric": "minkowski",
+    "metric_params": null,
+    "n_jobs": 2,
+    "n_neighbors": 15,
+    "p": 2,
+    "weights": "distance"
+  },
+  "max_train_rows": 120000,
+  "sampling": "Proportional within training trip and class; no validation/student rows used in fitting",
+  "training_diagnostic_macro_f1": 1.0,
+  "training_diagnostic_rows": 10000,
+  "training_diagnostic_scope": "10k or fewer rows from the fitted sample; KNN includes self neighbours",
+  "cv_macro_f1_mean": 0.8539421122618597,
+  "cv_macro_f1_std": 0.016141339339575792,
+  "student_test": {
+    "candidate_accuracy": 0.9624946615072021,
+    "precision": 0.7938991445294912,
+    "recall": 0.7370676141707597,
+    "f1": 0.7644285482035441,
+    "macro_f1": 0.8720269797459128,
+    "log_loss": 0.21157367542932176,
+    "top1_acc": 0.7856135401974612,
+    "trip_mean_top1": 0.8007874985609826,
+    "candidate_miss_rate": 0.0002611920806561141,
+    "n_known_obs": 19143,
+    "n_unknown_obs": 17,
+    "n_candidate_rows": 231905,
+    "n_known_candidate_rows": 231807,
+    "confusion_matrix": [
+      [
+        209007,
+        3662
+      ],
+      [
+        5032,
+        14106
+      ]
+    ]
+  },
+  "fit": {
+    "train_time_s": 0.37153140000009444,
+    "n_fit_rows": 119999,
+    "n_fit_trips": 80,
+    "fit_warnings": []
+  },
+  "calibration": "Uncalibrated binary probabilities; C/B must assess HMM suitability",
+  "route_continuity": "Pending C1 metric; not fabricated here",
+  "input_sha256": {
+    "data\\processed\\train.parquet": "3fc6183bcab2197fed2c4dc0cd5dfa71afdd1baf0beaaa412d0a72dbbadcb62e",
+    "data\\processed\\student_test.parquet": "49a248de9cb4ae90e7bd5ffb5dd5da1fee94765bc1f9ba0976950926c94de7d8",
+    "data\\processed\\obs_labels.parquet": "7975114f7319ccad28d639502f76224bcad1ebd8cfda2a8a768e8facbead32b6",
+    "configs\\folds.json": "03309a86f50bd736709aceaaefa4448303c34afc8eb4676f5453dd5792c70a34",
+    "models\\feature_schema.json": "79e0f451aa669a87bef3b511ccd1293631ea9cbaab759a6fbb4e79a8a10df381",
+    "C:\\Users\\Rohith46\\Desktop\\ML_hackathon\\PATHSNAP\\src\\models\\member1_harness.py": "4dd5f9fc2b884825d5075d9149e745552b1dd01aba129a960f115af23c66d8e1"
+  }
+}

@@ -118,7 +118,17 @@ def candidate_miss_rate(candidates: pd.DataFrame, obs_labels: pd.DataFrame | Non
 def _append_result(row: dict, output_path: str | Path | None) -> None:
     path = Path(output_path) if output_path else EXPERIMENTS_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame([row]).to_csv(path, mode="a", header=not path.exists(), index=False)
+    new = pd.DataFrame([row])
+    if path.exists():
+        previous = pd.read_csv(path)
+        keys = ["model_name", "config", "random_seed"]
+        if set(keys).issubset(previous.columns) and set(keys).issubset(new.columns):
+            same = pd.Series(True, index=previous.index)
+            for key in keys:
+                same &= previous[key].fillna("").astype(str).eq(str(row[key]))
+            previous = previous.loc[~same]
+        new = pd.concat([previous, new], ignore_index=True)
+    new.to_csv(path, index=False)
 
 
 def evaluate_model(estimator, model_name: str, data: pd.DataFrame,

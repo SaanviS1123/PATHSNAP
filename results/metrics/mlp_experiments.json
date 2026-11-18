@@ -1,0 +1,212 @@
+[
+  {
+    "model": "mlp",
+    "partition": "cv",
+    "fold": 0,
+    "candidate_accuracy": 0.9556132816107878,
+    "precision": 0.791753896254943,
+    "recall": 0.69303402814894,
+    "f1": 0.7391121425566277,
+    "macro_f1": 0.8574276435763111,
+    "log_loss": 0.11251653350061958,
+    "top1_acc": 0.7564616868938201,
+    "trip_mean_top1": 0.80097166107518,
+    "candidate_miss_rate": 0.002412024577260974,
+    "n_known_obs": 39386,
+    "n_unknown_obs": 74,
+    "n_candidate_rows": 433861,
+    "n_known_candidate_rows": 433080,
+    "confusion_matrix": [
+      [
+        386627,
+        7162
+      ],
+      [
+        12061,
+        27230
+      ]
+    ],
+    "train_time_s": 24.79091419999895,
+    "n_fit_rows": 120000,
+    "n_fit_trips": 64,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 0.19239829999969515
+  },
+  {
+    "model": "mlp",
+    "partition": "cv",
+    "fold": 1,
+    "candidate_accuracy": 0.9543562279151944,
+    "precision": 0.8154658894252664,
+    "recall": 0.6820164162334076,
+    "f1": 0.7427949183303085,
+    "macro_f1": 0.8588754329002535,
+    "log_loss": 0.11146226604963626,
+    "top1_acc": 0.7694342926754987,
+    "trip_mean_top1": 0.7895597135263172,
+    "candidate_miss_rate": 0.0005139333028780779,
+    "n_known_obs": 52536,
+    "n_unknown_obs": 65,
+    "n_candidate_rows": 543930,
+    "n_known_candidate_rows": 543360,
+    "confusion_matrix": [
+      [
+        482747,
+        8104
+      ],
+      [
+        16697,
+        35812
+      ]
+    ],
+    "train_time_s": 8.333948900000905,
+    "n_fit_rows": 119998,
+    "n_fit_trips": 64,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 0.20900189999883878
+  },
+  {
+    "model": "mlp",
+    "partition": "cv",
+    "fold": 2,
+    "candidate_accuracy": 0.961125317250551,
+    "precision": 0.826679274357358,
+    "recall": 0.6756253935542962,
+    "f1": 0.7435582435582435,
+    "macro_f1": 0.861263397923761,
+    "log_loss": 0.1040123675372381,
+    "top1_acc": 0.7540660701221228,
+    "trip_mean_top1": 0.7592888581974493,
+    "candidate_miss_rate": 0.016883336147222705,
+    "n_known_obs": 35538,
+    "n_unknown_obs": 16663,
+    "n_candidate_rows": 491322,
+    "n_known_candidate_rows": 418833,
+    "confusion_matrix": [
+      [
+        378946,
+        4949
+      ],
+      [
+        11333,
+        23605
+      ]
+    ],
+    "train_time_s": 10.683035500000187,
+    "n_fit_rows": 119989,
+    "n_fit_trips": 64,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 1.202817600000344
+  },
+  {
+    "model": "mlp",
+    "partition": "cv",
+    "fold": 3,
+    "candidate_accuracy": 0.9704978366585477,
+    "precision": 0.8535694651692453,
+    "recall": 0.7637468816977618,
+    "f1": 0.8061638882192593,
+    "macro_f1": 0.8950988862463979,
+    "log_loss": 0.07961745671073217,
+    "top1_acc": 0.8004418762746431,
+    "trip_mean_top1": 0.7967888117972957,
+    "candidate_miss_rate": 0.03259687287559487,
+    "n_known_obs": 29420,
+    "n_unknown_obs": 2998,
+    "n_candidate_rows": 401571,
+    "n_known_candidate_rows": 354313,
+    "confusion_matrix": [
+      [
+        322123,
+        3729
+      ],
+      [
+        6724,
+        21737
+      ]
+    ],
+    "train_time_s": 29.352499599999646,
+    "n_fit_rows": 120004,
+    "n_fit_trips": 64,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 0.9599267999983567
+  },
+  {
+    "model": "mlp",
+    "partition": "cv",
+    "fold": 4,
+    "candidate_accuracy": 0.9586854143017822,
+    "precision": 0.7778272319275992,
+    "recall": 0.678980767985495,
+    "f1": 0.7250505644199353,
+    "macro_f1": 0.8513575934475905,
+    "log_loss": 0.1024855715023156,
+    "top1_acc": 0.7426847759460593,
+    "trip_mean_top1": 0.7701901069896411,
+    "candidate_miss_rate": 0.0035809917088750476,
+    "n_known_obs": 30997,
+    "n_unknown_obs": 740,
+    "n_candidate_rows": 392748,
+    "n_known_candidate_rows": 384973,
+    "confusion_matrix": [
+      [
+        348097,
+        5990
+      ],
+      [
+        9915,
+        20971
+      ]
+    ],
+    "train_time_s": 24.659420699999828,
+    "n_fit_rows": 120000,
+    "n_fit_trips": 64,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 0.17016969999895082
+  },
+  {
+    "model": "mlp",
+    "partition": "student_test",
+    "fold": -1,
+    "candidate_accuracy": 0.9656093215476668,
+    "precision": 0.8029628825700021,
+    "recall": 0.7731737903647194,
+    "f1": 0.7877868285151467,
+    "macro_f1": 0.8845376609152269,
+    "log_loss": 0.08747677632557863,
+    "top1_acc": 0.7977328527399049,
+    "trip_mean_top1": 0.8140103694633456,
+    "candidate_miss_rate": 0.0002611920806561141,
+    "n_known_obs": 19143,
+    "n_unknown_obs": 17,
+    "n_candidate_rows": 231905,
+    "n_known_candidate_rows": 231807,
+    "confusion_matrix": [
+      [
+        209038,
+        3631
+      ],
+      [
+        4341,
+        14797
+      ]
+    ],
+    "train_time_s": 22.84533310000006,
+    "n_fit_rows": 119999,
+    "n_fit_trips": 80,
+    "fit_warnings": [
+      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
+    ],
+    "inference_time_s": 0.5959961999997176
+  }
+]

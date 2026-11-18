@@ -30,11 +30,12 @@ def tune(data_path=None, trials: int = 30, seed: int = 42, output_path=None):
 
     def objective(trial):
         params = {
-            "n_estimators": trial.suggest_int("n_estimators", 150, 500, step=50),
-            "max_depth": trial.suggest_categorical("max_depth", [None, 12, 20, 32]),
-            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 1, 8),
+            "n_estimators": trial.suggest_int("n_estimators", 50, 150, step=25),
+            "max_depth": trial.suggest_categorical("max_depth", [10, 14, 18, 22]),
+            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 2, 10),
             "max_features": trial.suggest_categorical("max_features", ["sqrt", 0.5, 0.8]),
-            "class_weight": "balanced_subsample", "n_jobs": -1, "random_state": seed,
+            "class_weight": "balanced_subsample", "n_jobs": 2,
+            "max_samples": 0.1, "random_state": seed,
         }
         model = RandomForestClassifier(**params)
         scores = evaluate_model(model, "random_forest_tpe_trial", frame,
