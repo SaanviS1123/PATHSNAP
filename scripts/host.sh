@@ -5,7 +5,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 source "$ROOT/scripts/_demo-env.sh"
 [[ "${1:-}" == "" || "${1:-}" == "--local" ]] || die "usage: scripts/host.sh [--local]"
 need_venv
-mkdir -p logs
+demo_logs="${DEMO_LOG_DIR:-$ROOT/logs}"
+mkdir -p "$demo_logs"
 pids=()
 cleanup() { trap - EXIT INT TERM; for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done; wait || true; }
 trap cleanup EXIT
@@ -27,13 +28,13 @@ for name,default in [('API_PORT',8000),('UI_PORT',8501)]:
         try: sock.bind(('127.0.0.1',int(os.getenv(name,default))))
         except OSError: raise SystemExit(f'{name} is occupied; stop the previous host stack first')
 PY
-scripts/serve.sh api > >(tee logs/api.log) 2>&1 & pids+=("$!")
+scripts/serve.sh api > >(tee "$demo_logs/api.log") 2>&1 & pids+=("$!")
 wait_ready "http://127.0.0.1:${API_PORT:-8000}/health" "${pids[0]}"
-scripts/serve.sh ui > >(tee logs/dashboard.log) 2>&1 & pids+=("$!")
+scripts/serve.sh ui > >(tee "$demo_logs/dashboard.log") 2>&1 & pids+=("$!")
 wait_ready "http://127.0.0.1:${UI_PORT:-8501}/_stcore/health" "${pids[1]}"
 say "Host ready: http://127.0.0.1:${UI_PORT:-8501} · API docs: http://127.0.0.1:${API_PORT:-8000}/docs"
 if [[ "${1:-}" != "--local" ]]; then
-  scripts/tunnel.sh > >(tee logs/tunnel.log) 2>&1 & pids+=("$!")
+  scripts/tunnel.sh > >(tee "$demo_logs/tunnel.log") 2>&1 & pids+=("$!")
 fi
 while true; do
   for pid in "${pids[@]}"; do kill -0 "$pid" 2>/dev/null || die "a service stopped; shutting down this stack"; done

@@ -40,6 +40,14 @@ def run_prediction(request):
     return payload
 
 
+def execute_job(request):
+    try:
+        return run_prediction(request)
+    except Exception:
+        logger.exception("trip=%s model=%s prediction failed", request.trip_id, request.model_name)
+        raise
+
+
 class JobStore:
     """One model worker, at most four outstanding requests, twelve retained results."""
     def __init__(self):
@@ -55,7 +63,7 @@ class JobStore:
             while len(self.jobs) >= 12 and completed:
                 del self.jobs[completed.pop(0)]
             job_id = uuid4().hex
-            self.jobs[job_id] = dict(request=request, future=self.executor.submit(run_prediction, request))
+            self.jobs[job_id] = dict(request=request, future=self.executor.submit(execute_job, request))
             return job_id
 
     def get(self, job_id):

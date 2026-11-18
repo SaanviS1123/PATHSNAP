@@ -6,6 +6,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
 export PYTHONUNBUFFERED=1
+export LOKY_MAX_CPU_COUNT="${LOKY_MAX_CPU_COUNT:-2}"
 PY="${PATHSNAP_PYTHON:-$ROOT/.venv/bin/python}"
 
 say()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
