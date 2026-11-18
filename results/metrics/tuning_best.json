@@ -20,7 +20,7 @@
   "sampler": "Optuna TPESampler",
   "seed": 42,
   "total_compute_seconds": 264.08571879111696,
-  "current_invocation_seconds": 382.9471225410234,
+  "current_invocation_seconds": 0.022537791985087097,
   "signature": "1f5377834ca58782b4469b25c767aa24f70cde4cec8a21660a76c5813c1f30a1",
   "inputs": {
     "inputs": {
