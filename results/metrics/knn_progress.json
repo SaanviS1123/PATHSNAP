@@ -1,0 +1,35 @@
+[
+  {
+    "model": "knn",
+    "partition": "cv",
+    "fold": 0,
+    "candidate_accuracy": 0.9529555740278932,
+    "precision": 0.7634980776731487,
+    "recall": 0.697505726648002,
+    "f1": 0.7290114918067674,
+    "macro_f1": 0.8516267204967973,
+    "log_loss": 0.3621788766097936,
+    "top1_acc": 0.746204235007363,
+    "trip_mean_top1": 0.7946375348198667,
+    "candidate_miss_rate": 0.002437414309653163,
+    "n_known_obs": 39386,
+    "n_unknown_obs": 74,
+    "n_candidate_rows": 433861,
+    "n_known_candidate_rows": 433080,
+    "confusion_matrix": [
+      [
+        385301,
+        8489
+      ],
+      [
+        11885,
+        27405
+      ]
+    ],
+    "train_time_s": 1.3908481250982732,
+    "n_fit_rows": 1701479,
+    "n_fit_trips": 64,
+    "fit_warnings": [],
+    "inference_time_s": 221.5539052078966
+  }
+]
