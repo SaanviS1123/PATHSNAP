@@ -221,3 +221,65 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# =============================================================================
+# PathSnap project rules (everything above is the stock Python template)
+# =============================================================================
+
+# --- Raw and derived data ----------------------------------------------------
+# Organiser-provided trips (.track/.nodes/.arcs/.route) and regenerable feature
+# tables stay local: ~100 MB of raw data does not belong in a public repo.
+# Keep the .gitkeep so the folders exist after a clone.
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+# Same files if someone drops the organiser's folder in unchanged.
+.github/statement/studentFolder/
+.github/statement/evaluator*/
+# Evaluator-testing data must never be committed or used during development.
+**/evaluator_test/
+**/evaluator-test/
+
+# --- Results the submission REQUIRES us to commit ----------------------------
+# The Python template ignores *.log above, but the brief asks for experiment
+# logs to be committed alongside the CSV results and Folium HTML maps.
+!results/**/*.log
+
+# --- Models ------------------------------------------------------------------
+# Final weights and configs ARE required ("subject to repository size
+# constraints"), so models/ is NOT ignored. Only scratch checkpoints are.
+# GitHub rejects files over 100 MB: if the final model is bigger, shrink it
+# (fewer trees, compression) rather than adding it here.
+models/**/checkpoints/
+models/**/*.tmp
+*.ckpt
+
+# --- Experiment tooling junk -------------------------------------------------
+catboost_info/
+wandb/
+.joblib_cache/
+
+# --- Secrets and credentials (the brief forbids committing any) --------------
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+secrets.*
+credentials*.json
+service-account*.json
+
+# --- Local machine / editor / assistant state --------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.claude/settings.local.json
+
+# --- Frontend (only if the UI ends up using Node) ----------------------------
+node_modules/
+.next/
