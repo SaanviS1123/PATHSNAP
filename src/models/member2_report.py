@@ -199,7 +199,7 @@ Member 1's KNN and MLP nine-question sections remain in
 MLP curves come from Member 1's actual epoch objectives. Boosting curves are
 actual per-stage empirical log losses on a fixed <=10k subset of that fold's
 fitted rows; they are labelled `fit_sample_log_loss` and exclude the L2 penalty.
-They are not validation-loss curves. Linear regression classifiers and forests
+They are not validation-loss curves. Logistic Regression and Random Forest
 have no fabricated epoch histories. Every curve row is in
 `results/metrics/model_training_history.csv`.
 
