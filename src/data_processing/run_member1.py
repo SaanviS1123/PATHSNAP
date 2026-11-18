@@ -119,7 +119,7 @@ def main():
     from src.data_processing.anomalies import diagnose
     from src.visualization.eda_diagnostics import plot_diagnostics
     diagnose(args.raw_dir)
-    plot_diagnostics()
+    plot_diagnostics(args.raw_dir)
     from src.visualization.eda_maps import create_eda
     create_eda(pd.DataFrame(quality), args.raw_dir)
     from src.data_processing.synthetic import write_fixture
