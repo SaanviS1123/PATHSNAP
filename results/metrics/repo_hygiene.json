@@ -1,0 +1,39 @@
+{
+  "tracked_files_checked": 401,
+  "secret_scan": "common credential patterns in UTF-8 files up to 2 MB; not a guarantee",
+  "findings": [],
+  "largest_files": [
+    {
+      "path": "models/member1/knn/model.joblib",
+      "bytes": 75667729
+    },
+    {
+      "path": "models/member2/random_forest/model.joblib",
+      "bytes": 14808300
+    },
+    {
+      "path": "member1_local/models/knn_model.joblib",
+      "bytes": 11981486
+    },
+    {
+      "path": "maps/eda_train_00000001.html",
+      "bytes": 8858729
+    },
+    {
+      "path": "models/member1/knn/scorer.joblib",
+      "bytes": 5849639
+    },
+    {
+      "path": "maps/pred_00000076.html",
+      "bytes": 2646968
+    },
+    {
+      "path": "report/PATHSNAP_report.pdf",
+      "bytes": 2571632
+    },
+    {
+      "path": "maps/pred_00000040.html",
+      "bytes": 1635039
+    }
+  ]
+}

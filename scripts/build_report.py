@@ -215,6 +215,8 @@ def build_pdf(source):
     inputs+=sorted((ROOT/'results/metrics').glob('*.csv'))
     inputs+=[p for p in [ROOT/'results/metrics/ui_integration.json',ROOT/'results/metrics/calibration_audit.json',ROOT/'results/metrics/deployment_checks.json',ROOT/'results/metrics/repo_hygiene.json'] if p.exists()]
     inputs+=sorted((REPORT/'figures').glob('*.png'))
+    inputs+=sorted((ROOT/'api').glob('*.py'))
+    inputs+=[ROOT/name for name in ['src/pipeline.py','ui/app.py','scripts/ui_smoke.py','scripts/integration.py','scripts/host.sh','scripts/serve.py','scripts/tunnel.sh','README.md','scripts/README.md']]
     manifest=dict(report=str(output.relative_to(ROOT)),report_sha256=sha(output),
                   inputs={str(path.relative_to(ROOT)):sha(path) for path in inputs},
                   physical_second_laptop_verified=False,public_tunnel_verified=False)

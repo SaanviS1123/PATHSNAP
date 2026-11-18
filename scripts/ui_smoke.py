@@ -73,7 +73,7 @@ def main():
         browser.close()
     assert not errors, errors
     output=ROOT/'results/metrics/ui_integration.json'
-    output.write_text(json.dumps(dict(url=args.url,physical_second_laptop=False,checks=rows,page_errors=errors),indent=2)+'\n')
+    output.write_text(json.dumps(dict(url=args.url,physical_second_laptop=False,checks=rows,page_errors=errors,batch_demo_verified=True,model_switches_verified=6,hmm_toggle_verified=True),indent=2)+'\n')
     print(f'Saved {len(rows)} browser checks to {output}')
 
 
