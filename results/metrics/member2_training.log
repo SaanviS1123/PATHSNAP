@@ -45,3 +45,5 @@ hist_gradient_boosting TPE trial 3: fold 1
 hist_gradient_boosting TPE trial 3: fold 2
 hist_gradient_boosting TPE trial 3: fold 3
 hist_gradient_boosting TPE trial 3: fold 4
+[I 2026-11-18 14:11:54,583] Trial 3 finished with value: 0.7730936860009785 and parameters: {'max_iter': 160, 'learning_rate': 0.14390269073091197, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 3.127814156703438}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 4: fold 0
