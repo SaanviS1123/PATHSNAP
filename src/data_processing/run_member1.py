@@ -103,7 +103,7 @@ def main():
             labels = pd.read_parquet(cache / f'{partition}_{folder.name}_labels.parquet')
             table = table.merge(labels[['trip_id', 'obs_idx', 'ref_arc']], on=['trip_id', 'obs_idx'], validate='many_to_one')
             table['is_ref'] = np.where(table.ref_arc < 0, -1, (table.arc_id == table.ref_arc).astype(int)).astype('int8')
-            table.drop(columns='ref_arc', inplace=True)
+            table = table.drop(columns='ref_arc')
             tables.append(table)
         pd.concat(tables, ignore_index=True).to_parquet(args.output_dir / f'{partition}.parquet', index=False)
     pd.concat(all_labels, ignore_index=True).to_parquet(args.output_dir / 'obs_labels.parquet', index=False)
