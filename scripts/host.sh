@@ -2,6 +2,7 @@
 # Run the complete host stack. Ctrl-C stops the tunnel, UI and API started here.
 # Usage: scripts/host.sh [--local]    # omit --local to print a public dashboard URL
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
+source "$ROOT/scripts/_demo-env.sh"
 [[ "${1:-}" == "" || "${1:-}" == "--local" ]] || die "usage: scripts/host.sh [--local]"
 need_venv
 mkdir -p logs

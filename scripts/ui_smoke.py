@@ -35,6 +35,7 @@ def main():
         for trip in trips:
             select(0,trip)
             run.click()
+            expect(run).to_be_disabled(timeout=15000)
             page.get_by_text('Approximate aligned point labels',exact=False).wait_for(timeout=120000)
             expect(run).to_be_enabled(timeout=120000)
             frame=map_ready()
@@ -49,6 +50,7 @@ def main():
         # The actual batch button must advance through every model and finish.
         select(0,trips[0])
         page.get_by_role('button',name='Demo every model',exact=True).click()
+        expect(run).to_be_disabled(timeout=15000)
         expect(run).to_be_enabled(timeout=180000)
         map_ready()
         # Check all six rows actually arrived in the live comparison dataframe.

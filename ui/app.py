@@ -68,6 +68,7 @@ if selected or all_models:
     st.session_state.pop("job_error", None)
     try:
         start_next()
+        st.rerun()
     except requests.RequestException as exc:
         st.session_state.demo_queue = []
         st.error(f"Could not start prediction: {exc}")
