@@ -54,7 +54,7 @@ def main():
         expect(run).to_be_enabled(timeout=180000)
         map_ready()
         # Check all six rows actually arrived in the live comparison dataframe.
-        table=page.locator('[data-testid="stDataFrame"]').first
+        table=page.locator('[data-testid="stDataFrame"]:visible').first
         expect(table).to_be_visible()
         page.get_by_text('This trip · live model comparison',exact=True).scroll_into_view_if_needed()
         page.screenshot(path=str(figures/'dashboard_models.png'),full_page=True)

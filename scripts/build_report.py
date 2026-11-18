@@ -16,6 +16,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Image, Table, TableStyle, KeepTogether, Preformatted
+import os
+os.environ.setdefault("MPLCONFIGDIR",str(ROOT_CACHE := Path(__file__).resolve().parents[1]/".cache/matplotlib"))
 import matplotlib
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -82,7 +84,11 @@ The best badge is based on highest mean training-fold observation Top-1. It is n
 `results/metrics/integration_run.csv` records {len(integration)} successful real HTTP job results: all {len(best)} student trips with the selected model and the five other configurations on the first trip. Every returned observation has a valid predicted arc. Selected-model server time (including fresh reference alignment and response construction, excluding queue wait) ranged from {best.server_ms.min():.2f} to {best.server_ms.max():.2f} ms. HTTP wall time includes polling and JSON transfer and is recorded separately. The first-trip KNN request took {integration.loc[integration.model=='knn','server_ms'].iloc[0]/1000:.2f} s. This is measured API latency, not a claim about other hardware or network conditions.
 
 '''
-    section7+=integration[['trip_id','model','n_observations','server_ms','classifier_accuracy','hmm_accuracy']].to_markdown(index=False,floatfmt='.4f')+'\n\n'
+    columns=['trip_id','model','n_observations','server_ms','classifier_accuracy','hmm_accuracy']
+    section7+='| '+' | '.join(columns)+' |\n| '+' | '.join(['---']*len(columns))+' |\n'
+    for row in integration[columns].itertuples(index=False,name=None):
+        section7+='| '+' | '.join(f'{value:.4f}' if isinstance(value,float) else str(value) for value in row)+' |\n'
+    section7+='\n'
     if browser:
         section7+=f"`ui_integration.json` records {len(browser['checks'])} successful real-browser checks, covering ten student trips, the batch model demo, switching among six completed results and the HMM toggle. Browser JavaScript errors: {len(browser['page_errors'])}. The following screenshots show the actual local dashboard; they are not evidence of a physical second laptop.\n\n"
         section7+='![Live dashboard: largest student trip, selected model](figures/dashboard_best.png)\n\n![Live dashboard: all model configurations on one trip](figures/dashboard_models.png)\n\n'
