@@ -89,8 +89,8 @@ def main():
     labels = pd.read_parquet(ROOT / 'data/processed/obs_labels.parquet')
     trip_id = args.trip or default_trip(labels)
     folder = find_trip(trip_id)
-    model_dir = args.model_dir or (ROOT / 'models' if (ROOT / 'models/model_card.json').exists()
-                                   else ROOT / 'models/member1/mlp')
+    model_dir = args.model_dir.resolve() if args.model_dir else (
+        ROOT / 'models' if (ROOT / 'models/model_card.json').exists() else ROOT / 'models/member1/mlp')
     scorer, model_name, status = load_any_scorer(model_dir)
 
     trip = load_trip(folder)  # no .route: inference path
