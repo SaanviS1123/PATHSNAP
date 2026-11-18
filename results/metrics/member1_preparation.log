@@ -1,0 +1,451 @@
+Prepare train/00000001
+Prepare train/00000002
+Prepare train/00000003
+Prepare train/00000004
+Prepare train/00000005
+Prepare train/00000006
+Prepare train/00000008
+Prepare train/00000010
+Prepare train/00000011
+Prepare train/00000012
+Prepare train/00000013
+Prepare train/00000014
+Prepare train/00000016
+Prepare train/00000018
+Prepare train/00000019
+Prepare train/00000020
+Prepare train/00000021
+Prepare train/00000022
+Prepare train/00000024
+Prepare train/00000025
+Prepare train/00000026
+Prepare train/00000027
+Prepare train/00000028
+Prepare train/00000029
+Prepare train/00000031
+Prepare train/00000032
+Prepare train/00000033
+Prepare train/00000034
+Prepare train/00000035
+Prepare train/00000036
+Prepare train/00000037
+Prepare train/00000038
+Prepare train/00000039
+Prepare train/00000041
+Prepare train/00000042
+Prepare train/00000043
+Prepare train/00000044
+Prepare train/00000045
+Prepare train/00000046
+Prepare train/00000047
+Prepare train/00000048
+Prepare train/00000050
+Prepare train/00000051
+Prepare train/00000053
+Prepare train/00000054
+Prepare train/00000055
+Prepare train/00000057
+Prepare train/00000058
+Prepare train/00000060
+Prepare train/00000061
+Prepare train/00000062
+Prepare train/00000063
+Prepare train/00000064
+Prepare train/00000066
+Prepare train/00000068
+Prepare train/00000069
+Prepare train/00000070
+Prepare train/00000071
+Prepare train/00000072
+Prepare train/00000074
+Prepare train/00000075
+Prepare train/00000078
+Prepare train/00000079
+Prepare train/00000080
+Prepare train/00000081
+Prepare train/00000082
+Prepare train/00000083
+Prepare train/00000084
+Prepare train/00000085
+Prepare train/00000086
+Prepare train/00000088
+Prepare train/00000089
+Prepare train/00000090
+Prepare train/00000092
+Prepare train/00000093
+Prepare train/00000095
+Prepare train/00000096
+Prepare train/00000097
+Prepare train/00000098
+Prepare train/00000099
+Prepare student_test/00000000
+Prepare student_test/00000007
+Prepare student_test/00000009
+Prepare student_test/00000040
+Prepare student_test/00000052
+Prepare student_test/00000056
+Prepare student_test/00000065
+Prepare student_test/00000076
+Prepare student_test/00000077
+Prepare student_test/00000091
+Features train/00000001
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000002
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000003
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000004
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000005
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000006
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000008
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000010
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000011
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000012
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000013
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000014
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000016
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000018
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000019
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000020
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000021
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000022
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000024
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000025
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000026
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000027
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000028
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000029
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000031
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000032
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000033
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000034
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000035
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000036
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000037
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000038
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000039
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000041
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000042
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000043
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000044
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000045
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000046
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000047
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000048
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000050
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000051
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000053
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000054
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000055
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000057
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000058
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000060
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000061
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000062
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000063
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000064
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000066
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000068
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000069
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000070
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000071
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000072
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000074
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000075
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000078
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000079
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000080
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000081
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000082
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000083
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000084
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000085
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000086
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000088
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000089
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000090
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000092
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000093
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000095
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000096
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000097
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000098
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features train/00000099
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000000
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000007
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000009
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000040
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000052
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000056
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000065
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000076
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000077
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Features student_test/00000091
+/Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  table.drop(columns='ref_arc', inplace=True)
+Member 1 preparation complete
