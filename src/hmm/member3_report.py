@@ -21,6 +21,22 @@ def generate_report():
     timing=pd.read_csv(metrics/'decode_timing.csv',dtype={'trip_id':str})
     tuning=pd.read_csv(metrics/'hmm_tuning.csv')
     model=json.loads((metrics/'hmm_tuning_model.json').read_text())
+    private_labels=ROOT/'data/processed/obs_labels.parquet'
+    cached_predictions=sorted((ROOT/'data/processed/member3').glob('prediction_*.parquet'))
+    if private_labels.exists() and cached_predictions:
+        observation_labels=pd.read_parquet(private_labels)
+        switches=[]
+        for path in cached_predictions:
+            trip=path.stem.split('_')[-1]
+            data=pd.read_parquet(path).merge(observation_labels[observation_labels.trip_id==trip][['obs_idx','ref_arc']],on='obs_idx')
+            data=data[data.ref_arc>=0]
+            cls=data.classifier_arc==data.ref_arc
+            hmm_correct=data.hmm_arc==data.ref_arc
+            switches.append(dict(trip_id=trip,classifier_correct_hmm_wrong=int((cls&~hmm_correct).sum()),
+                                 classifier_wrong_hmm_correct=int((~cls&hmm_correct).sum()),both_wrong=int((~cls&~hmm_correct).sum()),both_correct=int((cls&hmm_correct).sum())))
+        pd.DataFrame(switches).to_csv(metrics/'hmm_error_changes.csv',index=False)
+    switch_table=pd.read_csv(metrics/'hmm_error_changes.csv',dtype={'trip_id':str})
+
     student=comparison[comparison.partition=='student_test'].set_index('variant')
     fig,axes=plt.subplots(1,3,figsize=(12,4))
     order=['classifier','classifier_bridged','hmm']
@@ -52,6 +68,8 @@ def generate_report():
     measured=trips[(trips.partition=='student_test')&(trips.variant=='hmm')].merge(
         trips[(trips.partition=='student_test')&(trips.variant=='classifier')][['trip_id','n_correct']],on='trip_id',suffixes=('','_classifier'))
     n_worse=int((measured.n_correct<measured.n_correct_classifier).sum())
+    worst_id=pivot.sort_values('hmm_change').index[0]
+    worst_switch=switch_table[switch_table.trip_id==worst_id].iloc[0]
     table_columns=['partition','variant','n_known_obs','n_unknown_obs','pointwise_accuracy','route_continuity','sequence_precision','sequence_recall','sequence_f1','decoder_restarts']
     text=f'''# Member 3 report source: HMM, Viterbi and route maps
 
@@ -172,7 +190,12 @@ accuracy was {hmm.pointwise_accuracy:.4%}. Direct continuity changed from
 {baseline.route_continuity:.4%} to {hmm.route_continuity:.4%}. Ordered route F1
 was {baseline.sequence_f1:.4f} for raw classifier arcs,
 {bridged.sequence_f1:.4f} with bridging alone and {hmm.sequence_f1:.4f} with HMM
-and bridging. Tuning-set results are development scores after parameter selection,
+and bridging. Bridging alone increased ordered recall from {baseline.sequence_recall:.4f}
+to {bridged.sequence_recall:.4f}, while precision fell from
+{baseline.sequence_precision:.4f} to {bridged.sequence_precision:.4f}: filling paths
+between noisy greedy choices adds many arcs outside the supplied ordered reference.
+The HMM result therefore is not explained merely by adding intermediate arcs.
+Tuning-set results are development scores after parameter selection,
 not held-out performance estimates.
 
 ![Measured classifier/bridge/HMM comparison](../../results/plots/hmm_comparison.png)
@@ -183,6 +206,15 @@ HMM had lower point accuracy than the classifier on {n_worse} student trips.
 The lowest per-trip changes were:
 
 {markdown_table(worst)}
+
+On the lowest-gain trip `{worst_id}`, {int(worst_switch.classifier_correct_hmm_wrong)}
+known observations changed from classifier-correct to HMM-wrong, while
+{int(worst_switch.classifier_wrong_hmm_correct)} changed in the opposite direction.
+This is a net loss of {int(worst_switch.classifier_correct_hmm_wrong-worst_switch.classifier_wrong_hmm_correct)}
+correct labels. The offline failure screenshot focuses on one of the first group;
+it is chosen after the decoder is frozen and does not influence tuning.
+
+![Lowest-gain trip, offline error view](../../results/plots/hmm_failure_screenshot.png)
 
 These cases must be interpreted alongside the measured changes, not hidden by
 an aggregate. Hard topology constraints can favour a connected alternative when
@@ -209,7 +241,8 @@ The largest training trip `{large_train.trip_id}` has
 was fitted on training data, so its quality is not presented as generalisation.
 A separate warm-graph cap-8 diagnostic is recorded but does not change the frozen
 16-state configuration or student results. Detailed stages/cache counts are in
-`decode_timing.csv`.
+`decode_timing.csv`. Student cache counters include the later offline comparison
+work, as labelled in `cache_scope`; the timed prediction stages exclude that work.
 
 ![Measured student latency](../../results/plots/hmm_latency.png)
 
@@ -224,8 +257,12 @@ is drawn across a restart. The generic map function adds a reference layer only
 when explicitly supplied one by offline evaluation. API/UI inference must omit it.
 
 Open [the largest student trip](../../maps/pred_{largest.trip_id}.html).
-The rendered Folium screenshot, once generated by `src.visualization.render_maps`,
-is `results/plots/hmm_folium_screenshot.png` for the consolidated report.
+`src.visualization.render_maps` verifies all ten actual Folium pages and captures
+the largest-trip and lowest-gain-trip views. The screenshot below is an actual
+headless Chromium rendering with road layers, controls, legend and OpenStreetMap
+tiles, not a manually fabricated map. Checks, browser version and focus observations
+are in `folium_render_checks.json`. GPS display markers are subsampled to at most
+700 per page; all observations still participate in decoding and evaluation.
 
 ![Rendered Folium view](../../results/plots/hmm_folium_screenshot.png)
 
