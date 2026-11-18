@@ -9,6 +9,9 @@
       "loaded": 24
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 11,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -17,10 +20,13 @@
     "javascript_errors": [],
     "layer_control": true,
     "tiles": {
-      "total": 24,
-      "loaded": 24
+      "total": 20,
+      "loaded": 20
     },
     "screenshot": "hmm_failure_screenshot.png",
+    "focus_observation": 1257,
+    "focus_reason": "median known-label classifier-correct/HMM-wrong case; offline illustration only",
+    "map_zoom": 16,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -33,6 +39,9 @@
       "loaded": 24
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 14,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -41,10 +50,13 @@
     "javascript_errors": [],
     "layer_control": true,
     "tiles": {
-      "total": 46,
-      "loaded": 46
+      "total": 28,
+      "loaded": 28
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 11,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -57,6 +69,9 @@
       "loaded": 24
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 14,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -69,6 +84,9 @@
       "loaded": 30
     },
     "screenshot": "hmm_folium_screenshot.png",
+    "focus_observation": 1695,
+    "focus_reason": "median classifier/HMM disagreement",
+    "map_zoom": 16,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -81,6 +99,9 @@
       "loaded": 24
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 14,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -93,6 +114,9 @@
       "loaded": 30
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 12,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -105,6 +129,9 @@
       "loaded": 24
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 13,
     "browser_version": "159.0.8154.6"
   },
   {
@@ -117,6 +144,9 @@
       "loaded": 30
     },
     "screenshot": null,
+    "focus_observation": null,
+    "focus_reason": null,
+    "map_zoom": 14,
     "browser_version": "159.0.8154.6"
   }
 ]
