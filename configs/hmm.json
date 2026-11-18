@@ -8,8 +8,17 @@
     "backtrack_tolerance_m": 20.0,
     "candidate_cap": 16
   },
-  "signature": "eccfd3d59e0a2e7398f214eb52dd2dd6cbaf6b7d1c069d24c9885640557e7c51",
+  "signature": "a59aa804d83d26984dc4fdbbb4712310fb302be124ffaebb3ea01d5f7b0e4f9a",
   "inputs": {
+    "src/hmm/run_member3.py": "15ddff509c23514f495028ba230007c4b25ee76652c401edc9b35516da25ecfb",
+    "src/models/training.py": "00661aa2881215c5b56426eea3a209b37959f11148b3dde04b03138eabcf6d79",
+    "src/models/calibration.py": "42ce81c37114e49b26e2caae5f8f8b11bcba35b7fd8d7a33b278931e06c93402",
+    "src/evaluation/harness.py": "09be9f9b5dc9bdbd3b2ff95f16a1ec22d14a8c3aa4d0ff71b26e1d0e5f1c5d46",
+    "src/data_processing/loaders.py": "69f8ecffd16106e94a87369e2707ee7adad71d463a9a3c4bb4a9ba017e13423c",
+    "src/data_processing/geo.py": "8eca9375cf8549654b7fc6480e3dbb12c66e3c15f3da9a44610c017676288ba0",
+    "src/features/candidates.py": "1be07b621d3fae0eb6466008402e68f4cdfbd96c67856d831488dbad3bf18e2d",
+    "src/features/build.py": "729809ddb51144a9b1532544a950ac60abdbe87b3dcb954ad758b8235d4db7a6",
+    "configs/candidates.json": "b6a6a65d228380395aa1579abf88e17823d6447cd9c1f1726051617d876f2965",
     "src/hmm/network.py": "3b01c825d233f67657c2b2bd0b1c842ac6513d1a52c69048e8cd54196ebb8075",
     "src/hmm/viterbi.py": "75b97e7cee6df528148cc93b06dfc85ba00033bd7bfc228f493bfd5e643121b2",
     "src/hmm/predict.py": "d50bcef09f2cc6b30797ff83464e1f814f11e9b07a0b47c378b176675eaeed27",
