@@ -17,6 +17,8 @@ from src.models.training import ROOT,load_training_data,input_signature,file_has
 
 def tune(data_path=None,trials=10,seed=42,output_path=None,model_name=None,frame=None,features=None,obs_labels=None,search_max_train_rows=250000):
     import optuna
+    if search_max_train_rows<0:
+        raise ValueError('Search training-row budget must be nonnegative; 0 uses all rows')
     if trials<4:
         raise ValueError('At least four trials are required: three startup plus a TPE proposal')
     if frame is None:
@@ -83,19 +85,20 @@ def tune(data_path=None,trials=10,seed=42,output_path=None,model_name=None,frame
     result=json.loads((records/f'trial_{best.number}.json').read_text())
     confirmation_path=ROOT/'results/metrics/tuning_confirmation.json'
     confirmation_oof=cache/f'{study_name}_confirmation_oof.npy'
-    confirmation_key=dict(signature=signature,params=decode_trial_params(model_name,best.params))
+    confirmation_key=json.loads(json.dumps(dict(signature=signature,params=decode_trial_params(model_name,best.params))))
     confirmation=None
     if confirmation_path.exists() and confirmation_oof.exists():
         cached=json.loads(confirmation_path.read_text())
         if cached.get('confirmation_key')==confirmation_key:
             confirmation=cached
     if confirmation is None:
+        confirmation_started=time.perf_counter()
         confirmation=evaluate_model(make_estimator(model_name,decode_trial_params(model_name,best.params),seed),model_name+' full-row tuning confirmation',frame,features,obs_labels=obs_labels,continuity_fn=route_continuity,oof_path=confirmation_oof,output_path=ROOT/'results/metrics/member2/tuning_confirmation_progress.json')
-        confirmation.update(confirmation_key=confirmation_key)
+        confirmation.update(confirmation_key=confirmation_key,confirmation_compute_seconds=time.perf_counter()-confirmation_started)
         write_json(confirmation_path,confirmation)
     summary=dict(model_name=model_name,objective='mean observation Top-1 across all five frozen trip folds, with budgeted training rows and complete validation folds',
                  n_trials=len(study.trials),n_startup_trials=3,n_tpe_trials=sum(t.number>=3 for t in study.trials),
-                 best_trial=best.number,best_top1_accuracy=best.value,search_max_train_rows=search_max_train_rows,full_cv_top1_accuracy=confirmation['top1_accuracy'],full_cv_macro_f1=confirmation['macro_f1'],
+                 best_trial=best.number,best_top1_accuracy=best.value,search_max_train_rows=search_max_train_rows,full_cv_top1_accuracy=confirmation['top1_accuracy'],full_cv_macro_f1=confirmation['macro_f1'],confirmation_compute_seconds=confirmation['confirmation_compute_seconds'],
                  best_params=decode_trial_params(model_name,best.params),sampler='Optuna TPESampler',seed=seed,
                  total_compute_seconds=sum(t.user_attrs.get('elapsed_s',0) for t in study.trials),
                  current_invocation_seconds=time.perf_counter()-started,signature=signature,inputs=inputs,

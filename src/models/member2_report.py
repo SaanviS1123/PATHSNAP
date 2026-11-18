@@ -97,6 +97,10 @@ def generate_report(records,selection,tuning):
     columns=['model_name','cv_macro_f1','cv_top1_accuracy','student_top1_accuracy','student_route_continuity','student_macro_f1','student_log_loss','student_inference_time_sec']
     compact=table[columns].copy()
     compact.columns=['Model','CV Macro-F1','CV Top-1','Student Top-1','Direct continuity','Student Macro-F1','Log loss','Inference (s)']
+    population=pd.read_parquet(ROOT/'data/processed/obs_labels.parquet',columns=['partition','ref_arc'])
+    unknown_train=int(((population.partition=='train') & (population.ref_arc<0)).sum())
+    unknown_student=int(((population.partition=='student_test') & (population.ref_arc<0)).sum())
+    fit_rows=records[0]['student']['n_fit_rows']
     audit=json.loads((metrics/'calibration_audit.json').read_text())
     final=selection['final_student_test']
     source=f'''# Member 2 report source: model comparison, experiments and tuning
@@ -111,8 +115,8 @@ No evaluator-test partition was read.
 The five distinct families are Logistic Regression, KNN, Random Forest,
 histogram gradient boosting and MLP. A tuned variant is a separate row, not a
 sixth distinct baseline family. All use the same schema and frozen five trip
-folds over the 80 training trips. Known-label training rows total 2,134,559;
-20,540 training and 17 student-test observations have unknown alignment labels.
+folds over the 80 training trips. Known-label training rows total {fit_rows:,};
+{unknown_train:,} training and {unknown_student:,} student-test observations have unknown alignment labels.
 `-1` never enters supervised fitting or candidate metrics. Top-1 counts missing
 reference candidates as incorrect and excludes only unknown reference labels.
 
@@ -221,7 +225,8 @@ Search distributions:
 Best trial: {tuning['best_trial']}, objective Top-1
 {tuning['best_top1_accuracy']:.4%} under the search fit budget. Full-row confirmation
 Top-1 was {tuning['full_cv_top1_accuracy']:.4%}. Search compute was
-{tuning['total_compute_seconds']:.1f} s (sum of measured objective runtimes).
+{tuning['total_compute_seconds']:.1f} s (sum of measured objective runtimes), plus
+{tuning['confirmation_compute_seconds']:.1f} s for full-row confirmation.
 The SQLite study and sampler state stay in the regenerable processed-data cache;
 all trial parameters, objectives, timings and states are in
 `results/metrics/tuning_trials.csv`, with per-trial fold metrics under
