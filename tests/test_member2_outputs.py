@@ -54,7 +54,8 @@ def test_final_selection_calibration_and_export_limits():
     tuned=table[table.model_name==baseline.model_name+'_tuned'].iloc[0]
     assert selection['tuned_selected']==bool(tuned.cv_top1_accuracy>baseline.cv_top1_accuracy)
     card=json.loads(CARD.read_text())
-    assert card['train_trips']==80 and card['train_rows']==2134559
+    known_rows=int((pd.read_parquet('data/processed/train.parquet',columns=['is_ref']).is_ref>=0).sum())
+    assert card['train_trips']==80 and card['train_rows']==known_rows
     audit=json.loads(Path('results/metrics/calibration_audit.json').read_text())
     populations=[set(audit[k]) for k in ['base_fit_trip_ids','calibration_trip_ids','audit_trip_ids']]
     assert list(map(len,populations))==[48,16,16]
@@ -68,15 +69,16 @@ def test_final_selection_calibration_and_export_limits():
 
 
 def test_final_scorer_fresh_process_has_no_reference_io():
-    script='''import builtins,numpy as np,pandas as pd
+    script='''import builtins,io,numpy as np,pandas as pd
 from src.models.training import load_scorer
 frame=pd.read_parquet('tests/fixtures/member1/candidates.parquet')
 original=builtins.open
 def guard(path,*args,**kwargs):
     name=str(path)
-    assert not name.endswith('.route') and '/data/raw/' not in name
+    assert not name.endswith('.route') and '/data/raw/' not in name and not name.startswith('data/raw/')
     return original(path,*args,**kwargs)
 builtins.open=guard
+io.open=guard
 scorer=load_scorer('models')
 score=scorer.predict_proba(frame)
 assert score.shape==(len(frame),)

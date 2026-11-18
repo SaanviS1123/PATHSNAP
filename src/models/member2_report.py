@@ -290,9 +290,16 @@ References checked 18 November 2026:
     (folder/'models_and_tuning.md').write_text(source)
     (metrics/'model_selection.md').write_text(f"# Final model selection\n\nSelected: **{selection['selected_model']}**.\n\nPrimary metric: frozen-fold observation Top-1. Student test did not select parameters.\n\nCalibration enabled: {selection['calibration_enabled']}.\n\nFinal metrics are in `model_selection.json`; full analysis is in `report/member2/models_and_tuning.md`.\n")
     decision=ROOT/'DECISIONS.md'
-    decision_id='| D020 |'
-    if decision_id not in decision.read_text():
-        decision.write_text(decision.read_text()+f"| D020 | 2026-11-18 | Select `{selection['selected_model']}` with calibration {'enabled' if selection['calibration_enabled'] else 'disabled'}. | Baseline CV winner `{selection['baseline_winner']}`; TPE best trial {tuning['best_trial']}; evidence: `model_selection.json`, `tuned_vs_untuned.csv`, `calibration_audit.json`. |\n")
+    import hashlib,re
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    parameter_key=hashlib.sha256(json.dumps(tuning['best_params'],sort_keys=True).encode()).hexdigest()[:8]
+    outcome=f"Select `{selection['selected_model']}` with calibration {'enabled' if selection['calibration_enabled'] else 'disabled'} (parameter record {parameter_key})."
+    log=decision.read_text()
+    if outcome not in log:
+        next_id=max([int(n) for n in re.findall(r'\| D(\d+) \|',log)],default=0)+1
+        date=datetime.now(ZoneInfo('Asia/Kolkata')).date().isoformat()
+        decision.write_text(log+f"| D{next_id:03d} | {date} | {outcome} | Baseline CV winner `{selection['baseline_winner']}`; TPE best trial {tuning['best_trial']}; evidence: `model_selection.json`, `tuned_vs_untuned.csv`, `calibration_audit.json`. |\n")
     print('Generated Member 2 report, plots and final decision record',flush=True)
 
 

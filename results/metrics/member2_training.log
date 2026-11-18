@@ -83,3 +83,6 @@ hist_gradient_boosting TPE trial 9: fold 3
 hist_gradient_boosting TPE trial 9: fold 4
 [I 2026-11-18 14:14:38,077] Trial 9 finished with value: 0.7703889556396109 and parameters: {'max_iter': 60, 'learning_rate': 0.13017383232804303, 'max_leaf_nodes': 31, 'min_samples_leaf': 100, 'l2_regularization': 1.4974927637447881}. Best is trial 3 with value: 0.7730936860009785.
 hist_gradient_boosting full-row tuning confirmation: CV fold 0
+hist_gradient_boosting full-row tuning confirmation: CV fold 1
+hist_gradient_boosting full-row tuning confirmation: CV fold 2
+hist_gradient_boosting full-row tuning confirmation: CV fold 3
