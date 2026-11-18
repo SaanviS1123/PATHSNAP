@@ -448,30 +448,4 @@ Features student_test/00000091
 /Users/sabiqueislam/Downloads/PATHSNAP/src/data_processing/run_member1.py:106: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
 See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
   table.drop(columns='ref_arc', inplace=True)
-
-Fontconfig error: No writable cache directories
-	/opt/homebrew/var/cache/fontconfig
-	/Users/sabiqueislam/.cache/fontconfig
-	/Users/sabiqueislam/.fontconfig
-
-Fontconfig error: No writable cache directories
-	/opt/homebrew/var/cache/fontconfig
-	/Users/sabiqueislam/.cache/fontconfig
-	/Users/sabiqueislam/.fontconfig
-
-Fontconfig error: No writable cache directories
-	/opt/homebrew/var/cache/fontconfig
-	/Users/sabiqueislam/.cache/fontconfig
-	/Users/sabiqueislam/.fontconfig
-
-Fontconfig error: No writable cache directories
-	/opt/homebrew/var/cache/fontconfig
-	/Users/sabiqueislam/.cache/fontconfig
-	/Users/sabiqueislam/.fontconfig
-
-Fontconfig error: No writable cache directories
-	/opt/homebrew/var/cache/fontconfig
-	/Users/sabiqueislam/.cache/fontconfig
-	/Users/sabiqueislam/.fontconfig
-Matplotlib is building the font cache; this may take a moment.
 Member 1 preparation complete

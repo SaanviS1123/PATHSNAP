@@ -31,5 +31,38 @@
     "n_fit_trips": 64,
     "fit_warnings": [],
     "inference_time_s": 221.5539052078966
+  },
+  {
+    "model": "knn",
+    "partition": "cv",
+    "fold": 1,
+    "candidate_accuracy": 0.9538353945818611,
+    "precision": 0.7874918757993166,
+    "recall": 0.7153249919061494,
+    "f1": 0.7496756681236653,
+    "macro_f1": 0.8621243804261012,
+    "log_loss": 0.314169118838209,
+    "top1_acc": 0.7657035175879398,
+    "trip_mean_top1": 0.785861591607875,
+    "candidate_miss_rate": 0.0005139333028780779,
+    "n_known_obs": 52536,
+    "n_unknown_obs": 65,
+    "n_candidate_rows": 543931,
+    "n_known_candidate_rows": 543360,
+    "confusion_matrix": [
+      [
+        480715,
+        10136
+      ],
+      [
+        14948,
+        37561
+      ]
+    ],
+    "train_time_s": 1.2896789169171825,
+    "n_fit_rows": 1591199,
+    "n_fit_trips": 64,
+    "fit_warnings": [],
+    "inference_time_s": 333.37930537504144
   }
 ]
