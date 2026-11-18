@@ -1,0 +1,17 @@
+{
+  "elapsed_s": 59.113198375096545,
+  "seed": 42,
+  "partitions": {
+    "train": 80,
+    "student_test": 10
+  },
+  "candidate_config": {
+    "radius_m": 100,
+    "k": 16,
+    "selection_partition": "train",
+    "policy": "Smallest mean candidate count with <=1% miss rate, otherwise lowest miss rate",
+    "label_max_distance_m": 100,
+    "schema_version": "member1-v1",
+    "seed": 42
+  }
+}

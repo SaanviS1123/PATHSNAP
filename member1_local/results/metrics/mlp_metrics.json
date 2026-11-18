@@ -1,0 +1,18 @@
+{
+  "model": "PyTorch MLP",
+  "fold": 1,
+  "seed": 42,
+  "training_candidate_rows": 120000,
+  "validation_candidate_rows": 142117,
+  "validation_observations": 10000,
+  "validation_positive_labels": 6998,
+  "best_validation_loss": 0.11880627560406214,
+  "epochs_trained": 10,
+  "precision": 0.5133310249307479,
+  "recall": 0.8473849671334667,
+  "f1": 0.6393530997304582,
+  "candidate_accuracy": 0.9529261101768262,
+  "log_loss": 0.11880627274513245,
+  "gps_top1_accuracy": 0.541,
+  "elapsed_seconds": 28.62
+}

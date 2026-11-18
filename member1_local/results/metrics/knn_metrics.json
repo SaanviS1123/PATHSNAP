@@ -1,0 +1,16 @@
+{
+  "model": "KNN",
+  "fold": 1,
+  "seed": 42,
+  "training_candidate_rows": 120000,
+  "validation_candidate_rows": 142117,
+  "validation_observations": 10000,
+  "precision": 0.4965627095908786,
+  "recall": 0.846384681337525,
+  "f1": 0.6259114445736025,
+  "candidate_accuracy": 0.9501818923844438,
+  "log_loss": 0.17870729048534995,
+  "gps_top1_accuracy": 0.5128,
+  "validation_positive_labels": 6998,
+  "elapsed_seconds": 9.66
+}

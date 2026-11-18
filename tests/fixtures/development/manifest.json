@@ -1,0 +1,15 @@
+{
+  "partition": "train",
+  "schema_version": "member1-v1",
+  "trip_ids": [
+    "00000026",
+    "00000039",
+    "00000018",
+    "00000014",
+    "00000022"
+  ],
+  "selection": "Five smallest training trips by observation count; trip ID breaks ties",
+  "n_candidate_rows": 28764,
+  "n_observations": 2025,
+  "no_raw_coordinates": true
+}

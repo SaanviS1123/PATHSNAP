@@ -1,0 +1,51 @@
+
+{
+  "schema_version": "1.0",
+  "project": "PathSnap",
+  "task": "Candidate road-arc classification",
+  "coordinate_order": ["longitude", "latitude"],
+  "candidate_generation": {
+    "spatial_index": "scipy.spatial.cKDTree",
+    "search_k": 500,
+    "final_k": 30,
+    "radius_m": 100,
+    "distance_method": "point_to_segment",
+    "empty_radius_fallback": "nearest_candidate"
+  },
+  "feature_columns": [
+    "distance_m",
+    "segment_length_m",
+    "bearing_difference",
+    "speed_mps",
+    "time_delta_s"
+  ],
+  "feature_units": {
+    "distance_m": "metres",
+    "segment_length_m": "metres",
+    "bearing_difference": "degrees",
+    "speed_mps": "metres_per_second",
+    "time_delta_s": "seconds"
+  },
+  "identifier_columns": [
+    "trip_id",
+    "observation_id",
+    "arc_id"
+  ],
+  "target_column": "is_correct_arc",
+  "label_source": "heuristic alignment to ordered reference route",
+  "validation": {
+    "strategy": "GroupKFold",
+    "group_column": "trip_id",
+    "n_splits": 5,
+    "random_state": 42
+  },
+  "notes": [
+    "Labels are provisional, not independently verified ground truth.",
+    "Reference route files must not be used as inference features.",
+    "Trip IDs must be stored as zero-padded 8-character strings.",
+    "GroupKFold prevents observations from the same trip appearing in both training and validation folds.",
+    "GroupKFold does not shuffle; random_state is retained as a project reproducibility setting, not passed to GroupKFold.",
+    "The existing trained model uses an older approximate local projection and 10 candidates per observation.",
+    "This schema describes the planned 30-candidate pipeline. Retrain models before claiming compatibility with it."
+  ]
+}
