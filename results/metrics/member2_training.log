@@ -86,3 +86,14 @@ hist_gradient_boosting full-row tuning confirmation: CV fold 0
 hist_gradient_boosting full-row tuning confirmation: CV fold 1
 hist_gradient_boosting full-row tuning confirmation: CV fold 2
 hist_gradient_boosting full-row tuning confirmation: CV fold 3
+hist_gradient_boosting full-row tuning confirmation: CV fold 4
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/src/models/run_all.py", line 239, in <module>
+    parser.add_argument('--trials',type=int,default=10)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/src/models/run_all.py", line 223, in run
+    for record in records:
+    
+TypeError: dict() got multiple values for keyword argument 'model_name'

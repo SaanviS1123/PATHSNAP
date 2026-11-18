@@ -1,5 +1,105 @@
 {
   "baseline_winner": "hist_gradient_boosting",
-  "metric": "mean five-fold observation Top-1",
-  "student_test_used_for_selection": false
+  "selected_model": "hist_gradient_boosting_tuned",
+  "tuned_selected": true,
+  "calibration_enabled": true,
+  "metric": "mean observation Top-1 across frozen five trip folds; strict CV improvement required to replace baseline",
+  "student_test_used_for_selection": false,
+  "cv_top1_accuracy": 0.7735211055026154,
+  "cv_macro_f1": 0.8303809007920693,
+  "final_student_test": {
+    "candidate_accuracy": 0.9674341154494903,
+    "precision": 0.8238779274495557,
+    "recall": 0.7701954227191974,
+    "f1": 0.7961327608090956,
+    "macro_f1": 0.8892182024329829,
+    "log_loss": 0.08285873095175417,
+    "brier_score": 0.024219579519561985,
+    "ece_10": 0.00447310671743495,
+    "calibration_bins": [
+      {
+        "bin": 0,
+        "count": 198690,
+        "mean_probability": 0.006849862331892907,
+        "positive_fraction": 0.0052745482913080675
+      },
+      {
+        "bin": 1,
+        "count": 6642,
+        "mean_probability": 0.14335538661793046,
+        "positive_fraction": 0.12270400481782595
+      },
+      {
+        "bin": 2,
+        "count": 3629,
+        "mean_probability": 0.24696298192834873,
+        "positive_fraction": 0.2119041058142739
+      },
+      {
+        "bin": 3,
+        "count": 2715,
+        "mean_probability": 0.34740271300325165,
+        "positive_fraction": 0.3241252302025783
+      },
+      {
+        "bin": 4,
+        "count": 2240,
+        "mean_probability": 0.4491065215890863,
+        "positive_fraction": 0.39553571428571427
+      },
+      {
+        "bin": 5,
+        "count": 2243,
+        "mean_probability": 0.5508481062107252,
+        "positive_fraction": 0.5439144003566652
+      },
+      {
+        "bin": 6,
+        "count": 2288,
+        "mean_probability": 0.6513673270003887,
+        "positive_fraction": 0.6354895104895105
+      },
+      {
+        "bin": 7,
+        "count": 2602,
+        "mean_probability": 0.7509786894125213,
+        "positive_fraction": 0.7613374327440431
+      },
+      {
+        "bin": 8,
+        "count": 3588,
+        "mean_probability": 0.8539075359760314,
+        "positive_fraction": 0.866778149386845
+      },
+      {
+        "bin": 9,
+        "count": 7170,
+        "mean_probability": 0.9517026176913774,
+        "positive_fraction": 0.9728033472803347
+      }
+    ],
+    "top1_accuracy": 0.8035835553466019,
+    "trip_mean_top1": 0.8208026733687012,
+    "candidate_miss_rate": 0.0002611920806561145,
+    "route_continuity": 0.9038120104438643,
+    "n_known_obs": 19143,
+    "n_unknown_obs": 17,
+    "n_candidate_rows": 231905,
+    "n_known_candidate_rows": 231807,
+    "confusion_matrix": [
+      [
+        209518,
+        3151
+      ],
+      [
+        4398,
+        14740
+      ]
+    ]
+  },
+  "limitations": [
+    "Known-label surrogate alignment; unknown observations excluded from supervised metrics",
+    "CV conditional on training-wide candidate selection and model/search selection; not nested CV",
+    "Continuity is direct classifier adjacency; C1/HMM/sequence comparison remains Member 3 work"
+  ]
 }

@@ -1,0 +1,278 @@
+{
+  "method": "sigmoid on clipped log odds",
+  "accepted": true,
+  "rule": "Strictly increasing slope, lower audit log loss and no higher audit Brier score",
+  "base_fit_trip_ids": [
+    "00000001",
+    "00000004",
+    "00000005",
+    "00000006",
+    "00000008",
+    "00000010",
+    "00000011",
+    "00000012",
+    "00000013",
+    "00000016",
+    "00000018",
+    "00000021",
+    "00000022",
+    "00000024",
+    "00000025",
+    "00000028",
+    "00000032",
+    "00000035",
+    "00000037",
+    "00000038",
+    "00000041",
+    "00000042",
+    "00000043",
+    "00000044",
+    "00000046",
+    "00000047",
+    "00000048",
+    "00000051",
+    "00000054",
+    "00000055",
+    "00000058",
+    "00000061",
+    "00000062",
+    "00000066",
+    "00000068",
+    "00000069",
+    "00000070",
+    "00000078",
+    "00000079",
+    "00000081",
+    "00000082",
+    "00000083",
+    "00000084",
+    "00000085",
+    "00000088",
+    "00000092",
+    "00000096",
+    "00000099"
+  ],
+  "calibration_trip_ids": [
+    "00000002",
+    "00000003",
+    "00000019",
+    "00000026",
+    "00000027",
+    "00000029",
+    "00000036",
+    "00000045",
+    "00000063",
+    "00000064",
+    "00000074",
+    "00000075",
+    "00000080",
+    "00000086",
+    "00000089",
+    "00000093"
+  ],
+  "audit_trip_ids": [
+    "00000014",
+    "00000020",
+    "00000031",
+    "00000033",
+    "00000034",
+    "00000039",
+    "00000050",
+    "00000053",
+    "00000057",
+    "00000060",
+    "00000071",
+    "00000072",
+    "00000090",
+    "00000095",
+    "00000097",
+    "00000098"
+  ],
+  "raw": {
+    "candidate_accuracy": 0.9465529066108215,
+    "precision": 0.6081731861342057,
+    "recall": 0.940690769825375,
+    "f1": 0.7387387387387387,
+    "macro_f1": 0.85448513736493,
+    "log_loss": 0.13392784978848754,
+    "brier_score": 0.03977405304393156,
+    "ece_10": 0.06019369149951455,
+    "calibration_bins": [
+      {
+        "bin": 0,
+        "count": 275125,
+        "mean_probability": 0.00963800007918723,
+        "positive_fraction": 0.0015374829622898682
+      },
+      {
+        "bin": 1,
+        "count": 15380,
+        "mean_probability": 0.14459633161732305,
+        "positive_fraction": 0.01775032509752926
+      },
+      {
+        "bin": 2,
+        "count": 8772,
+        "mean_probability": 0.24653224330992482,
+        "positive_fraction": 0.030095759233926128
+      },
+      {
+        "bin": 3,
+        "count": 6266,
+        "mean_probability": 0.3479173625844552,
+        "positive_fraction": 0.05681455473986594
+      },
+      {
+        "bin": 4,
+        "count": 4748,
+        "mean_probability": 0.44795002119535776,
+        "positive_fraction": 0.07834877843302443
+      },
+      {
+        "bin": 5,
+        "count": 4074,
+        "mean_probability": 0.5488045053009638,
+        "positive_fraction": 0.10284732449680903
+      },
+      {
+        "bin": 6,
+        "count": 3716,
+        "mean_probability": 0.6496890135373822,
+        "positive_fraction": 0.1498923573735199
+      },
+      {
+        "bin": 7,
+        "count": 3976,
+        "mean_probability": 0.7510325558020093,
+        "positive_fraction": 0.24723340040241448
+      },
+      {
+        "bin": 8,
+        "count": 5368,
+        "mean_probability": 0.8539534943069264,
+        "positive_fraction": 0.3867362146050671
+      },
+      {
+        "bin": 9,
+        "count": 26888,
+        "mean_probability": 0.9752737876782528,
+        "positive_fraction": 0.8456560547456115
+      }
+    ],
+    "top1_accuracy": 0.8100271923861319,
+    "trip_mean_top1": 0.809023825220803,
+    "candidate_miss_rate": 0.03259687287559483,
+    "route_continuity": null,
+    "n_known_obs": 29420,
+    "n_unknown_obs": 2998,
+    "n_candidate_rows": 401571,
+    "n_known_candidate_rows": 354313,
+    "confusion_matrix": [
+      [
+        308603,
+        17249
+      ],
+      [
+        1688,
+        26773
+      ]
+    ]
+  },
+  "calibrated": {
+    "candidate_accuracy": 0.9721743204454818,
+    "precision": 0.8492415139681586,
+    "recall": 0.7946663855802677,
+    "f1": 0.8210480460312563,
+    "macro_f1": 0.9029811751410755,
+    "log_loss": 0.07420759266542326,
+    "brier_score": 0.020706124961626986,
+    "ece_10": 0.006447761063727094,
+    "calibration_bins": [
+      {
+        "bin": 0,
+        "count": 307388,
+        "mean_probability": 0.006806153677433516,
+        "positive_fraction": 0.004694392754434135
+      },
+      {
+        "bin": 1,
+        "count": 9238,
+        "mean_probability": 0.14212258075119463,
+        "positive_fraction": 0.10651656202641265
+      },
+      {
+        "bin": 2,
+        "count": 4680,
+        "mean_probability": 0.2466937383837249,
+        "positive_fraction": 0.2141025641025641
+      },
+      {
+        "bin": 3,
+        "count": 3426,
+        "mean_probability": 0.348335453334619,
+        "positive_fraction": 0.3359603035610041
+      },
+      {
+        "bin": 4,
+        "count": 2949,
+        "mean_probability": 0.4502416317067628,
+        "positive_fraction": 0.42861987114276023
+      },
+      {
+        "bin": 5,
+        "count": 2989,
+        "mean_probability": 0.5510980134696545,
+        "positive_fraction": 0.522248243559719
+      },
+      {
+        "bin": 6,
+        "count": 3125,
+        "mean_probability": 0.6508561263134038,
+        "positive_fraction": 0.64864
+      },
+      {
+        "bin": 7,
+        "count": 3846,
+        "mean_probability": 0.7526089505650354,
+        "positive_fraction": 0.8000520020800832
+      },
+      {
+        "bin": 8,
+        "count": 6257,
+        "mean_probability": 0.8559310534364684,
+        "positive_fraction": 0.9184912897554739
+      },
+      {
+        "bin": 9,
+        "count": 10415,
+        "mean_probability": 0.943282003287056,
+        "positive_fraction": 0.9798367738838214
+      }
+    ],
+    "top1_accuracy": 0.8100271923861319,
+    "trip_mean_top1": 0.809023825220803,
+    "candidate_miss_rate": 0.03259687287559483,
+    "route_continuity": null,
+    "n_known_obs": 29420,
+    "n_unknown_obs": 2998,
+    "n_candidate_rows": 401571,
+    "n_known_candidate_rows": 354313,
+    "confusion_matrix": [
+      [
+        321837,
+        4015
+      ],
+      [
+        5844,
+        22617
+      ]
+    ]
+  },
+  "fit": {
+    "train_time_sec": 18.704683832940646,
+    "n_fit_rows": 1395273,
+    "n_fit_trips": 48,
+    "warnings": []
+  },
+  "note": "Training-only calibration audit after family/parameter selection; not an unbiased estimate of the full selected pipeline. Student test is not consulted."
+}
