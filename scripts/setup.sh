@@ -3,8 +3,7 @@
 #
 # Usage: scripts/setup.sh
 #
-# Installs requirements-member2.txt (which includes requirements-member1.txt), plus
-# requirements-api.txt / requirements-ui.txt if workstream D adds them.
+# Installs the complete pinned requirements.txt (models, API, UI and report).
 # Uses uv when available, otherwise python3.13 -m venv + pip.
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 [[ "${1:-}" =~ ^(-h|--help)$ ]] && { usage "$0"; exit 0; }
@@ -23,10 +22,7 @@ install() {
   if command -v uv >/dev/null 2>&1; then uv pip install --python "$PY" -r "$1"
   else "$PY" -m pip install -r "$1"; fi
 }
-install requirements-member2.txt
-for extra in requirements-api.txt requirements-ui.txt; do
-  if [[ -f "$extra" ]]; then install "$extra"; fi
-done
+install requirements.txt
 
 say "Installed versions"
 "$PY" - <<'EOF'
@@ -35,4 +31,4 @@ for name in ["numpy", "pandas", "scipy", "sklearn", "shapely", "pyproj",
              "pyarrow", "folium", "optuna", "joblib", "pytest"]:
     print(f"  {name:<10} {importlib.import_module(name).__version__}")
 EOF
-say "Done. Next: scripts/prep.sh"
+say "Done. Existing data/models: scripts/host.sh; new data: scripts/prep.sh"
