@@ -206,8 +206,11 @@ have no fabricated epoch histories. Every curve row is in
 Tuning targeted **{tuning['model_name']}**, the measured baseline CV winner.
 Optuna TPE used seed {tuning['seed']} with {tuning['n_trials']} completed trials:
 {tuning['n_startup_trials']} startup trials and {tuning['n_tpe_trials']} subsequent
-TPE proposals. Every completed objective evaluated all five frozen folds over
-known training labels. No student-test result entered the objective.
+TPE proposals. Every completed objective evaluated all five full validation folds. Search fits
+used approximately {tuning['search_max_train_rows']:,} known rows per fold, sampled
+proportionally within every training trip/class. This is a fit budget, not a
+validation subsample. The search winner then received full-row five-fold
+confirmation before comparison with the full-row untuned baseline. No student-test result entered the objective.
 
 Search distributions:
 
@@ -216,7 +219,8 @@ Search distributions:
 ```
 
 Best trial: {tuning['best_trial']}, objective Top-1
-{tuning['best_top1_accuracy']:.4%}. Search compute was
+{tuning['best_top1_accuracy']:.4%} under the search fit budget. Full-row confirmation
+Top-1 was {tuning['full_cv_top1_accuracy']:.4%}. Search compute was
 {tuning['total_compute_seconds']:.1f} s (sum of measured objective runtimes).
 The SQLite study and sampler state stay in the regenerable processed-data cache;
 all trial parameters, objectives, timings and states are in
@@ -288,5 +292,6 @@ References checked 18 November 2026:
 
 
 if __name__=='__main__':
-    records=[json.loads(p.read_text()) for p in sorted((ROOT/'results/metrics/member2').glob('*.json')) if not p.name.startswith('trial_') and not p.name.endswith('_progress.json')]
+    saved=[json.loads(p.read_text()) for p in sorted((ROOT/'results/metrics/member2').glob('*.json'))]
+    records=[r for r in saved if all(k in r for k in ['name','cv','student'])]
     generate_report(records,json.loads((ROOT/'results/metrics/model_selection.json').read_text()),json.loads((ROOT/'results/metrics/tuning_best.json').read_text()))
