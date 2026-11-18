@@ -123,8 +123,8 @@ def main():
     plot_diagnostics(args.raw_dir)
     from src.visualization.eda_maps import create_eda
     create_eda(pd.DataFrame(quality), args.raw_dir)
-    from src.data_processing.synthetic import write_fixture
-    write_fixture()
+    from src.data_processing.fixtures import write_fixtures
+    write_fixtures(args.output_dir)
     write_json(metrics / 'member1_preparation.json', dict(elapsed_s=time.perf_counter()-start,
                seed=SEED, partitions={p: len(v) for p, v in directories.items()}, candidate_config=params))
     print('Member 1 preparation complete', flush=True)
