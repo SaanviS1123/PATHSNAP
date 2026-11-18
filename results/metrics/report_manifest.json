@@ -1,13 +1,13 @@
 {
   "report": "report/PATHSNAP_report.pdf",
-  "report_sha256": "861151732c82eae47815aa8aaf2cd9cc92d4e7709cd23d774407e309c05520f0",
+  "report_sha256": "8a389bbdb8d9bd7c056106a03c292f3f18367efc175eca19e6f7518306ed78e1",
   "inputs": {
     "report/member1/eda_and_models.md": "dc3bb53c9c2c66033a69542e260c2d6bd44f001df49e16654f8e2f22451d32e8",
     "report/member2/models_and_tuning.md": "5797b8d19c519145b6628f6617c23ac2ca1ac51cb27cc46cac4b8fabcf92e90f",
     "report/member3/hmm_and_maps.md": "ecfcb11bf0e3745e168576c674b1750da33462d1ad6c1786eef4cdd8e3a43bee",
     "report/PATHSNAP_report.md": "fa109d49dcfe483558cae2cda8ef2df68e9ba0762b91e6e7522b620768939e3b",
     "scripts/build_report.py": "826d9e34828b4ff1a8ef53ce5393e295840a0ba77f0f71d7e6b495ffd47d9c29",
-    "requirements.txt": "ca8edd3a98d40bce1e6867752560257b6737d1496e868bce2be3d7e7096df84e",
+    "requirements.txt": "25a9a31879f016e42769cd156a207e83b1ba2076acc2c9c2eef480d3f191682e",
     "configs/hmm.json": "09cc8e53f13792fe824831b61b01adde4b4b9996cc5c8a86aa154fd818d7fa63",
     "results/metrics/candidate_sweep.csv": "5ebf15ec130bbcda019cfb4ef31e54b019d9b0d82f58180f602a03d3ac66d16a",
     "results/metrics/candidate_sweep_by_trip.csv": "7be61955b21bb42d19ea502ff6daaea7d9b6015847f71d7c58c6d306a4cbc813",
@@ -36,7 +36,8 @@
     "results/metrics/tuned_vs_untuned.csv": "ac3166c45ac2a5d234c2d0d39cc344efc258bdb2c119d6012f4fd830b82f86d3",
     "results/metrics/tuning_trials.csv": "67a96d3652a3490171a34545dfe538a5a52a89d4aa34e68b00b0df11c14f954b",
     "results/metrics/calibration_audit.json": "7200c42abcd2a2ecccf85fac5da50ce29dc25a8d45da414fdb8c42066d9264b4",
-    "report/figures/dashboard_best.png": "bbe4c540333366360a9c8f53ad0bba283cbac7d60bb7a8757aef125b31a2bbbb"
+    "report/figures/dashboard_best.png": "bc4f057ae919e8fa4b224eb2b90a7a8084b1e9a54a47fca4daeac0be8bf3b634",
+    "report/figures/dashboard_models.png": "17fe490a60495ad3dd2cd033cfe7b38dc59cb8dbf439ffa4030d97c226e50d04"
   },
   "physical_second_laptop_verified": false,
   "public_tunnel_verified": false

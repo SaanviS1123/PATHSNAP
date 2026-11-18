@@ -1,0 +1,9 @@
+{
+  "18000": 200,
+  "18501": 200,
+  "shutdown_children_stopped": true,
+  "public_tunnel_verified": false,
+  "physical_second_laptop_verified": false,
+  "cloudflared_version": "2026.11.1",
+  "tunnel_creation_error": "Connection reset by peer from api.trycloudflare.com before URL creation"
+}

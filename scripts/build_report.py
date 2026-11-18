@@ -17,7 +17,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Image, Table, TableStyle, KeepTogether, Preformatted
 import os
-os.environ.setdefault("MPLCONFIGDIR",str(ROOT_CACHE := Path(__file__).resolve().parents[1]/".cache/matplotlib"))
+os.environ.setdefault("MPLCONFIGDIR",str(Path(__file__).resolve().parents[1]/".cache/matplotlib"))
 import matplotlib
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -213,7 +213,7 @@ def build_pdf(source):
                       title='PATHSNAP - Map Matching and Route Reconstruction',author='PATHSNAP team').build(story,onFirstPage=decorate,onLaterPages=decorate)
     inputs=SOURCES+[source,Path(__file__).resolve(),ROOT/'requirements.txt',ROOT/'configs/hmm.json']
     inputs+=sorted((ROOT/'results/metrics').glob('*.csv'))
-    inputs+=[p for p in [ROOT/'results/metrics/ui_integration.json',ROOT/'results/metrics/calibration_audit.json'] if p.exists()]
+    inputs+=[p for p in [ROOT/'results/metrics/ui_integration.json',ROOT/'results/metrics/calibration_audit.json',ROOT/'results/metrics/deployment_checks.json',ROOT/'results/metrics/repo_hygiene.json'] if p.exists()]
     inputs+=sorted((REPORT/'figures').glob('*.png'))
     manifest=dict(report=str(output.relative_to(ROOT)),report_sha256=sha(output),
                   inputs={str(path.relative_to(ROOT)):sha(path) for path in inputs},

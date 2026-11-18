@@ -66,7 +66,8 @@ def main():
             rows.append(dict(trip_id=trips[0],model=label,status='pass'))
             print(f'UI PASS {label}',flush=True)
         # Toggle decoder layer without losing the selected result.
-        page.get_by_role('checkbox',name='Show HMM route',exact=True).uncheck()
+        page.get_by_text('Show HMM route',exact=True).click()
+        expect(page.get_by_role('checkbox',name='Show HMM route',exact=True)).not_to_be_checked()
         map_ready()
         assert not page.locator('[data-testid="stException"]').count()
         browser.close()
