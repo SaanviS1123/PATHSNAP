@@ -279,7 +279,7 @@
   "probability_output": "model.joblib accepts raw schema features and includes preprocessing/calibration; do not preprocess twice",
   "artifacts_sha256": {
     "preprocessor.joblib": "9ec1eb5f5b31ff5aa3e7c1ee7f3f9cacbea4e8dc324707aec4585dc8e26ab75d",
-    "model.joblib": "4fe3a5e6e8c1a01b32601e361d6c3f96bb07be4f342f4148579dac7d712ff7bd",
+    "model.joblib": "1b2db20467410ef2ef90d6d9a9540d598c6835088a81d47dd7cb9e16b6c1bb30",
     "feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8"
   }
 }
