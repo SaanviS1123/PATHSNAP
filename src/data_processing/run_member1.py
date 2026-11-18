@@ -40,7 +40,8 @@ def main():
     cache.mkdir(exist_ok=True)
     inventory, quality, alignment, sweeps, all_labels, hashes = [], [], [], [], [], []
     directories = {p: trip_directories(args.raw_dir, p) for p in ['train', 'student_test']}
-    # Sweep TRAIN ONLY, before looking at student-test labels or results.
+    # Only training-trip counts enter candidate selection. Student labels are
+    # prepared separately for offline evaluation, never added to the sweep.
     for partition, folders in directories.items():
         for folder in folders:
             print(f'Prepare {partition}/{folder.name}', flush=True)
