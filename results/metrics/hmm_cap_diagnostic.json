@@ -1,0 +1,8 @@
+{
+  "partition": "train_speed_only",
+  "trip_id": "00000054",
+  "n_obs": 19313,
+  "cap8_warm_graph_prepare_decode_ms": 3169.937749975361,
+  "chosen_candidate_cap": 16,
+  "note": "Warm graph diagnostic only; cap 8 is not selected or used in student predictions."
+}
