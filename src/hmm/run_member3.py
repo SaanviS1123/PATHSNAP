@@ -200,7 +200,7 @@ def main():
         warm=decode_prepared(result.prepared,params)
         warm_ms=(time.perf_counter()-started)*1000
         timings.append(dict(partition='student_test',trip_id=folder.name,n_obs=len(result.decoded),n_arcs=len(result.network.arcs),
-                            **result.timing_ms,warm_viterbi_ms=warm_ms,**result.network.stats()))
+                            **result.timing_ms,warm_viterbi_ms=warm_ms,cache_scope='inference_and_offline_comparison',**result.network.stats()))
         saved=result.classifier.rename(columns={'arc_id':'classifier_arc'}).merge(result.decoded.rename(columns={'arc_id':'hmm_arc'}),on='obs_idx')
         saved.to_parquet(CACHE/f'prediction_{folder.name}.parquet',index=False)
         write_json(CACHE/f'diagnostics_{folder.name}.json',result.decoded.attrs['diagnostics'])
@@ -213,7 +213,7 @@ def main():
     result=predict_trip(ROOT/'data/raw/train'/largest,scorer,params)
     started=time.perf_counter();decode_prepared(result.prepared,params);warm_ms=(time.perf_counter()-started)*1000
     timings.append(dict(partition='train_speed_only',trip_id=largest,n_obs=len(result.decoded),n_arcs=len(result.network.arcs),
-                        **result.timing_ms,warm_viterbi_ms=warm_ms,**result.network.stats()))
+                        **result.timing_ms,warm_viterbi_ms=warm_ms,cache_scope='inference_only',**result.network.stats()))
     # Candidate-cap diagnostic reuses scoring; it does not choose decoder parameters.
     cap=replace(params,candidate_cap=8)
     started=time.perf_counter()

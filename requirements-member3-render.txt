@@ -1,0 +1,2 @@
+# Optional headless renderer for report screenshots.
+playwright==1.65.2

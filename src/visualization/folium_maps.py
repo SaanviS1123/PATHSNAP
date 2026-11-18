@@ -33,9 +33,9 @@ def prediction_map(result,path,reference_route=None):
     expanded=[arc for segment in result.segments for arc in segment]
     layer('HMM route with directed bridges',expanded,COLORS['hmm'],4)
     gps=folium.FeatureGroup(name='Raw GPS observations')
-    for i in range(0,len(coordinates),max(1,len(coordinates)//700)):
+    for i in range(0,len(coordinates),max(1,int(np.ceil(len(coordinates)/700)))):
         folium.CircleMarker(coordinates[i,::-1].tolist(),radius=2,color=COLORS['gps'],fill=True,
-                            tooltip=f'obs {i}; t={trip.track[i,2]:g}s').add_to(gps)
+                            tooltip=f'obs {i}; t={trip.track[i,2]:g}s; classifier={int(result.classifier.arc_id.iloc[i])}; HMM={int(result.decoded.arc_id.iloc[i])}').add_to(gps)
     gps.add_to(map_)
     folium.LayerControl(collapsed=False).add_to(map_)
     map_.fit_bounds([coordinates.min(axis=0)[::-1].tolist(),coordinates.max(axis=0)[::-1].tolist()])
@@ -48,3 +48,36 @@ def prediction_map(result,path,reference_route=None):
     path.parent.mkdir(parents=True,exist_ok=True)
     map_.save(path)
     return path
+
+
+def main():
+    """Restyle saved predictions offline, without rerunning model/decoder selection."""
+    import argparse
+    from types import SimpleNamespace
+    import pandas as pd
+    from src.models.training import ROOT
+    from src.hmm.network import RoadNetwork
+    from src.hmm.predict import load_params
+    from src.hmm.viterbi import route_segments
+    from src.data_processing.loaders import load_trip
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--offline-reference',action='store_true')
+    args=parser.parse_args()
+    params=load_params()
+    count=0
+    for path in sorted((ROOT/'data/processed/member3').glob('prediction_*.parquet')):
+        trip_id=path.stem.split('_')[-1]
+        folder=ROOT/'data/raw/student_test'/trip_id
+        network=RoadNetwork.from_trip_dir(folder)
+        data=pd.read_parquet(path)
+        classifier=data[['obs_idx','classifier_arc']].rename(columns={'classifier_arc':'arc_id'})
+        decoded=data[['obs_idx','hmm_arc']].rename(columns={'hmm_arc':'arc_id'})
+        result=SimpleNamespace(network=network,classifier=classifier,decoded=decoded,segments=route_segments(decoded,network,params))
+        reference=load_trip(folder,include_route=True).route if args.offline_reference else None
+        prediction_map(result,ROOT/f'maps/pred_{trip_id}.html',reference)
+        count+=1
+    print(f'Restyled {count} saved prediction maps')
+
+
+if __name__=='__main__':
+    main()
