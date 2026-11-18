@@ -27,8 +27,8 @@ def main():
             page.get_by_role('combobox').nth(index).click()
             page.get_by_role('option',name=value,exact=True).click()
         def map_ready():
-            page.locator('iframe').first.wait_for(timeout=60000)
-            frame=page.frame_locator('iframe').first
+            page.locator('iframe:visible').first.wait_for(timeout=60000)
+            frame=page.frame_locator('iframe:visible').first
             frame.locator('.leaflet-control-layers').wait_for(timeout=60000)
             return frame
         trips=['00000000','00000007','00000009','00000040','00000052','00000056','00000065','00000076','00000077','00000091']

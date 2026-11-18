@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 import streamlit as st
 from dotenv import load_dotenv
-from streamlit_folium import st_folium
+from streamlit.components.v1 import html as embed_html
 
 load_dotenv()
 API_URL = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/")
@@ -162,7 +162,7 @@ group.add_to(route_map)
 folium.LayerControl(collapsed=False).add_to(route_map)
 route_map.fit_bounds(gps)
 st.caption("Orange: GPS · Blue: classifier · Purple: HMM with directed bridges. Toggle layers on the map.")
-st_folium(route_map, height=580, use_container_width=True, returned_objects=[], key=f"map-{trip}-{model}-{show_hmm}")
+embed_html(route_map.get_root().render(), height=580, scrolling=False)
 with st.expander("Timing and decoder diagnostics"):
     st.json(dict(stages_ms=result["stages_ms"], diagnostics=result["diagnostics"]))
 st.download_button("Download this prediction JSON", data=__import__("json").dumps(result, indent=2), file_name=f"pathsnap_{trip}_{model}.json", mime="application/json")
