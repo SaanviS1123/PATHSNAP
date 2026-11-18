@@ -1,3 +1,4 @@
+
 """Request and response schemas for the PATHSNAP API."""
 
 from typing import Any
@@ -24,9 +25,16 @@ class PredictRequest(BaseModel):
     )
 
 
+class MethodMetrics(BaseModel):
+    sequence_precision: float
+    sequence_recall: float
+    sequence_f1: float
+    route_continuity: float
+
+
 class PredictionMetrics(BaseModel):
-    top1_accuracy: float | None = None
-    route_continuity: float | None = None
+    classifier: MethodMetrics
+    viterbi: MethodMetrics
 
 
 class PredictResponse(BaseModel):
@@ -34,7 +42,16 @@ class PredictResponse(BaseModel):
     status: str
     message: str
     n_observations: int | None = None
-    predicted_arcs: list[Any] = Field(default_factory=list)
+    n_road_segments: int | None = None
+
+    gps_geometry: list[Any] = Field(default_factory=list)
+    road_geometry: list[Any] = Field(default_factory=list)
+
+    classifier_arcs: list[int] = Field(default_factory=list)
+    classifier_geometry: list[Any] = Field(default_factory=list)
+
+    predicted_arcs: list[int] = Field(default_factory=list)
     predicted_geometry: list[Any] = Field(default_factory=list)
+
     metrics: PredictionMetrics | None = None
     timing_ms: float | None = None
