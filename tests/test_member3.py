@@ -105,3 +105,35 @@ def test_inference_loader_never_opens_reference(tmp_path,monkeypatch):
     monkeypatch.setattr(np,'loadtxt',guarded)
     road=RoadNetwork.from_trip_dir(tmp_path/'00000001')
     assert road.metric.trip.route is None
+
+
+def test_prediction_pipeline_ignores_private_processed_labels(tmp_path,monkeypatch):
+    from src.data_processing.synthetic import write_fixture
+    from src.hmm.predict import predict_trip
+    from src.models.training import load_scorer
+    write_fixture(tmp_path)
+    scorer=load_scorer('models')
+    original=np.loadtxt
+    def guarded(path,*args,**kwargs):
+        assert not str(path).endswith('.route')
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(np,'loadtxt',guarded)
+    monkeypatch.setattr(pd,'read_parquet',lambda *args,**kwargs: (_ for _ in ()).throw(AssertionError('Private labels/table read during inference')))
+    result=predict_trip(tmp_path/'00000001',scorer,HMMParams())
+    assert result.network.metric.trip.route is None
+    assert len(result.decoded)==12 and result.decoded.arc_id.ge(0).all()
+    for segment in result.segments:
+        assert np.array_equal(result.network.arcs[segment[:-1],1],result.network.arcs[segment[1:],0])
+
+
+def test_reference_map_layer_is_explicit_offline_input(tmp_path):
+    from src.data_processing.synthetic import write_fixture
+    from src.hmm.predict import predict_trip
+    from src.visualization.folium_maps import prediction_map
+    write_fixture(tmp_path)
+    result=predict_trip(tmp_path/'00000001',params=HMMParams())
+    without=prediction_map(result,tmp_path/'without.html').read_text()
+    assert 'Reference route (offline report only)' not in without
+    assert 'HMM route with directed bridges' in without
+    with_reference=prediction_map(result,tmp_path/'with.html',np.array([0,1])).read_text()
+    assert 'Reference route (offline report only)' in with_reference
