@@ -104,7 +104,7 @@ def fit_model(name, table, max_rows):
                fit_warnings=[str(x.message) for x in captured])
 
 
-def run_model(name, processed_dir=Path('data/processed'), max_train_rows=120000):
+def run_model(name, processed_dir=Path('data/processed'), max_train_rows=0):
     processed_dir = Path(processed_dir)
     train = pd.read_parquet(processed_dir / 'train.parquet')
     student = pd.read_parquet(processed_dir / 'student_test.parquet')
@@ -184,7 +184,7 @@ def main(default=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', choices=['knn', 'mlp', 'all'], default=default or 'all')
     parser.add_argument('--processed-dir', type=Path, default=Path('data/processed'))
-    parser.add_argument('--max-train-rows', type=int, default=120000,
+    parser.add_argument('--max-train-rows', type=int, default=0,
                         help='Proportional training sample cap; 0 fits all known rows')
     args = parser.parse_args()
     if args.max_train_rows < 0:
@@ -194,4 +194,7 @@ def main(default=None):
 
 
 if __name__ == '__main__':
-    main()
+    # Import the canonical module so exported scorer instances unpickle in a
+    # fresh API/CLI process rather than referring to __main__.CandidateScorer.
+    from src.models.member1_harness import main as run
+    run()

@@ -116,6 +116,10 @@ def main():
     for fold, (_, validation) in enumerate(splitter.split(train, groups=train.trip_id)):
         fold_map.update({trip_id: fold for trip_id in train.iloc[validation].trip_id.unique()})
     write_json('configs/folds.json', dict(method='GroupKFold', n_splits=5, shuffle=True, seed=SEED, trip_to_fold=fold_map))
+    from src.data_processing.anomalies import diagnose
+    from src.visualization.eda_diagnostics import plot_diagnostics
+    diagnose(args.raw_dir)
+    plot_diagnostics()
     from src.visualization.eda_maps import create_eda
     create_eda(pd.DataFrame(quality), args.raw_dir)
     from src.data_processing.synthetic import write_fixture
