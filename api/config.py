@@ -23,7 +23,7 @@ def resolve_path(value: str) -> Path:
 
 
 # API server settings
-API_HOST = os.getenv("API_HOST", "0.0.0.0")
+API_HOST = os.getenv("API_HOST", "127.0.0.1")
 API_PORT = int(os.getenv("API_PORT", "8000"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 
@@ -33,7 +33,7 @@ TRAIN_DATA_DIR = resolve_path(
     os.getenv("TRAIN_DATA_DIR", "data/raw/train")
 )
 STUDENT_TEST_DIR = resolve_path(
-    os.getenv("STUDENT_TEST_DIR", "data/raw/student_test")
+    os.getenv("EVAL_DATA_DIR", os.getenv("STUDENT_TEST_DIR", "data/raw/student_test"))
 )
 
 # Model and configuration paths
