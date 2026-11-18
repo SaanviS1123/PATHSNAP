@@ -1,0 +1,40 @@
+{
+  "version": "member3-v1",
+  "parameters": {
+    "transition_beta_m": 10.0,
+    "gap_restart_s": 30.0,
+    "path_margin_m": 500.0,
+    "max_route_distance_m": 5000.0,
+    "backtrack_tolerance_m": 20.0,
+    "candidate_cap": 16
+  },
+  "signature": "eccfd3d59e0a2e7398f214eb52dd2dd6cbaf6b7d1c069d24c9885640557e7c51",
+  "inputs": {
+    "src/hmm/network.py": "3b01c825d233f67657c2b2bd0b1c842ac6513d1a52c69048e8cd54196ebb8075",
+    "src/hmm/viterbi.py": "75b97e7cee6df528148cc93b06dfc85ba00033bd7bfc228f493bfd5e643121b2",
+    "src/hmm/predict.py": "d50bcef09f2cc6b30797ff83464e1f814f11e9b07a0b47c378b176675eaeed27",
+    "src/evaluation/route_metrics.py": "0747be4cbe0a60a0d38905ba88962630ce7c1aa35f0479d3efe2f1821e5efb9e",
+    "models/model.joblib": "1b2db20467410ef2ef90d6d9a9540d598c6835088a81d47dd7cb9e16b6c1bb30",
+    "models/model_card.json": "5f4663935cc93c61bbf4a5d0e0e818972e85d63cb10e4750d28859e32d6cc497",
+    "models/feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8",
+    "configs/folds.json": "2aff739a1bc56f1fbaae23ec0f5c569916dbd3d6d8010982d1e28095e13006c3",
+    "data/processed/train.parquet": "21ee734e31e1dc709e8cac88ce932b789cbd5e5017c64ab0b490fb309b34ec27",
+    "data/processed/obs_labels.parquet": "63541035140757095c2d75e2447d6b62ff094b69e602540eb2ffde5f0a87a1f4",
+    "results/metrics/data_manifest.csv": "7d0746181ae331be0d00865c9815afd4abf1a6dfd57b8e0ae4271b29d1981156"
+  },
+  "selection": {
+    "partition": "train fold 3",
+    "primary": "known-observation pointwise accuracy",
+    "tie_breaks": [
+      "direct continuity",
+      "fewer restarts",
+      "larger beta",
+      "smaller restart gap"
+    ],
+    "n_configurations": 12,
+    "n_tuning_trips": 16,
+    "n_known_obs": 29420,
+    "tuning_pointwise_accuracy": 0.8947314751869476,
+    "student_test_used": false
+  }
+}
