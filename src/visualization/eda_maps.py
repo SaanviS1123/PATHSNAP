@@ -9,6 +9,7 @@ from matplotlib.collections import LineCollection
 import folium
 import numpy as np
 from src.data_processing.loaders import load_trip, trip_directories
+from src.data_processing.geo import project_trip
 
 
 def create_eda(quality, raw_dir):
@@ -27,11 +28,13 @@ def create_eda(quality, raw_dir):
         fig.savefig(out / f'eda_{column}.png', dpi=150)
         plt.close(fig)
     trip = load_trip(trip_directories(raw_dir, 'train')[0])
-    fig, ax = plt.subplots(figsize=(7, 6))
-    ax.add_collection(LineCollection(trip.nodes[trip.arcs], linewidths=.25, colors='grey', alpha=.3))
-    ax.plot(*trip.track[:, :2].T, color='#c24b22', linewidth=1, label='GPS')
+    metric = project_trip(trip)
+    fig, ax = plt.subplots(figsize=(5, 8))
+    ax.add_collection(LineCollection(metric.node_xy[trip.arcs] / 1000, linewidths=.25, colors='grey', alpha=.3))
+    ax.plot(*(metric.xy / 1000).T, color='#c24b22', linewidth=1, label='GPS')
+    ax.set_aspect('equal', adjustable='box')
     ax.autoscale()
-    ax.set(title=f'Train trip {trip.trip_id}: GPS and road network', xlabel='Longitude (degrees)', ylabel='Latitude (degrees)')
+    ax.set(title=f'Train trip {trip.trip_id}: GPS and road network', xlabel='Local easting (km)', ylabel='Local northing (km)')
     ax.legend()
     fig.tight_layout()
     fig.savefig(out / 'eda_trajectory.png', dpi=150)
