@@ -785,7 +785,13 @@ The best badge is based on highest mean training-fold observation Top-1. It is n
 | 00000000 | random_forest | 2503 | 1070.9767 | 0.9249 | 0.9636 |
 | 00000000 | hist_gradient_boosting | 2503 | 873.8235 | 0.9241 | 0.9628 |
 
-Browser acceptance evidence is not yet available.
+`ui_integration.json` records 16 successful real-browser checks, covering ten student trips, the batch model demo, switching among six completed results and the HMM toggle. Browser JavaScript errors: 0. The following screenshots show the actual local dashboard; they are not evidence of a physical second laptop.
+
+![Live dashboard: largest student trip, selected model](figures/dashboard_best.png)
+
+![Live dashboard: all model configurations on one trip](figures/dashboard_models.png)
+
+Repository check: 0 findings from tracked raw-data/environment checks, common credential patterns, and a 95 MB file guard. Largest tracked file: models/member1/knn/model.joblib (75,667,729 bytes). This pattern scan is not a guarantee of secret detection. Evidence: `repo_hygiene.json`.
 
 ### Commands, connectivity and remaining external check
 

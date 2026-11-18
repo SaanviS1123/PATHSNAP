@@ -94,6 +94,8 @@ The best badge is based on highest mean training-fold observation Top-1. It is n
         section7+='![Live dashboard: largest student trip, selected model](figures/dashboard_best.png)\n\n![Live dashboard: all model configurations on one trip](figures/dashboard_models.png)\n\n'
     else:
         section7+='Browser acceptance evidence is not yet available.\n\n'
+    hygiene=json.loads((ROOT/'results/metrics/repo_hygiene.json').read_text())
+    section7+=f"Repository check: {len(hygiene['findings'])} findings from tracked raw-data/environment checks, common credential patterns, and a 95 MB file guard. Largest tracked file: {hygiene['largest_files'][0]['path']} ({hygiene['largest_files'][0]['bytes']:,} bytes). This pattern scan is not a guarantee of secret detection. Evidence: `repo_hygiene.json`.\n\n"
     section7+='''### Commands, connectivity and remaining external check
 
 All commands are in `scripts/README.md`. `scripts/setup.sh` installs exact direct dependency versions for Python 3.13. `scripts/host.sh` starts API, UI and the temporary dashboard tunnel and stops its children on Ctrl-C. Separate-terminal commands are `serve.sh api`, `serve.sh ui`, and `tunnel.sh`. The receiving laptop may run `check-dashboard.sh HTTPS_URL` or curl `HTTPS_URL/_stcore/health`, then open the URL and run a prediction while the host log is visible.
@@ -213,7 +215,7 @@ def build_pdf(source):
                       title='PATHSNAP - Map Matching and Route Reconstruction',author='PATHSNAP team').build(story,onFirstPage=decorate,onLaterPages=decorate)
     inputs=SOURCES+[source,Path(__file__).resolve(),ROOT/'requirements.txt',ROOT/'configs/hmm.json']
     inputs+=sorted((ROOT/'results/metrics').glob('*.csv'))
-    inputs+=[p for p in [ROOT/'results/metrics/ui_integration.json',ROOT/'results/metrics/calibration_audit.json',ROOT/'results/metrics/deployment_checks.json',ROOT/'results/metrics/repo_hygiene.json'] if p.exists()]
+    inputs+=[p for p in [ROOT/'results/metrics/ui_integration.json',ROOT/'results/metrics/calibration_audit.json',ROOT/'results/metrics/deployment_checks.json',ROOT/'results/metrics/repo_hygiene.json',ROOT/'results/metrics/api_response_example.json'] if p.exists()]
     inputs+=sorted((REPORT/'figures').glob('*.png'))
     inputs+=sorted((ROOT/'api').glob('*.py'))
     inputs+=[ROOT/name for name in ['src/pipeline.py','ui/app.py','scripts/ui_smoke.py','scripts/integration.py','scripts/host.sh','scripts/serve.py','scripts/tunnel.sh','README.md','scripts/README.md']]

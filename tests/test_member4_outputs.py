@@ -25,6 +25,8 @@ def test_browser_and_supervisor_acceptance_evidence():
     browser=json.loads((ROOT/'results/metrics/ui_integration.json').read_text())
     assert len(browser['checks'])==16 and not browser['page_errors']
     assert not browser['physical_second_laptop']
+    assert browser['hmm_toggle_verified'] and browser['batch_demo_verified']
+    assert browser['model_switches_verified']==6
     deployment=json.loads((ROOT/'results/metrics/deployment_checks.json').read_text())
     assert deployment['18000']==deployment['18501']==200
     assert deployment['shutdown_children_stopped']

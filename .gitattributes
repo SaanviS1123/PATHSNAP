@@ -1,0 +1,2 @@
+# Generated PDFs must not be treated as text diffs.
+*.pdf binary

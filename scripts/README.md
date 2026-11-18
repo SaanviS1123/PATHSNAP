@@ -60,6 +60,7 @@ With the API/dashboard running:
 scripts/integration.sh           # 10 trips with best + the 5 baseline configurations on first trip
 scripts/integration.sh --all-models  # optional: all 6 configurations on all 10 trips; KNN is slow
 scripts/test.sh
+scripts/check-repo.sh          # tracked data, credential patterns, file sizes
 scripts/predict.sh 00000000 best  # compact real response in the host terminal
 scripts/report.sh               # assemble report/PATHSNAP_report.pdf from measured sources
 # Optional real browser tests + screenshots:
