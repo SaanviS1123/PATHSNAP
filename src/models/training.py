@@ -60,6 +60,7 @@ def load_training_data(path: str | Path = TRAIN_PATH):
 def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str],
                    *, scale: bool = False, random_seed: int = 42,
                    metrics: dict | None = None, output_dir: str | Path = MODEL_DIR):
+    frame = frame[frame["is_ref"].astype(int) >= 0].copy()
     labels = frame["is_ref"].astype(int)
     if labels.nunique() != 2:
         raise ValueError("Training data must contain both is_ref classes")
@@ -74,13 +75,15 @@ def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str
     out.mkdir(parents=True, exist_ok=True)
     joblib.dump(CandidateScorer(estimator, preprocessor, features), out / "model.joblib")
     joblib.dump(preprocessor, out / "preprocessor.joblib")
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8")) if SCHEMA_PATH.exists() else {}
+    schema_version = schema.get("version", 1)
     existing_schema = SCHEMA_PATH if SCHEMA_PATH.exists() else None
     if existing_schema and existing_schema.resolve() != (out / "feature_schema.json").resolve():
         schema_text = existing_schema.read_text(encoding="utf-8")
     elif existing_schema:
         schema_text = existing_schema.read_text(encoding="utf-8")
     else:
-        schema_text = json.dumps({"version": 1, "features": features,
+        schema_text = json.dumps({"version": schema_version, "features": features,
                                   "target": "is_ref", "positive_class": 1}, indent=2) + "\n"
     (out / "feature_schema.json").write_text(schema_text, encoding="utf-8")
     card = {
@@ -88,7 +91,7 @@ def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "random_seed": random_seed,
         "config": estimator.get_params(deep=True),
-        "feature_schema_version": 1,
+        "feature_schema_version": schema_version,
         "feature_columns": features,
         "train_rows": len(frame), "train_trips": int(frame.trip_id.nunique()),
         "metrics": metrics or {},
