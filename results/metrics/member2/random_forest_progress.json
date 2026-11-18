@@ -384,6 +384,102 @@
       "n_fit_trips": 64,
       "warnings": [],
       "inference_time_sec": 1.2334387080045417
+    },
+    {
+      "fold": 4,
+      "candidate_accuracy": 0.9367903723118245,
+      "precision": 0.5661524171075482,
+      "recall": 0.9077575600595739,
+      "f1": 0.6973684210526315,
+      "macro_f1": 0.8310390626156857,
+      "log_loss": 0.16315739261674506,
+      "brier_score": 0.04804126753699003,
+      "ece_10": 0.07143525722044362,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "count": 286796,
+          "mean_probability": 0.015600077857775443,
+          "positive_fraction": 0.0017991882731976736
+        },
+        {
+          "bin": 1,
+          "count": 21895,
+          "mean_probability": 0.14234035744606297,
+          "positive_fraction": 0.018862754053436858
+        },
+        {
+          "bin": 2,
+          "count": 12259,
+          "mean_probability": 0.2461297985181747,
+          "positive_fraction": 0.04339668814748348
+        },
+        {
+          "bin": 3,
+          "count": 8170,
+          "mean_probability": 0.3474474645951146,
+          "positive_fraction": 0.0806609547123623
+        },
+        {
+          "bin": 4,
+          "count": 6331,
+          "mean_probability": 0.44803750498924144,
+          "positive_fraction": 0.1151476859895751
+        },
+        {
+          "bin": 5,
+          "count": 4859,
+          "mean_probability": 0.5491435604172514,
+          "positive_fraction": 0.17019962955340606
+        },
+        {
+          "bin": 6,
+          "count": 5327,
+          "mean_probability": 0.6512627799721183,
+          "positive_fraction": 0.24178712220762155
+        },
+        {
+          "bin": 7,
+          "count": 5760,
+          "mean_probability": 0.7486475264464604,
+          "positive_fraction": 0.31979166666666664
+        },
+        {
+          "bin": 8,
+          "count": 7186,
+          "mean_probability": 0.8562215622308593,
+          "positive_fraction": 0.44405789034233234
+        },
+        {
+          "bin": 9,
+          "count": 26390,
+          "mean_probability": 0.96631313016222,
+          "positive_fraction": 0.7915498294808639
+        }
+      ],
+      "top1_accuracy": 0.7447494918863116,
+      "trip_mean_top1": 0.774902144268679,
+      "candidate_miss_rate": 0.0035809917088750524,
+      "route_continuity": 0.8780933766274708,
+      "n_known_obs": 30997,
+      "n_unknown_obs": 740,
+      "n_candidate_rows": 392766,
+      "n_known_candidate_rows": 384973,
+      "confusion_matrix": [
+        [
+          332602,
+          21485
+        ],
+        [
+          2849,
+          28037
+        ]
+      ],
+      "train_time_sec": 82.82613845902961,
+      "n_fit_rows": 1749586,
+      "n_fit_trips": 64,
+      "warnings": [],
+      "inference_time_sec": 1.2931341249495745
     }
   ],
   "histories": []
