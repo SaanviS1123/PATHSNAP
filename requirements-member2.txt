@@ -1,0 +1,3 @@
+# Install Member 1 data dependencies first.
+-r requirements-member1.txt
+optuna==5.1.0
