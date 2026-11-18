@@ -16,6 +16,11 @@ python -m src.models.run_all
 python -m pytest -q
 ```
 
+Pytest discovers the canonical `tests/` directory via `pytest.ini`; separate
+local projects do not participate in this repository’s test collection. Model
+artifact smoke tests use committed fixtures; full-data checks require local
+processed data.
+
 The default run completes all five-family comparisons, ten seeded TPE trials,
 calibration audit and final export. Search fitting uses an approximately
 250,000-row budget per fold, preserving all training trips through proportional
