@@ -44,7 +44,7 @@ def generate_report(records,selection,tuning):
     x=np.arange(len(table))
     ax.bar(x-.18,table.student_top1_accuracy,width=.36,label='Observation Top-1')
     ax.bar(x+.18,table.student_macro_f1,width=.36,label='Candidate Macro-F1')
-    ax.set(xticks=x,xticklabels=labels,ylim=(0,1),title='Student-test comparison (known labels)')
+    ax.set(xticks=x,xticklabels=labels,ylim=(0,1),title='Student test before calibration (known labels)')
     ax.tick_params(axis='x',rotation=20)
     ax.legend(loc='upper center',bbox_to_anchor=(.5,-.25),ncol=2)
     fig.tight_layout()
@@ -83,8 +83,6 @@ def generate_report(records,selection,tuning):
     fig,ax=plt.subplots(figsize=(7,5))
     ax.plot([0,1],[0,1],linestyle='--',color='grey',label='Ideal')
     for record in records:
-        if record['name'].endswith('_tuned'):
-            continue
         bins=record['student']['calibration_bins']
         ax.plot([r['mean_probability'] for r in bins],[r['positive_fraction'] for r in bins],marker='o',markersize=3,label=display_name(record['name']))
     final_bins=selection['final_student_test']['calibration_bins']
@@ -101,8 +99,15 @@ def generate_report(records,selection,tuning):
     unknown_train=int(((population.partition=='train') & (population.ref_arc<0)).sum())
     unknown_student=int(((population.partition=='student_test') & (population.ref_arc<0)).sum())
     fit_rows=records[0]['student']['n_fit_rows']
+    pair=pd.read_csv(metrics/'tuned_vs_untuned.csv')
+    pair_baseline=pair[~pair.model_name.str.endswith('_tuned')].iloc[0]
+    pair_tuned=pair[pair.model_name.str.endswith('_tuned')].iloc[0]
+    student_delta=(pair_tuned.student_top1_accuracy-pair_baseline.student_top1_accuracy)*100
     audit=json.loads((metrics/'calibration_audit.json').read_text())
     final=selection['final_student_test']
+    final_row={k:v for k,v in final.items() if isinstance(v,(str,int,float))}
+    pd.DataFrame([dict(final_row,model_name=selection['selected_model'],calibration_enabled=selection['calibration_enabled'])]).to_csv(metrics/'final_export_metrics.csv',index=False)
+    student_interpretation=('This run did not show a student Top-1 gain from tuning, despite the CV improvement.' if student_delta<=0 else 'This run showed a student Top-1 gain alongside the CV improvement.')
     source=f'''# Member 2 report source: model comparison, experiments and tuning
 
 These sections extend Member 1's report source for the single final team PDF.
@@ -119,6 +124,9 @@ folds over the 80 training trips. Known-label training rows total {fit_rows:,};
 {unknown_train:,} training and {unknown_student:,} student-test observations have unknown alignment labels.
 `-1` never enters supervised fitting or candidate metrics. Top-1 counts missing
 reference candidates as incorrect and excludes only unknown reference labels.
+
+The comparison rows below are **before post-selection sigmoid calibration**.
+Final exported metrics are reported in section 4 and `final_export_metrics.csv`.
 
 {markdown_table(compact)}
 
@@ -172,6 +180,7 @@ Member 1's KNN and MLP nine-question sections remain in
         suitability,limitations,objective=explanations[name]
         diagnostic=record['training_diagnostic_macro_f1']
         gap=diagnostic-cv['macro_f1']
+        fit_assessment=('The optimistic fitted-score gap is consistent with overfitting or memorisation.' if gap>.05 else 'This diagnostic/CV gap does not show strong overfitting at this configuration; it does not rule out underfitting or probability-threshold effects.')
         source+=f'''
 ### {display_name(name)}
 
@@ -183,7 +192,7 @@ Member 1's KNN and MLP nine-question sections remain in
 6. **Objective.** {objective}
 7. **Student-test results.** Candidate accuracy {test['candidate_accuracy']:.4%}, positive precision {test['precision']:.4f}, recall {test['recall']:.4f}, F1 {test['f1']:.4f}; known observations {test['n_known_obs']:,}, unknown observations {test['n_unknown_obs']:,}; candidate miss rate {test['candidate_miss_rate']:.4%}.
 8. **Required metrics.** Student Top-1 {test['top1_accuracy']:.4%}, Macro-F1 {test['macro_f1']:.4f}, log loss {test['log_loss']:.4f}. CV Macro-F1 {cv['macro_f1']:.4f} (fold SD {cv['macro_f1_std']:.4f}); CV Top-1 {cv['top1_accuracy']:.4%}. Refit {test['train_time_sec']:.3f} s; student inference {test['inference_time_sec']:.3f} s for {test['n_candidate_rows']:,} candidate rows. Timings exclude loading, feature generation and HMM decoding.
-9. **Fit/generalisation evidence.** The <=10k fitted-row diagnostic Macro-F1 was {diagnostic:.4f}, a {gap:+.4f} difference from grouped CV. It is optimistic because these rows entered fitting. Fold Macro-F1 ranged {min(r['macro_f1'] for r in cv['folds']):.4f}–{max(r['macro_f1'] for r in cv['folds']):.4f}. This measured gap and fold spread guide overfitting assessment; training score alone cannot establish generalisation or rule out underfitting. Refit warnings: {test['warnings'] or 'none'}.
+9. **Fit/generalisation evidence.** {fit_assessment} The <=10k fitted-row diagnostic Macro-F1 was {diagnostic:.4f}, a {gap:+.4f} difference from grouped CV. It is optimistic because these rows entered fitting. Fold Macro-F1 ranged {min(r['macro_f1'] for r in cv['folds']):.4f}–{max(r['macro_f1'] for r in cv['folds']):.4f}. This measured gap and fold spread guide overfitting assessment; training score alone cannot establish generalisation or rule out underfitting. Refit warnings: {test['warnings'] or 'none'}.
 
 ```json
 {json.dumps(record['configuration'],indent=2,default=str)}
@@ -241,6 +250,10 @@ Best parameters:
 Tuned versus untuned, using identical metric definitions and partitions:
 
 {markdown_table(pd.read_csv(metrics/'tuned_vs_untuned.csv')[['model_name','cv_macro_f1','cv_top1_accuracy','student_top1_accuracy','student_macro_f1','student_log_loss','student_inference_time_sec']])}
+
+The raw tuned student Top-1 difference was {student_delta:+.4f} percentage
+points. {student_interpretation} The small differences do not establish statistical
+superiority.
 
 The tuned configuration {'replaced' if selection['tuned_selected'] else 'did not replace'}
 the untuned baseline. The rule requires strictly better CV Top-1, regardless of

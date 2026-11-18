@@ -120,6 +120,19 @@ def comparison_table(records):
     return pd.DataFrame(rows).sort_values(['cv_top1_accuracy','cv_macro_f1','model_name'],ascending=[False,False,True])
 
 
+
+def flatten_experiments(records):
+    """Normalize reserved fields after importing legacy experiment records."""
+    rows=[]
+    for record in records:
+        for fold in record['cv']['folds']:
+            scalar={k:v for k,v in fold.items() if v is None or isinstance(v,(str,int,float))}
+            rows.append(dict(scalar,model_name=record['name'],partition='cv'))
+        scalar={k:v for k,v in record['student'].items() if v is None or isinstance(v,(str,int,float))}
+        rows.append(dict(scalar,model_name=record['name'],partition='student_test'))
+    return rows
+
+
 def select_winner(table):
     eligible=table.dropna(subset=['cv_top1_accuracy','cv_macro_f1'])
     if eligible.empty:
@@ -218,13 +231,7 @@ def run(data_path=None,seed=42,output_dir=None,student_path=None,trials=10,basel
                                              slope=float(calibrator.model.coef_[0,0]) if calibrator else None),metrics=final_metrics))
     write_json(METRICS/'model_selection.json',selection)
     np.save(CACHE/'final_student.npy',final_scores)
-    # Flatten measured experiments for the shared report and external consumers.
-    experiment_rows=[]
-    for record in records:
-        for fold in record['cv']['folds']:
-            experiment_rows.append(dict({k:v for k,v in fold.items() if v is None or isinstance(v,(str,int,float))},model_name=record['name'],partition='cv'))
-        experiment_rows.append(dict({k:v for k,v in record['student'].items() if v is None or isinstance(v,(str,int,float))},model_name=record['name'],partition='student_test'))
-    pd.DataFrame(experiment_rows).to_csv(METRICS/'experiments.csv',index=False)
+    pd.DataFrame(flatten_experiments(records)).to_csv(METRICS/'experiments.csv',index=False)
     from src.models.member2_report import generate_report
     generate_report(records,selection,tuning)
     return table
