@@ -1,50 +1,85 @@
-# scripts/
+# Run commands
 
-Every command to set up, prepare, train, test and demo PathSNAP. Run them from anywhere; each script
-changes into the repo root itself. Run output is tee'd into `logs/` (git-ignored).
+Run these from the repository. Scripts find the repository root automatically. Python 3.13 is required on the model host. Laptop 2 needs only a browser and Internet access.
 
-| Script | Does | Recorded time |
-|---|---|---|
-| `setup.sh` | Create `.venv` (Python 3.13), install `requirements-member2.txt` (includes member1) | n/a |
-| `prep.sh [--source DIR]` | Check `data/raw` layout, build all processed tables, configs, plots, EDA map | 59 s |
-| `train.sh member1` | KNN and MLP, 5 trip folds plus student test | KNN scoring ~25 min, MLP fit ~6 min |
-| `train.sh baselines` | Logistic Regression, Random Forest, HistGradientBoosting; reuse KNN/MLP; CV winner | not yet recorded |
-| `train.sh tune [--model M] [--trials N]` | Optuna TPE on one model | not yet recorded |
-| `train.sh full [--trials N]` | Baselines, tuning, calibration audit, final export to `models/` | not yet recorded |
-| `train.sh one logreg\|rf\|boosting\|knn\|mlp` | Fit and export one model | varies |
-| `train.sh report` | Regenerate `report/member1/eda_and_models.md` from saved metrics | n/a |
-| `test.sh [pytest args]` | pytest | about 20 s |
-| `demo.sh [--trip ID] [--with-reference]` | Print the comparison table, score one trip, write `maps/demo_<trip>.html` | a few seconds |
-| `serve.sh api` / `serve.sh ui` | Two-laptop system (Laptop 1 API, Laptop 2 UI) | not built yet |
-| `status.sh` | Read-only: what is installed, prepared, trained, exported, built, running | instant |
-| `reproduce.sh [--source DIR] [--full]` | Setup, prep, member1, report, baselines (or full), tests | hours |
+## Demo on two laptops
 
-## Fresh machine
+**Host laptop, one terminal:**
 
 ```bash
-scripts/setup.sh
-scripts/prep.sh --source /path/to/organiser/folder   # folder holding train/ and student_test/
-scripts/train.sh member1
-scripts/train.sh baselines
-scripts/test.sh
-scripts/demo.sh
+scripts/setup.sh                 # once; installs pinned model/API/UI/report dependencies
+scripts/status.sh               # check that local student data and six model exports exist
+scripts/host.sh                  # API + dashboard + Cloudflare Quick Tunnel
 ```
 
-Or `scripts/reproduce.sh --source /path/to/organiser/folder`. `scripts/status.sh` shows where you are.
+Keep the terminal open. Open the printed `https://….trycloudflare.com` dashboard URL on Laptop 2. No API address needs to be changed there. `Ctrl-C` stops the services started by `host.sh`. The model host must stay awake and connected.
 
-## Things to know
+On the dashboard: select a trip, choose a model, click **Run selected model**, or click **Demo every model**. The latter runs KNN, MLP, Logistic Regression, Random Forest, baseline Histogram Boosting, then the selected tuned/calibrated model. Results accumulate in a per-trip table. Select any completed model to view its map; toggle HMM or individual map layers. The winner is chosen by recorded training-fold CV, not by one demo trip.
 
-- **Demo scope.** `demo.sh` is classifier-only: each GPS point takes its highest-scoring candidate arc. There is no HMM
-  or Viterbi decoding yet, so the continuity number it prints is the interim classifier-adjacency metric.
-  Its "agreement" figures use the aligned reference labels, which are approximate supervision, not point-level truth.
-  `--with-reference` draws the `.route` for offline report maps only; keep it off the live demo.
-- **Not built yet.** `api/` and `ui/` hold only `.gitkeep`, and `src/hmm/` is empty. `serve.sh` stops with a clear message
-  until `api/main.py` and `ui/app.py` exist. It assumes `api.main:app`, `streamlit run ui/app.py` and the plan's
-  `EVAL_DATA_DIR` / `API_URL` variables; override them (see the header of `serve.sh`) if workstream D chooses otherwise.
-- **One run at a time.** `prep.sh` and every `train.sh` target refuse to start while another prep or training run is active,
-  because they write the same caches and artifacts. Override with `PATHSNAP_ALLOW_PARALLEL=1` only if you know the runs are disjoint.
-- **`train.sh full` guard.** `run_all` imports `src/models/member2_report.py` only after tuning and calibration finish,
-  so `full` refuses to start if that file is missing rather than crash at the end.
-- **Re-running `prep.sh`** rewrites the tables that Member 2's cached results are fingerprinted against;
-  a run only resumes if the fingerprints still match.
-- **Never commit** `data/raw`, `logs/`, or anything from the evaluator partition. `.gitignore` covers the first two.
+Install `cloudflared` separately: `brew install cloudflared` on macOS, or follow [Cloudflare installation](https://developers.cloudflare.com/tunnel/downloads/) for Windows/Linux. [Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/) print a different temporary URL each time, have no uptime guarantee, and are intended for testing. Polling jobs keep individual requests short. A Quick Tunnel is a public demo link; stop it when finished.
+
+**Separate terminals, if you want clearer API logs:**
+
+```bash
+scripts/serve.sh api             # terminal 1: host-local port 8000, request metrics logged
+scripts/serve.sh ui              # terminal 2: host-local port 8501
+scripts/tunnel.sh                # terminal 3: dashboard tunnel only
+```
+
+The API stays on loopback. The Streamlit server calls it on the same laptop; Laptop 2 talks only to the dashboard. `.env.example` documents configurable paths/ports; copy it to `.env` if needed. Shell exports override `.env`. Use a single API worker so models load once and the in-memory job queue stays coherent.
+
+**Laptop 2 connectivity check (optional terminal):**
+
+```bash
+curl --fail --max-time 30 https://YOUR-LINK.trycloudflare.com/_stcore/health
+# If this repository is present on Laptop 2:
+bash scripts/check-dashboard.sh https://YOUR-LINK.trycloudflare.com
+```
+
+Then run a prediction in the browser. Capture that browser and the host's trip/model/points/latency/accuracy log for the physical demo evidence. Laptop 2 does not need the raw files or Python environment.
+
+## Network fallback
+
+If Quick Tunnel creation fails or a link stops working, restart `scripts/tunnel.sh` and use the new URL. If outbound QUIC is blocked, use `TUNNEL_PROTOCOL=http2 scripts/tunnel.sh`. A failure to create a tunnel at `api.trycloudflare.com` happens before protocol selection; try a different network/hotspot.
+
+For a same-Wi-Fi/hotspot demo without Cloudflare, stop the previous stack and run:
+
+```bash
+UI_HOST=0.0.0.0 scripts/host.sh --local
+# Laptop 2: open http://HOST_LAN_IP:8501 (allow inbound 8501 on host firewall).
+# Host locally: http://127.0.0.1:8501
+```
+
+The API still stays local. If both Internet and tile access fail, predictions/metrics still run, and map line overlays remain available on an empty basemap. Keep saved offline report screenshots available for context. Do not present a static screenshot as live inference.
+
+## Validation and report
+
+With the API/dashboard running:
+
+```bash
+scripts/integration.sh           # 10 trips with best + the 5 baseline configurations on first trip
+scripts/integration.sh --all-models  # optional: all 6 configurations on all 10 trips; KNN is slow
+scripts/test.sh
+scripts/report.sh               # assemble report/PATHSNAP_report.pdf from measured sources
+# Optional real browser tests + screenshots:
+uv pip install --python .venv/bin/python -r requirements-member3-render.txt
+.venv/bin/python -m playwright install chromium
+scripts/ui-smoke.sh
+```
+
+`integration.sh` produces `results/metrics/integration_run.csv` and logs under `logs/`. The browser check exercises all ten trips, the batch demo, model switching and HMM toggle; it writes `ui_integration.json` and real screenshots under `report/figures/`. These checks do not establish that a second physical laptop or public tunnel worked.
+
+## Prepare or reproduce training (not required before a demo with saved exports)
+
+| Command | Purpose |
+| --- | --- |
+| `scripts/prep.sh --source /path/to/organiser` | Copy only train/student_test, validate, build features/EDA |
+| `scripts/train.sh member1` | Train KNN and MLP with frozen trip folds |
+| `scripts/train.sh baselines` | LR, RF and boosting comparison |
+| `scripts/train.sh full --trials 10` | Baselines, Bayesian tuning, calibration and final export |
+| `scripts/train.sh one logreg\|rf\|boosting\|knn\|mlp` | Fit a single model |
+| `.venv/bin/python -m src.hmm.run_member3` | Reproduce decoder tuning, evaluation and offline maps |
+| `scripts/demo.sh --trip 00000000` | Classifier-only standalone Folium preview; use the dashboard for HMM |
+| `scripts/reproduce.sh --source /path/to/organiser --full` | Full data/model workflow; may take hours |
+
+Raw and processed data and live logs stay ignored. Never copy evaluator-test data into development. The model artifacts were exported with the exact scikit-learn version in `requirements.txt`; use that version when loading them.
