@@ -66,3 +66,17 @@ def test_every_student_observation_and_road_bridge_is_valid():
         segments=route_segments(prediction[['obs_idx','hmm_arc']].rename(columns={'hmm_arc':'arc_id'}),network,params)
         for segment in segments:
             assert np.array_equal(network.arcs[segment[:-1],1],network.arcs[segment[1:],0])
+
+
+def test_actual_folium_render_checks_and_screenshots():
+    path=Path('results/metrics/folium_render_checks.json')
+    assert path.exists()
+    checks=json.loads(path.read_text())
+    assert len(checks)==10 and len({row['trip_id'] for row in checks})==10
+    for row in checks:
+        assert row['javascript_errors']==[] and row['layer_control']
+        assert row['tiles']['total']>0 and row['tiles']['loaded']==row['tiles']['total']
+        if row['screenshot']:
+            assert row['map_zoom']==16
+            assert Path('results/plots',row['screenshot']).stat().st_size>0
+    assert len([row for row in checks if row['screenshot']])==2

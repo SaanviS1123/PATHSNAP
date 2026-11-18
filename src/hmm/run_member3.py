@@ -25,7 +25,9 @@ CACHE=ROOT/'data/processed/member3'
 
 def signature():
     import hashlib
-    files=['src/hmm/network.py','src/hmm/viterbi.py','src/hmm/predict.py','src/evaluation/route_metrics.py',
+    files=['src/hmm/run_member3.py','src/models/training.py','src/models/calibration.py','src/evaluation/harness.py',
+           'src/data_processing/loaders.py','src/data_processing/geo.py','src/features/candidates.py','src/features/build.py','configs/candidates.json',
+           'src/hmm/network.py','src/hmm/viterbi.py','src/hmm/predict.py','src/evaluation/route_metrics.py',
            'models/model.joblib','models/model_card.json','models/feature_schema.json','configs/folds.json',
            'data/processed/train.parquet','data/processed/obs_labels.parquet','results/metrics/data_manifest.csv']
     inputs={name:file_hash(ROOT/name) for name in files}
@@ -177,6 +179,13 @@ def aggregate(rows):
 def main():
     CACHE.mkdir(parents=True,exist_ok=True)
     METRICS.mkdir(parents=True,exist_ok=True)
+    manifest=pd.read_csv(METRICS/'data_manifest.csv',dtype={'trip_id':str})
+    for row in manifest.itertuples():
+        if row.partition not in {'train','student_test'}:
+            raise ValueError('Only development partitions are permitted')
+        path=ROOT/'data/raw'/row.partition/row.trip_id/f'{row.trip_id}.{row.file_type}'
+        if file_hash(path)!=row.sha256:
+            raise ValueError(f'Raw data differs from inventory: {row.trip_id}.{row.file_type}')
     key,inputs=signature()
     labels=pd.read_parquet(ROOT/'data/processed/obs_labels.parquet')
     scores,model_meta=tuning_scores(key,inputs)
