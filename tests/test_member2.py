@@ -176,3 +176,11 @@ def test_calibration_audit_uses_disjoint_training_trip_sets(tmp_path,monkeypatch
     assert not fitting&calibration_trips and not fitting&audit_trips and not calibration_trips&audit_trips
     assert len(fitting)==3 and len(calibration_trips)==len(audit_trips)==1
     assert isinstance(accepted,bool)
+
+
+def test_legacy_csv_fields_are_normalized_without_duplicate_keywords():
+    from src.models.run_all import flatten_experiments
+    records=[dict(name='actual',cv={'folds':[dict(model_name='old',partition='old',fold=0,macro_f1=.8)]},student=dict(model_name='old',partition='old',macro_f1=.9))]
+    rows=flatten_experiments(records)
+    assert [row['model_name'] for row in rows]==['actual','actual']
+    assert [row['partition'] for row in rows]==['cv','student_test']

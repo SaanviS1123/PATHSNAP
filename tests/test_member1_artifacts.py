@@ -32,9 +32,10 @@ np.save(sys.argv[2],probability)
     assert card['max_train_rows'] >= 0
     experiments = pd.read_csv(f'results/metrics/{name}_experiments.csv')
     assert experiments[experiments.partition == 'cv'].fold.nunique() == 5
-    labels = pd.read_parquet('data/processed/obs_labels.parquet')
-    student_labels = labels[labels.partition == 'student_test']
-    assert experiments[experiments.partition == 'student_test'].n_known_obs.iloc[0] == int((student_labels.ref_arc >= 0).sum())
-    assert card['student_test']['n_unknown_obs'] == int((student_labels.ref_arc < 0).sum())
+    if Path('data/processed/obs_labels.parquet').exists():
+        labels = pd.read_parquet('data/processed/obs_labels.parquet')
+        student_labels = labels[labels.partition == 'student_test']
+        assert experiments[experiments.partition == 'student_test'].n_known_obs.iloc[0] == int((student_labels.ref_arc >= 0).sum())
+        assert card['student_test']['n_unknown_obs'] == int((student_labels.ref_arc < 0).sum())
     for path in folder.glob('*.joblib'):
         assert path.stat().st_size < 100_000_000, f'Artifact exceeds GitHub file limit: {path}'

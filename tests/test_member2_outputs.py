@@ -23,6 +23,7 @@ def test_five_families_and_complete_comparison():
     assert Path('results/plots/model_calibration.png').exists()
 
 
+@pytest.mark.skipif(not Path('data/processed/train.parquet').exists(),reason='Private processed data not available')
 def test_real_tpe_trials_and_full_row_confirmation():
     summary=json.loads(Path('results/metrics/tuning_best.json').read_text())
     trials=pd.read_csv('results/metrics/tuning_trials.csv')
@@ -54,8 +55,11 @@ def test_final_selection_calibration_and_export_limits():
     tuned=table[table.model_name==baseline.model_name+'_tuned'].iloc[0]
     assert selection['tuned_selected']==bool(tuned.cv_top1_accuracy>baseline.cv_top1_accuracy)
     card=json.loads(CARD.read_text())
-    known_rows=int((pd.read_parquet('data/processed/train.parquet',columns=['is_ref']).is_ref>=0).sum())
-    assert card['train_trips']==80 and card['train_rows']==known_rows
+    selected=json.loads(Path(f"results/metrics/member2/{selection['selected_model']}.json").read_text())
+    assert card['train_trips']==80 and card['train_rows']==selected['student']['n_fit_rows']
+    if Path('data/processed/train.parquet').exists():
+        known_rows=int((pd.read_parquet('data/processed/train.parquet',columns=['is_ref']).is_ref>=0).sum())
+        assert card['train_rows']==known_rows
     audit=json.loads(Path('results/metrics/calibration_audit.json').read_text())
     populations=[set(audit[k]) for k in ['base_fit_trip_ids','calibration_trip_ids','audit_trip_ids']]
     assert list(map(len,populations))==[48,16,16]
@@ -70,12 +74,20 @@ def test_final_selection_calibration_and_export_limits():
 
 def test_final_scorer_fresh_process_has_no_reference_io():
     script='''import builtins,io,numpy as np,pandas as pd
+from pathlib import Path
 from src.models.training import load_scorer
 frame=pd.read_parquet('tests/fixtures/member1/candidates.parquet')
+reference_frame=None
+if Path('data/processed/member2/final_student.npy').exists():
+    all_rows=pd.read_parquet('data/processed/student_test.parquet')
+    indexes=np.linspace(0,len(all_rows)-1,256,dtype=int)
+    reference_frame=all_rows.iloc[indexes]
+    reference_scores=np.load('data/processed/member2/final_student.npy')[indexes]
 original=builtins.open
 def guard(path,*args,**kwargs):
     name=str(path)
     assert not name.endswith('.route') and '/data/raw/' not in name and not name.startswith('data/raw/')
+    assert '/data/processed/' not in name and not name.startswith('data/processed/')
     return original(path,*args,**kwargs)
 builtins.open=guard
 io.open=guard
@@ -86,5 +98,7 @@ assert np.isfinite(np.log(score)).all() and np.isfinite(np.log1p(-score)).all()
 without_labels=frame.drop(columns=['is_ref'])
 assert np.array_equal(score,scorer.predict_proba(without_labels))
 assert scorer.predict_proba(frame.iloc[:0]).shape==(0,)
+if reference_frame is not None:
+    assert np.allclose(scorer.predict_proba(reference_frame),reference_scores,atol=1e-14,rtol=1e-12)
 '''
     subprocess.run([sys.executable,'-c',script],check=True)
