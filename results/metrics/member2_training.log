@@ -9,3 +9,13 @@ random_forest: CV fold 1
 random_forest: CV fold 2
 random_forest: CV fold 3
 random_forest: CV fold 4
+hist_gradient_boosting: CV fold 0
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 264, in _count_physical_cores
+    cpu_count_physical = _count_physical_cores_darwin()
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 420, in _count_physical_cores_darwin
+    return int(cpu_info)
+hist_gradient_boosting: CV fold 1
+hist_gradient_boosting: CV fold 2
+hist_gradient_boosting: CV fold 3
+hist_gradient_boosting: CV fold 4
+knn: score saved Member 1 model for continuity/calibration diagnostics
