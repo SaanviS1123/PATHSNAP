@@ -1,0 +1,11 @@
+logistic_regression: CV fold 0
+logistic_regression: CV fold 1
+logistic_regression: CV fold 2
+logistic_regression: CV fold 3
+logistic_regression: CV fold 4
+Provisional Logistic Regression exported to models/
+random_forest: CV fold 0
+random_forest: CV fold 1
+random_forest: CV fold 2
+random_forest: CV fold 3
+random_forest: CV fold 4
