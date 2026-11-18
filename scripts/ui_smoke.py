@@ -34,9 +34,10 @@ def main():
         trips=['00000000','00000007','00000009','00000040','00000052','00000056','00000065','00000076','00000077','00000091']
         for trip in trips:
             select(0,trip)
+            page.get_by_text('Choose a model and run a prediction.',exact=False).wait_for(timeout=30000)
             run.click()
-            expect(run).to_be_disabled(timeout=15000)
-            page.get_by_text('Approximate aligned point labels',exact=False).wait_for(timeout=120000)
+            page.get_by_text(f'Trip {trip} · Selected best · tuned + calibrated Histogram Boosting',exact=True).wait_for(timeout=120000)
+            page.get_by_text('Approximate aligned point labels',exact=False).wait_for(timeout=30000)
             expect(run).to_be_enabled(timeout=120000)
             frame=map_ready()
             labels=frame.locator('.leaflet-control-layers').inner_text()

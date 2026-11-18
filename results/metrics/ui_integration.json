@@ -1,0 +1,160 @@
+{
+  "url": "http://127.0.0.1:8501",
+  "physical_second_laptop": false,
+  "checks": [
+    {
+      "trip_id": "00000000",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000007",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000009",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000040",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000052",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000056",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000065",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000076",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000077",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000091",
+      "model": "best",
+      "status": "pass",
+      "map_layers": [
+        " openstreetmap",
+        " Road network",
+        " Classifier arc choices",
+        " HMM + directed bridges",
+        " GPS observations"
+      ]
+    },
+    {
+      "trip_id": "00000000",
+      "model": "K-Nearest Neighbours",
+      "status": "pass"
+    },
+    {
+      "trip_id": "00000000",
+      "model": "Multi-Layer Perceptron",
+      "status": "pass"
+    },
+    {
+      "trip_id": "00000000",
+      "model": "Logistic Regression",
+      "status": "pass"
+    },
+    {
+      "trip_id": "00000000",
+      "model": "Random Forest",
+      "status": "pass"
+    },
+    {
+      "trip_id": "00000000",
+      "model": "Histogram Boosting \u00b7 baseline",
+      "status": "pass"
+    },
+    {
+      "trip_id": "00000000",
+      "model": "Selected best \u00b7 tuned + calibrated Histogram Boosting",
+      "status": "pass"
+    }
+  ],
+  "page_errors": [],
+  "batch_demo_verified": true,
+  "model_switches_verified": 6,
+  "hmm_toggle_verified": true
+}
