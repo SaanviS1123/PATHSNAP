@@ -1,0 +1,182 @@
+{
+  "status": "baseline",
+  "seed": 42,
+  "fit": {
+    "n_fit_rows": 2134559,
+    "n_fit_trips": 80,
+    "train_time_sec": 17.398719334043562,
+    "warnings": []
+  },
+  "signature": "188d0cd3e5ec969aa3bd35a3c71c538521280ddf8317f3dadc4c5d943b7577e3",
+  "inputs": {
+    "inputs": {
+      "data/processed/train.parquet": "21ee734e31e1dc709e8cac88ce932b789cbd5e5017c64ab0b490fb309b34ec27",
+      "data/processed/student_test.parquet": "bfa6f7dc5aea34dd437bbd684380b2ee66a287be8c567b61e8e39b3bafc21a55",
+      "data/processed/obs_labels.parquet": "63541035140757095c2d75e2447d6b62ff094b69e602540eb2ffde5f0a87a1f4",
+      "configs/folds.json": "2aff739a1bc56f1fbaae23ec0f5c569916dbd3d6d8010982d1e28095e13006c3",
+      "models/feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8",
+      "results/metrics/data_manifest.csv": "7d0746181ae331be0d00865c9815afd4abf1a6dfd57b8e0ae4271b29d1981156",
+      "src/evaluation/harness.py": "09be9f9b5dc9bdbd3b2ff95f16a1ec22d14a8c3aa4d0ff71b26e1d0e5f1c5d46",
+      "src/evaluation/continuity.py": "3cd9231b3ce716e0ca50177377902ce46a64a59ae5fa3950ee06768cb1a6cf57",
+      "src/models/training.py": "00661aa2881215c5b56426eea3a209b37959f11148b3dde04b03138eabcf6d79",
+      "src/models/specs.py": "eee160eb47881d124fe0105b201958d8cb9b5cef9db01b1147a8312fbf18784d"
+    },
+    "features": [
+      "distance_m",
+      "position_frac",
+      "heading_diff_rad",
+      "heading_valid",
+      "speed_mps",
+      "arc_length_m",
+      "candidate_rank",
+      "in_degree",
+      "out_degree",
+      "time_gap_s",
+      "large_gap",
+      "outside_radius"
+    ],
+    "sklearn_version": "1.9.1",
+    "config": {
+      "categorical_features": "from_dtype",
+      "class_weight": "balanced",
+      "early_stopping": false,
+      "interaction_cst": null,
+      "l2_regularization": 1.0,
+      "learning_rate": 0.1,
+      "loss": "log_loss",
+      "max_bins": 255,
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_iter": 100,
+      "max_leaf_nodes": 31,
+      "min_samples_leaf": 20,
+      "monotonic_cst": null,
+      "n_iter_no_change": 10,
+      "random_state": 42,
+      "scoring": "loss",
+      "tol": 1e-07,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "extra": null
+  },
+  "metrics": {
+    "model_name": "hist_gradient_boosting",
+    "candidate_accuracy": 0.9327414616469736,
+    "precision": 0.5543901616217377,
+    "recall": 0.9445605601421256,
+    "f1": 0.6986955261377911,
+    "macro_f1": 0.8304206284702731,
+    "log_loss": 0.16508968140792907,
+    "brier_score": 0.049608998371334014,
+    "ece_10": 0.07655970588337181,
+    "calibration_bins": [
+      {
+        "bin": 0,
+        "count": 174120,
+        "mean_probability": 0.014184343713890645,
+        "positive_fraction": 0.0009935676544911556
+      },
+      {
+        "bin": 1,
+        "count": 10884,
+        "mean_probability": 0.14369579813865707,
+        "positive_fraction": 0.015435501653803748
+      },
+      {
+        "bin": 2,
+        "count": 6129,
+        "mean_probability": 0.24668758823204767,
+        "positive_fraction": 0.034263338228095935
+      },
+      {
+        "bin": 3,
+        "count": 4405,
+        "mean_probability": 0.3484243621363975,
+        "positive_fraction": 0.0547105561861521
+      },
+      {
+        "bin": 4,
+        "count": 3662,
+        "mean_probability": 0.44836723991140104,
+        "positive_fraction": 0.07345712725286728
+      },
+      {
+        "bin": 5,
+        "count": 2988,
+        "mean_probability": 0.5476374197115287,
+        "positive_fraction": 0.10742971887550201
+      },
+      {
+        "bin": 6,
+        "count": 2845,
+        "mean_probability": 0.6491221585740142,
+        "positive_fraction": 0.13848857644991214
+      },
+      {
+        "bin": 7,
+        "count": 3697,
+        "mean_probability": 0.7521814143688925,
+        "positive_fraction": 0.20719502299161482
+      },
+      {
+        "bin": 8,
+        "count": 4451,
+        "mean_probability": 0.8521908438230151,
+        "positive_fraction": 0.3520557178162211
+      },
+      {
+        "bin": 9,
+        "count": 18626,
+        "mean_probability": 0.9720619072932047,
+        "positive_fraction": 0.8068828519274133
+      }
+    ],
+    "top1_accuracy": 0.8040537010917829,
+    "trip_mean_top1": 0.820871965141774,
+    "candidate_miss_rate": 0.0002611920806561145,
+    "route_continuity": 0.9030287206266319,
+    "n_known_obs": 19143,
+    "n_unknown_obs": 17,
+    "n_candidate_rows": 231905,
+    "n_known_candidate_rows": 231807,
+    "confusion_matrix": [
+      [
+        198139,
+        14530
+      ],
+      [
+        1061,
+        18077
+      ]
+    ],
+    "train_time_sec": 17.398719334043562,
+    "n_fit_rows": 2134559,
+    "n_fit_trips": 80,
+    "warnings": [],
+    "inference_time_sec": 0.47282895806711167
+  },
+  "model_name": "hist_gradient_boosting",
+  "feature_schema_version": "member1-v1",
+  "feature_columns": [
+    "distance_m",
+    "position_frac",
+    "heading_diff_rad",
+    "heading_valid",
+    "speed_mps",
+    "arc_length_m",
+    "candidate_rank",
+    "in_degree",
+    "out_degree",
+    "time_gap_s",
+    "large_gap",
+    "outside_radius"
+  ],
+  "probability_output": "model.joblib accepts raw schema features and includes preprocessing/calibration; do not preprocess twice",
+  "artifacts_sha256": {
+    "preprocessor.joblib": "9ec1eb5f5b31ff5aa3e7c1ee7f3f9cacbea4e8dc324707aec4585dc8e26ab75d",
+    "model.joblib": "dc96cb19de930501434cb5ca6890c67fd03ce46c63a27a565ba6ed0fcd771b73",
+    "feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8"
+  }
+}
