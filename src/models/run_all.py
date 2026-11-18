@@ -110,9 +110,12 @@ def comparison_table(records):
     for record in records:
         row=dict(model_name=record['name'],configuration=json.dumps(record['configuration'],default=str),training_diagnostic_macro_f1=record.get('training_diagnostic_macro_f1'))
         for prefix,key in [('cv','cv'),('student','student')]:
-            for metric,value in record[key].items():
-                if value is None or isinstance(value,(str,int,float)):
-                    row[f'{prefix}_{metric}']=value
+            for metric in ['candidate_accuracy','precision','recall','f1','macro_f1','macro_f1_std',
+                           'top1_accuracy','trip_mean_top1','candidate_miss_rate','route_continuity',
+                           'log_loss','brier_score','ece_10','train_time_sec','inference_time_sec',
+                           'n_known_obs','n_unknown_obs','n_candidate_rows','n_known_candidate_rows']:
+                if metric in record[key]:
+                    row[f'{prefix}_{metric}']=record[key][metric]
         rows.append(row)
     return pd.DataFrame(rows).sort_values(['cv_top1_accuracy','cv_macro_f1','model_name'],ascending=[False,False,True])
 
@@ -219,8 +222,8 @@ def run(data_path=None,seed=42,output_dir=None,student_path=None,trials=10,basel
     experiment_rows=[]
     for record in records:
         for fold in record['cv']['folds']:
-            experiment_rows.append(dict(model_name=record['name'],partition='cv',**{k:v for k,v in fold.items() if v is None or isinstance(v,(str,int,float))}))
-        experiment_rows.append(dict(model_name=record['name'],partition='student_test',**{k:v for k,v in record['student'].items() if v is None or isinstance(v,(str,int,float))}))
+            experiment_rows.append(dict({k:v for k,v in fold.items() if v is None or isinstance(v,(str,int,float))},model_name=record['name'],partition='cv'))
+        experiment_rows.append(dict({k:v for k,v in record['student'].items() if v is None or isinstance(v,(str,int,float))},model_name=record['name'],partition='student_test'))
     pd.DataFrame(experiment_rows).to_csv(METRICS/'experiments.csv',index=False)
     from src.models.member2_report import generate_report
     generate_report(records,selection,tuning)

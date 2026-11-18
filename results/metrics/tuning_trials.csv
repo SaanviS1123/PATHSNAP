@@ -1,3 +1,4 @@
 trial,state,objective_top1_accuracy,proposal,params_json,elapsed_s,macro_f1,log_loss
 0,COMPLETE,0.7677054619113884,startup,"{""max_iter"": 100, ""learning_rate"": 0.07862589064613253, ""max_leaf_nodes"": 15, ""min_samples_leaf"": 20, ""l2_regularization"": 0.011527987128232402}",19.77323858300224,0.8216282943291464,0.1852706398364167
 1,COMPLETE,0.7644967851115141,startup,"{""max_iter"": 60, ""learning_rate"": 0.040198648566549054, ""max_leaf_nodes"": 63, ""min_samples_leaf"": 100, ""l2_regularization"": 0.02621087878265441}",17.148968082969077,0.8206247690990198,0.20559273788786636
+2,COMPLETE,0.7728415030455746,startup,"{""max_iter"": 160, ""learning_rate"": 0.10615383778576548, ""max_leaf_nodes"": 63, ""min_samples_leaf"": 50, ""l2_regularization"": 0.015673095467235415}",32.460707375081256,0.8365285276782932,0.15940671320483185
