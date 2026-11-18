@@ -1,101 +1,123 @@
-"""Shared training and artifact export helpers for candidate classifiers."""
-
+"""Schema-checked loading, reproducible signatures and the public scorer export."""
 from __future__ import annotations
-
+import hashlib
 import json
-from datetime import datetime, timezone
 from pathlib import Path
-
+import shutil
+import tempfile
 import joblib
+import numpy as np
 import pandas as pd
+from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
+from src.evaluation.harness import _positive_probability, fit_estimator, validate_table
 
-ROOT = Path(__file__).resolve().parents[2]
-TRAIN_PATH = ROOT / "data" / "processed" / "train.parquet"
-SCHEMA_PATH = ROOT / "models" / "feature_schema.json"
-MODEL_DIR = ROOT / "models"
-REQUIRED = {"trip_id", "obs_idx", "arc_id", "is_ref"}
+ROOT=Path(__file__).resolve().parents[2]
+TRAIN_PATH=ROOT/'data/processed/train.parquet'
+SCHEMA_PATH=ROOT/'models/feature_schema.json'
+MODEL_DIR=ROOT/'models'
+
+
+def write_json(path,value):
+    path=Path(path)
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text(json.dumps(value,indent=2,default=lambda x:x.item() if isinstance(x,np.generic) else str(x),allow_nan=False)+'\n')
+
+
+def file_hash(path):
+    digest=hashlib.sha256()
+    with Path(path).open('rb') as source:
+        for block in iter(lambda:source.read(1024*1024),b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def input_signature(features,estimator=None,extra=None):
+    import sklearn
+    paths=['data/processed/train.parquet','data/processed/student_test.parquet','data/processed/obs_labels.parquet','configs/folds.json','models/feature_schema.json','results/metrics/data_manifest.csv','src/evaluation/harness.py','src/evaluation/continuity.py','src/models/training.py','src/models/specs.py']
+    inputs={p:file_hash(ROOT/p) for p in paths if (ROOT/p).exists()}
+    payload=dict(inputs=inputs,features=features,sklearn_version=sklearn.__version__,config=estimator.get_params() if estimator is not None else None,extra=extra)
+    key=hashlib.sha256(json.dumps(payload,sort_keys=True,default=str).encode()).hexdigest()
+    return key,payload
+
+
+def load_training_data(path=TRAIN_PATH):
+    frame=pd.read_parquet(path)
+    schema=json.loads(SCHEMA_PATH.read_text())
+    features=[f['name'] for f in schema['features']]
+    validate_table(frame,features)
+    return frame,features
 
 
 class CandidateScorer:
-    """Stable scorer contract: predict_proba returns P(is_ref=1) as shape (n,)."""
+    """Public contract: raw DataFrame -> positive probabilities, shape (n,)."""
+    def __init__(self,estimator,preprocessor,feature_columns,calibrator=None):
+        self.estimator=estimator
+        self.preprocessor=preprocessor
+        self.feature_columns=list(feature_columns)
+        self.calibrator=calibrator
 
-    def __init__(self, estimator, preprocessor, feature_columns):
-        self.estimator = estimator
-        self.preprocessor = preprocessor
-        self.feature_columns = list(feature_columns)
-
-    def predict_proba(self, X):
-        X = X.loc[:, self.feature_columns]
-        if self.preprocessor != "passthrough":
-            X = self.preprocessor.transform(X)
-        probs = self.estimator.predict_proba(X)
-        return probs[:, list(self.estimator.classes_).index(1)]
-
-
-def load_training_data(path: str | Path = TRAIN_PATH):
-    path = Path(path)
-    if not path.exists():
-        raise FileNotFoundError(f"Training data not found: {path}. Member 1 must generate train.parquet first.")
-    frame = pd.read_parquet(path)
-    missing = REQUIRED - set(frame.columns)
-    if missing:
-        raise ValueError(f"Training table is missing columns: {sorted(missing)}")
-    if SCHEMA_PATH.exists():
-        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
-        declared = schema.get("features", schema.get("columns", []))
-        if declared and isinstance(declared[0], dict):
-            features = [x["name"] for x in declared]
-        else:
-            features = list(declared)
-        if not set(features).issubset(frame.columns):
-            raise ValueError("Feature schema columns do not match train.parquet")
-    else:
-        features = [c for c in frame.columns if c not in REQUIRED]
-    if not features:
-        raise ValueError("No feature columns found")
-    return frame, features
+    def predict_proba(self,X):
+        if not set(self.feature_columns).issubset(X.columns):
+            raise ValueError('Missing schema feature columns')
+        values=X[self.feature_columns]
+        if not np.isfinite(values.to_numpy()).all():
+            raise ValueError('Nonfinite features')
+        if len(values)==0:
+            return np.empty(0)
+        if not isinstance(self.preprocessor,str):
+            values=self.preprocessor.transform(values)
+        scores=_positive_probability(self.estimator,values)
+        if self.calibrator is not None:
+            scores=self.calibrator.predict(scores)
+        # Finite log emissions; no reference files are read at inference.
+        return np.clip(scores,np.finfo(float).eps,1-np.finfo(float).eps)
 
 
-def fit_and_export(estimator, name: str, frame: pd.DataFrame, features: list[str],
-                   *, scale: bool = False, random_seed: int = 42,
-                   metrics: dict | None = None, output_dir: str | Path = MODEL_DIR):
-    frame = frame[frame["is_ref"].astype(int) >= 0].copy()
-    labels = frame["is_ref"].astype(int)
-    if labels.nunique() != 2:
-        raise ValueError("Training data must contain both is_ref classes")
-    preprocessor = StandardScaler() if scale else "passthrough"
-    X = frame[features]
+def scorer_from_fitted(estimator,features,calibrator=None):
+    if isinstance(estimator,Pipeline):
+        return CandidateScorer(estimator.steps[-1][1],estimator[:-1],features,calibrator)
+    return CandidateScorer(estimator,'passthrough',features,calibrator)
+
+
+def export_scorer(scorer,name,features,output_dir,card):
+    out=Path(output_dir)
+    out.mkdir(parents=True,exist_ok=True)
+    schema=json.loads(SCHEMA_PATH.read_text())
+    with tempfile.TemporaryDirectory(prefix='export-',suffix='.tmp',dir=out) as temporary:
+        stage=Path(temporary)
+        joblib.dump(scorer,stage/'model.joblib',compress=3)
+        joblib.dump(scorer.preprocessor,stage/'preprocessor.joblib',compress=3)
+        for path in stage.glob('*.joblib'):
+            if path.stat().st_size>=100_000_000:
+                raise ValueError(f'Artifact exceeds 100 MB: {path.name}')
+        write_json(stage/'feature_schema.json',schema)
+        card=dict(card,model_name=name,feature_schema_version=schema['version'],feature_columns=features,
+                  probability_output='model.joblib accepts raw schema features and includes preprocessing/calibration; do not preprocess twice',
+                  artifacts_sha256={p.name:file_hash(p) for p in stage.iterdir()})
+        write_json(stage/'model_card.json',card)
+        for filename in ['model.joblib','preprocessor.joblib','feature_schema.json','model_card.json']:
+            (stage/filename).replace(out/filename)
+    return card
+
+
+def load_scorer(model_dir=MODEL_DIR):
+    folder=Path(model_dir)
+    card=json.loads((folder/'model_card.json').read_text())
+    schema=json.loads((folder/'feature_schema.json').read_text())
+    if card['feature_schema_version'] != schema['version']:
+        raise ValueError('Model/schema version mismatch')
+    for name,expected in card['artifacts_sha256'].items():
+        if file_hash(folder/name)!=expected:
+            raise ValueError(f'Artifact checksum mismatch: {name}')
+    return joblib.load(folder/'model.joblib')
+
+
+def fit_and_export(estimator,name,frame,features,*,scale=False,random_seed=42,metrics=None,output_dir=MODEL_DIR):
     if scale:
-        X = pd.DataFrame(preprocessor.fit_transform(X), columns=features, index=X.index)
-    estimator.fit(X, labels)
-    if 1 not in estimator.classes_:
-        raise ValueError("Trained classifier has no positive class 1")
-    out = Path(output_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    joblib.dump(CandidateScorer(estimator, preprocessor, features), out / "model.joblib")
-    joblib.dump(preprocessor, out / "preprocessor.joblib")
-    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8")) if SCHEMA_PATH.exists() else {}
-    schema_version = schema.get("version", 1)
-    existing_schema = SCHEMA_PATH if SCHEMA_PATH.exists() else None
-    if existing_schema and existing_schema.resolve() != (out / "feature_schema.json").resolve():
-        schema_text = existing_schema.read_text(encoding="utf-8")
-    elif existing_schema:
-        schema_text = existing_schema.read_text(encoding="utf-8")
-    else:
-        schema_text = json.dumps({"version": schema_version, "features": features,
-                                  "target": "is_ref", "positive_class": 1}, indent=2) + "\n"
-    (out / "feature_schema.json").write_text(schema_text, encoding="utf-8")
-    card = {
-        "model_name": name,
-        "created_utc": datetime.now(timezone.utc).isoformat(),
-        "random_seed": random_seed,
-        "config": estimator.get_params(deep=True),
-        "feature_schema_version": schema_version,
-        "feature_columns": features,
-        "train_rows": len(frame), "train_trips": int(frame.trip_id.nunique()),
-        "metrics": metrics or {},
-        "probability_output": "predict_proba class 1; apply preprocessor.joblib first",
-    }
-    (out / "model_card.json").write_text(json.dumps(card, indent=2, default=str) + "\n", encoding="utf-8")
-    return estimator, preprocessor
+        estimator=make_pipeline(StandardScaler(),estimator)
+    fitted,fit=fit_estimator(estimator,frame,features)
+    scorer=scorer_from_fitted(fitted,features)
+    signature,inputs=input_signature(features,estimator)
+    card=export_scorer(scorer,name,features,output_dir,dict(status='provisional',seed=random_seed,fit=fit,metrics=metrics or {},signature=signature,inputs=inputs))
+    return scorer,card

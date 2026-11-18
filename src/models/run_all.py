@@ -1,240 +1,239 @@
-"""Run Member 2 model CV, comparison, and final artifact export."""
-
+"""Run/reuse five baselines, tune the CV winner, audit calibration, export/report."""
 from __future__ import annotations
-
 import argparse
 import json
-import shutil
 from pathlib import Path
-
+import time
+import joblib
+import numpy as np
 import pandas as pd
-from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
+from threadpoolctl import threadpool_limits
+from src.evaluation.harness import evaluate_model,evaluate_holdout,score_predictions,_positive_probability,fit_estimator
+from src.evaluation.continuity import route_continuity
+from src.models.specs import BASELINES,make_estimator
+from src.models.training import ROOT,load_training_data,input_signature,write_json,file_hash,export_scorer,scorer_from_fitted,CandidateScorer,load_scorer
 
-from src.evaluation.harness import evaluate_holdout, evaluate_model
-from src.models.training import fit_and_export, load_training_data
-
-ROOT = Path(__file__).resolve().parents[2]
+METRICS=ROOT/'results/metrics'
+CACHE=ROOT/'data/processed/member2'
 
 
-def _sum_confusions(items):
-    total = [[0, 0], [0, 0]]
-    for item in items:
-        if not item:
+def _cached(path,signature):
+    if Path(path).exists():
+        result=json.loads(Path(path).read_text())
+        if result.get('signature')==signature:
+            return result
+    return None
+
+
+def run_baseline(name,frame,student,labels,features,seed):
+    estimator=make_estimator(name,seed=seed)
+    signature,inputs=input_signature(features,estimator)
+    path=METRICS/f'member2/{name}.json'
+    cached=_cached(path,signature)
+    folder=ROOT/f'models/member2/{name}'
+    if cached and (folder/'model_card.json').exists() and (CACHE/f'{name}_oof.npy').exists():
+        load_scorer(folder)
+        print(f'{name}: reuse matching completed run',flush=True)
+        return cached
+    cv=evaluate_model(estimator,name,frame,features,obs_labels=labels[labels.partition=='train'],
+                      continuity_fn=route_continuity,output_path=METRICS/f'member2/{name}_progress.json',
+                      oof_path=CACHE/f'{name}_oof.npy')
+    test,fitted,scores=evaluate_holdout(estimator,frame,student,labels[labels.partition=='student_test'],features,
+                                      model_name=name,continuity_fn=route_continuity,return_estimator=True)
+    diagnostic=frame[frame.is_ref>=0].sample(n=min(10000,int((frame.is_ref>=0).sum())),random_state=seed)
+    with threadpool_limits(limits=2):
+        dp=_positive_probability(fitted,diagnostic[features])
+    from sklearn.metrics import f1_score
+    record=dict(signature=signature,inputs=inputs,name=name,cv=cv,student=test,
+                training_diagnostic_macro_f1=float(f1_score(diagnostic.is_ref,dp>=.5,labels=[0,1],average='macro',zero_division=0)),
+                diagnostic_scope='<=10k fitted rows; optimistic, not validation',configuration=estimator.get_params())
+    scorer=scorer_from_fitted(fitted,features)
+    card=export_scorer(scorer,name,features,folder,dict(status='baseline',seed=seed,fit={k:test[k] for k in ['n_fit_rows','n_fit_trips','train_time_sec','warnings']},signature=signature,inputs=inputs,metrics=test))
+    np.save(CACHE/f'{name}_student.npy',scores)
+    write_json(path,record)
+    if name=='logistic_regression' and not (ROOT/'models/model_card.json').exists():
+        export_scorer(scorer,name,features,ROOT/'models',dict(card,status='provisional'))
+        print('Provisional Logistic Regression exported to models/',flush=True)
+    return record
+
+
+def import_member1(name,frame,student,labels,features):
+    from src.models.member1_harness import load_scorer as load_member1
+    source=ROOT/f'models/member1/{name}'
+    card=json.loads((source/'model_card.json').read_text())
+    if card['max_train_rows']!=0:
+        raise ValueError('Comparison requires full known-row Member 1 experiments')
+    for filename,expected in card['input_sha256'].items():
+        path=Path(filename)
+        if not path.is_absolute():
+            path=ROOT/path
+        if not path.exists() and path.name=='member1_harness.py':
+            path=ROOT/'src/models/member1_harness.py'
+        if file_hash(path)!=expected:
+            raise ValueError(f'Stale Member 1 input: {filename}')
+    signature,inputs=input_signature(features,extra=dict(member1=name,card_hash=file_hash(source/'model_card.json')))
+    path=METRICS/f'member2/{name}.json'
+    cached=_cached(path,signature)
+    if cached:
+        return cached
+    rows=json.loads((ROOT/f'results/metrics/{name}_experiments.json').read_text())
+    folds=[]
+    for row in rows:
+        if row['partition']!='cv':
             continue
-        for i in range(2):
-            for j in range(2):
-                total[i][j] += int(item[i][j])
-    return total
+        row=dict(row,top1_accuracy=row['top1_acc'],train_time_sec=row['train_time_s'],inference_time_sec=row['inference_time_s'],warnings=row['fit_warnings'])
+        folds.append(row)
+    if len(folds)!=5 or any(row['n_fit_trips']!=64 for row in folds):
+        raise ValueError('Member 1 CV is not the expected five trip folds')
+    keys=['macro_f1','log_loss','top1_accuracy','precision','recall','f1','candidate_accuracy','candidate_miss_rate','train_time_sec','inference_time_sec']
+    cv={k:float(np.mean([r[k] for r in folds])) for k in keys}
+    cv.update(folds=folds,macro_f1_std=card['cv_macro_f1_std'],route_continuity=None,brier_score=None,ece_10=None,
+              note='Historical CV probabilities were not retained; continuity/calibration CV values are unavailable.')
+    print(f'{name}: score saved Member 1 model for continuity/calibration diagnostics',flush=True)
+    scorer=load_member1(source)
+    started=time.perf_counter()
+    with threadpool_limits(limits=2):
+        scores=scorer.predict_proba(student)
+    inference=time.perf_counter()-started
+    test=score_predictions(student,scores,labels[labels.partition=='student_test'],route_continuity)
+    test.update(inference_time_sec=inference,train_time_sec=card['fit']['train_time_s'],n_fit_rows=card['fit']['n_fit_rows'],n_fit_trips=80,warnings=card['fit']['fit_warnings'])
+    record=dict(name=name,signature=signature,inputs=inputs,cv=cv,student=test,configuration=card['configuration'],
+                training_diagnostic_macro_f1=card['training_diagnostic_macro_f1'],diagnostic_scope=card['training_diagnostic_scope'],
+                member1_source=str(source.relative_to(ROOT)))
+    np.save(CACHE/f'{name}_student.npy',scores)
+    write_json(path,record)
+    return record
 
 
-def _plot_comparison(table: pd.DataFrame, history_rows: list[dict]):
-    import matplotlib.pyplot as plt
-
-    plots = ROOT / "results" / "plots"
-    plots.mkdir(parents=True, exist_ok=True)
-    for metric, title, filename in [
-        ("cv_macro_f1", "Trip-grouped CV Macro-F1", "model_cv_macro_f1.png"),
-        ("cv_top1_accuracy", "Trip-grouped CV observation Top-1", "model_cv_top1.png"),
-        ("cv_log_loss", "Trip-grouped CV log loss", "model_cv_log_loss.png"),
-    ]:
-        if metric not in table:
-            continue
-        ax = table.set_index("model_name")[metric].dropna().sort_values().plot.bar(figsize=(8, 4))
-        ax.set_title(title); ax.set_ylabel(metric); ax.set_xlabel("")
-        ax.figure.tight_layout(); ax.figure.savefig(plots / filename, dpi=160); plt.close(ax.figure)
-    student_metrics = [c for c in ("student_top1_accuracy", "student_macro_f1") if c in table]
-    if student_metrics:
-        ax = table.set_index("model_name")[student_metrics].dropna(how="all").plot.bar(figsize=(8, 4))
-        ax.set_title("Student-test Top-1 and Macro-F1"); ax.set_ylabel("score"); ax.set_xlabel("")
-        ax.figure.tight_layout(); ax.figure.savefig(plots / "model_student_metrics.png", dpi=160); plt.close(ax.figure)
-    matrices = [r for r in table.to_dict(orient="records") if r.get("cv_confusion_matrix")]
-    for row in matrices:
-        matrix = row["cv_confusion_matrix"]
-        fig, ax = plt.subplots(figsize=(4, 3))
-        image = ax.imshow(matrix, cmap="Blues")
-        ax.set(title=f"{row['model_name']} CV confusion matrix", xlabel="Predicted", ylabel="Reference")
-        ax.set_xticks([0, 1], ["negative", "positive"]); ax.set_yticks([0, 1], ["negative", "positive"])
-        for i in range(2):
-            for j in range(2): ax.text(j, i, f"{matrix[i][j]:,}", ha="center", va="center")
-        fig.colorbar(image, ax=ax); fig.tight_layout()
-        fig.savefig(plots / f"confusion_{row['model_name']}_cv.png", dpi=160); plt.close(fig)
-    history_frame = pd.DataFrame(history_rows)
-    if not history_frame.empty:
-        for (model, run, history_type), curve in history_frame.groupby(
-                ["model", "run", "history_type"], sort=True):
-            curve = curve.sort_values("iteration")
-            fig, ax = plt.subplots(figsize=(6, 3))
-            ax.plot(curve.iteration, curve.value)
-            ax.set(title=f"{model} {run} {history_type}", xlabel="iteration", ylabel=history_type)
-            fig.tight_layout()
-            fig.savefig(plots / f"training_history_{model}_{run}.png", dpi=160)
-            plt.close(fig)
+def comparison_table(records):
+    rows=[]
+    for record in records:
+        row=dict(model_name=record['name'],configuration=json.dumps(record['configuration'],default=str),training_diagnostic_macro_f1=record.get('training_diagnostic_macro_f1'))
+        for prefix,key in [('cv','cv'),('student','student')]:
+            for metric,value in record[key].items():
+                if value is None or isinstance(value,(str,int,float)):
+                    row[f'{prefix}_{metric}']=value
+        rows.append(row)
+    return pd.DataFrame(rows).sort_values(['cv_top1_accuracy','cv_macro_f1','model_name'],ascending=[False,False,True])
 
 
-def _write_selection_note(comparison: pd.DataFrame, winner: str):
-    selected = comparison.loc[comparison.model_name == winner].iloc[0]
-    lines = ["# Model selection result", "",
-        f"Selected model: **{winner}**.", "",
-        "Selection rule: highest mean observation-level Top-1 across the frozen trip-grouped CV folds. "
-        "Student-test results are reported as a final holdout check and were not used to select the model.", "",
-        f"- CV observation Top-1: {selected.get('cv_top1_accuracy', float('nan')):.6f}",
-        f"- CV candidate Macro-F1: {selected.get('cv_macro_f1', float('nan')):.6f}",
-        f"- CV log loss: {selected.get('cv_log_loss', float('nan')):.6f}",
-        f"- CV Brier score: {selected.get('cv_brier_score', float('nan')):.6f}",
-        f"- CV 10-bin ECE: {selected.get('cv_ece_10', float('nan')):.6f}",
-        f"- Candidate miss rate: {selected.get('cv_candidate_miss_rate', float('nan')):.6f}", ""]
-    for key, label in (("student_top1_accuracy", "Student-test Top-1"),
-                       ("student_macro_f1", "Student-test Macro-F1"),
-                       ("student_log_loss", "Student-test log loss"),
-                       ("student_brier_score", "Student-test Brier score"),
-                       ("student_ece_10", "Student-test 10-bin ECE")):
-        if key in selected.index and pd.notna(selected[key]):
-            lines.append(f"- {label}: {float(selected[key]):.6f}")
-    lines.extend(["", "Full per-model metrics and confusion matrices: `model_comparison.csv`.",
-                  "This report is generated only after the full training and evaluation tables are available."])
-    (ROOT / "results" / "metrics" / "model_selection.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+def select_winner(table):
+    eligible=table.dropna(subset=['cv_top1_accuracy','cv_macro_f1'])
+    if eligible.empty:
+        raise ValueError('No CV-complete model')
+    return eligible.sort_values(['cv_top1_accuracy','cv_macro_f1','model_name'],ascending=[False,False,True]).iloc[0].model_name
 
 
-def run(data_path=None, seed: int = 42, output_dir=None, student_path=None):
-    frame, features = load_training_data(data_path) if data_path else load_training_data()
-    labels_path = ROOT / "data" / "processed" / "obs_labels.parquet"
-    obs_labels = pd.read_parquet(labels_path) if labels_path.exists() else None
-    holdout_path = Path(student_path) if student_path else ROOT / "data" / "processed" / "student_test.parquet"
-    holdout = pd.read_parquet(holdout_path) if holdout_path.exists() else None
-    specs = [
-        ("logistic_regression", LogisticRegression(C=1.0, max_iter=1000,
-          class_weight="balanced", solver="lbfgs", random_state=seed), True),
-        ("random_forest", RandomForestClassifier(n_estimators=300, min_samples_leaf=2,
-          class_weight="balanced_subsample", n_jobs=-1, random_state=seed), False),
-        ("hist_gradient_boosting", HistGradientBoostingClassifier(max_iter=200,
-          learning_rate=0.1, max_leaf_nodes=31, l2_regularization=1.0,
-          random_state=seed, class_weight="balanced"), False),
-    ]
-    tuning_path = ROOT / "results" / "metrics" / "tuning_best.json"
-    if tuning_path.exists():
-        tuned = json.loads(tuning_path.read_text(encoding="utf-8"))
-        tuned_params = dict(tuned.get("best_params", {}))
-        tuned_params.update({"class_weight": "balanced_subsample", "n_jobs": -1,
-                             "random_state": seed})
-        specs.append(("random_forest_tuned", RandomForestClassifier(**tuned_params), False))
-    records = []
-    history_rows = []
-    for name, estimator, scale in specs:
-        # CV evaluates the same preprocessing choice that will be used at refit.
-        if scale:
-            from sklearn.pipeline import make_pipeline
-            from sklearn.preprocessing import StandardScaler
-            estimator = make_pipeline(StandardScaler(), estimator)
-        cv = evaluate_model(estimator, name, frame, feature_columns=features,
-                            random_seed=seed, obs_labels=obs_labels)
-        for history in json.loads(cv["training_history_json"]):
-            history_rows.extend({"model": name, "run": f"fold_{history['fold']}",
-                "history_type": history["history_type"], "iteration": i + 1, "value": value}
-                for i, value in enumerate(history["values"]))
-        row = {"model_name": name,
-            "cv_top1_accuracy": cv["top1_accuracy"], "cv_macro_f1": cv["macro_f1"],
-            "cv_log_loss": cv["log_loss"], "cv_brier_score": cv["brier_score"],
-            "cv_ece_10": cv["ece_10"],
-            "cv_candidate_miss_rate": cv["candidate_miss_rate"],
-            "cv_train_time_sec": cv["train_time_sec"],
-            "cv_inference_time_sec": cv["inference_time_sec"],
-            "cv_route_continuity": cv["route_continuity"], "config": cv["config"]}
-        fold_metrics = json.loads(cv["fold_metrics_json"])
-        row["cv_confusion_matrix"] = _sum_confusions([f["confusion_matrix"] for f in fold_metrics])
-        if holdout is not None and obs_labels is not None:
-            test = evaluate_holdout(estimator, frame, holdout, obs_labels, features, model_name=name)
-            row.update({f"student_{key}": value for key, value in test.items()
-                        if key not in {"model_name", "n_test_trips"}})
-            row["student_confusion_matrix"] = test["confusion_matrix"]
-        records.append(row)
-    # Bring in A's measured models when their complete experiment files exist.
-    for member_model in ("knn", "mlp"):
-        member_path = ROOT / "results" / "metrics" / f"{member_model}_experiments.csv"
-        if not member_path.exists():
-            continue
-        member = pd.read_csv(member_path)
-        cv_rows = member[member.partition == "cv"]
-        test_rows = member[member.partition == "student_test"]
-        if cv_rows.empty:
-            continue
-        record = {"model_name": member_model,
-            "cv_top1_accuracy": cv_rows.top1_acc.mean(), "cv_macro_f1": cv_rows.macro_f1.mean(),
-            "cv_log_loss": cv_rows.log_loss.mean(),
-            "cv_candidate_miss_rate": cv_rows.candidate_miss_rate.mean(),
-            "cv_train_time_sec": cv_rows.train_time_s.mean(),
-            "cv_inference_time_sec": cv_rows.inference_time_s.mean(),
-            "cv_route_continuity": float("nan"), "config": "Member 1 experiment log"}
-        member_json = ROOT / "results" / "metrics" / f"{member_model}_experiments.json"
-        if member_json.exists():
-            member_rows = json.loads(member_json.read_text(encoding="utf-8"))
-            record["cv_confusion_matrix"] = _sum_confusions([
-                r.get("confusion_matrix") for r in member_rows if r.get("partition") == "cv"])
-        member_history_path = ROOT / "results" / "metrics" / f"{member_model}_loss_history.csv"
-        if member_history_path.exists():
-            for _, h in pd.read_csv(member_history_path).iterrows():
-                history_rows.append({"model": member_model, "run": h.get("run", "refit"),
-                    "history_type": "loss", "iteration": int(h.epoch), "value": float(h.train_loss)})
-        if not test_rows.empty:
-            last = test_rows.iloc[-1]
-            record.update({"student_top1_accuracy": last.top1_acc,
-                "student_macro_f1": last.macro_f1, "student_log_loss": last.log_loss,
-                "student_brier_score": float("nan"),
-                "student_candidate_miss_rate": last.candidate_miss_rate,
-                "student_train_time_sec": last.train_time_s,
-                "student_inference_time_sec": last.inference_time_s,
-                "student_route_continuity": float("nan")})
-            if member_json.exists():
-                test_conf = [r.get("confusion_matrix") for r in member_rows
-                             if r.get("partition") == "student_test"]
-                if test_conf: record["student_confusion_matrix"] = test_conf[-1]
-        records.append(record)
-    comparison = pd.DataFrame(records).sort_values("cv_top1_accuracy", ascending=False)
-    metrics_path = ROOT / "results" / "metrics" / "model_comparison.csv"
-    metrics_path.parent.mkdir(parents=True, exist_ok=True)
-    comparison.to_csv(metrics_path, index=False)
-    if history_rows:
-        pd.DataFrame(history_rows).to_csv(ROOT / "results" / "metrics" / "model_training_history.csv", index=False)
-    if "random_forest_tuned" in set(comparison.model_name):
-        pair = comparison[comparison.model_name.isin(["random_forest", "random_forest_tuned"])]
-        pair.to_csv(ROOT / "results" / "metrics" / "tuned_vs_untuned.csv", index=False)
-    _plot_comparison(comparison, history_rows)
-    winner = comparison.iloc[0]["model_name"]
-    if winner not in {name for name, _, _ in specs}:
-        source = ROOT / "models" / "member1" / winner
-        if not (source / "scorer.joblib").exists():
-            raise FileNotFoundError(f"Best CV model is {winner}, but its Member 1 scorer is missing from {source}")
-        out_dir = Path(output_dir) if output_dir else ROOT / "models"
-        out_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source / "scorer.joblib", out_dir / "model.joblib")
-        if (source / "preprocessor.joblib").exists():
-            shutil.copy2(source / "preprocessor.joblib", out_dir / "preprocessor.joblib")
-        shutil.copy2(ROOT / "models" / "feature_schema.json", out_dir / "feature_schema.json")
-        (out_dir / "model_card.json").write_text(json.dumps({
-            "model_name": winner, "selected_by": "highest trip-fold mean observation Top-1",
-            "cv_top1_accuracy": float(comparison.iloc[0]["cv_top1_accuracy"]),
-            "cv_macro_f1": float(comparison.iloc[0]["cv_macro_f1"]),
-            "artifact_source": str(source),
-            "note": "Member 1's scorer artifact copied to the common scorer contract path.",
-        }, indent=2) + "\n", encoding="utf-8")
-        _write_selection_note(comparison, winner)
-        return comparison
-    chosen, scale = next((est, sc) for name, est, sc in specs if name == winner)
-    out_dir = Path(output_dir) if output_dir else ROOT / "models"
-    fit_and_export(chosen, winner, frame, features, scale=scale, random_seed=seed,
-                   metrics={key: float(comparison.iloc[0][key]) for key in
-                       ("cv_top1_accuracy", "cv_macro_f1", "cv_log_loss", "cv_brier_score",
-                        "cv_ece_10", "cv_candidate_miss_rate") if key in comparison.columns},
-                   output_dir=out_dir)
-    _write_selection_note(comparison, winner)
-    return comparison
+def run(data_path=None,seed=42,output_dir=None,student_path=None,trials=10,baseline_only=False):
+    CACHE.mkdir(parents=True,exist_ok=True)
+    (METRICS/'member2').mkdir(parents=True,exist_ok=True)
+    frame,features=load_training_data(data_path) if data_path else load_training_data()
+    student=pd.read_parquet(student_path or ROOT/'data/processed/student_test.parquet')
+    labels=pd.read_parquet(ROOT/'data/processed/obs_labels.parquet')
+    if set(frame.trip_id)&set(student.trip_id):
+        raise ValueError('Training/student trips overlap')
+    for partition,table,expected in [('train',frame,80),('student_test',student,10)]:
+        reference=labels[labels.partition==partition]
+        if table.trip_id.nunique()!=expected or set(table.trip_id)!=set(reference.trip_id):
+            raise ValueError(f'Unexpected trip population: {partition}')
+    manifest=pd.read_csv(METRICS/'data_manifest.csv',dtype={'trip_id':str})
+    for row in manifest[manifest.file_type=='arcs'].itertuples():
+        if row.partition not in {'train','student_test'}:
+            raise ValueError('Unexpected road-network partition')
+        network=ROOT/'data/raw'/row.partition/row.trip_id/f'{row.trip_id}.arcs'
+        if file_hash(network)!=row.sha256:
+            raise ValueError(f'Changed road network: {row.trip_id}')
+    records=[]
+    for name in BASELINES:
+        records.append(run_baseline(name,frame,student,labels,features,seed))
+    for name in ['knn','mlp']:
+        records.append(import_member1(name,frame,student,labels,features))
+    table=comparison_table(records)
+    table.to_csv(METRICS/'model_comparison.csv',index=False)
+    winner=select_winner(table)
+    write_json(METRICS/'model_selection.json',dict(baseline_winner=winner,metric='mean five-fold observation Top-1',student_test_used_for_selection=False))
+    print(f'Baseline CV winner: {winner}',flush=True)
+    if baseline_only:
+        return table
+    from src.models.tuning.bayes_opt import tune
+    tuning,tuned_cv=tune(trials=trials,seed=seed,model_name=winner,frame=frame,features=features,obs_labels=labels[labels.partition=='train'])
+    estimator=make_estimator(winner,tuning['best_params'],seed)
+    tuned_name=winner+'_tuned'
+    tuned_signature,tuned_inputs=input_signature(features,estimator)
+    tuned_path=METRICS/f'member2/{tuned_name}.json'
+    tuned=_cached(tuned_path,tuned_signature)
+    if tuned is None:
+        test,fitted,scores=evaluate_holdout(estimator,frame,student,labels[labels.partition=='student_test'],features,
+                                          model_name=tuned_name,continuity_fn=route_continuity,return_estimator=True)
+        tuned=dict(name=tuned_name,signature=tuned_signature,inputs=tuned_inputs,configuration=estimator.get_params(),cv=tuned_cv,student=test)
+        export_scorer(scorer_from_fitted(fitted,features),tuned_name,features,ROOT/f'models/member2/{tuned_name}',dict(status='tuned_candidate',seed=seed,fit=test,signature=tuned_signature,inputs=tuned_inputs))
+        np.save(CACHE/f'{tuned_name}_student.npy',scores)
+        write_json(tuned_path,tuned)
+    baseline=next(r for r in records if r['name']==winner)
+    use_tuned=tuned['cv']['top1_accuracy']>baseline['cv']['top1_accuracy']
+    selected=tuned if use_tuned else baseline
+    selected_estimator=estimator if use_tuned else make_estimator(winner,seed=seed)
+    records.append(tuned)
+    table=comparison_table(records)
+    table.to_csv(METRICS/'model_comparison.csv',index=False)
+    comparison_table([baseline,tuned]).to_csv(METRICS/'tuned_vs_untuned.csv',index=False)
+    from src.models.calibration import audit_calibration,fit_oof_calibrator
+    calibration_accepted,audit=audit_calibration(selected_estimator,frame,features,labels[labels.partition=='train'])
+    calibrator=None
+    if calibration_accepted:
+        if use_tuned:
+            oof=np.load(ROOT/tuning['oof_path'])
+        elif (CACHE/f'{winner}_oof.npy').exists():
+            oof=np.load(CACHE/f'{winner}_oof.npy')
+        else:
+            evaluate_model(selected_estimator,winner+' calibration OOF',frame,features,obs_labels=labels[labels.partition=='train'],oof_path=CACHE/f'{winner}_oof.npy',continuity_fn=route_continuity)
+            oof=np.load(CACHE/f'{winner}_oof.npy')
+        calibrator=fit_oof_calibrator(frame,oof)
+    if selected['name'] in ['knn','mlp']:
+        source=ROOT/f'models/member1/{winner}'
+        scorer=CandidateScorer(joblib.load(source/'model.joblib'),joblib.load(source/'preprocessor.joblib'),features,calibrator)
+    else:
+        scorer=load_scorer(ROOT/f'models/member2/{selected["name"]}')
+        scorer.calibrator=calibrator
+    raw_scores=np.load(CACHE/f'{selected["name"]}_student.npy')
+    if calibrator is None:
+        final_scores=np.clip(raw_scores,np.finfo(float).eps,1-np.finfo(float).eps)
+    else:
+        final_scores=np.clip(calibrator.predict(raw_scores),np.finfo(float).eps,1-np.finfo(float).eps)
+    final_metrics=score_predictions(student,final_scores,labels[labels.partition=='student_test'],route_continuity)
+    selection=dict(baseline_winner=winner,selected_model=selected['name'],tuned_selected=bool(use_tuned),calibration_enabled=calibration_accepted,
+                   metric='mean observation Top-1 across frozen five trip folds; strict CV improvement required to replace baseline',
+                   student_test_used_for_selection=False,cv_top1_accuracy=selected['cv']['top1_accuracy'],cv_macro_f1=selected['cv']['macro_f1'],
+                   final_student_test=final_metrics,
+                   limitations=['Known-label surrogate alignment; unknown observations excluded from supervised metrics',
+                                'CV conditional on training-wide candidate selection and model/search selection; not nested CV',
+                                'Continuity is direct classifier adjacency; C1/HMM/sequence comparison remains Member 3 work'])
+    signature,inputs=input_signature(features,selected_estimator,extra=dict(calibrated=calibration_accepted))
+    card=export_scorer(scorer,selected['name'],features,output_dir or ROOT/'models',
+                       dict(status='final',seed=seed,selection=selection,inputs=inputs,signature=signature,train_rows=int((frame.is_ref>=0).sum()),train_trips=80,
+                            calibration=dict(enabled=calibration_accepted,method='OOF sigmoid on log odds' if calibration_accepted else 'none',audit='results/metrics/calibration_audit.json',
+                                             slope=float(calibrator.model.coef_[0,0]) if calibrator else None),metrics=final_metrics))
+    write_json(METRICS/'model_selection.json',selection)
+    np.save(CACHE/'final_student.npy',final_scores)
+    # Flatten measured experiments for the shared report and external consumers.
+    experiment_rows=[]
+    for record in records:
+        for fold in record['cv']['folds']:
+            experiment_rows.append(dict(model_name=record['name'],partition='cv',**{k:v for k,v in fold.items() if v is None or isinstance(v,(str,int,float))}))
+        experiment_rows.append(dict(model_name=record['name'],partition='student_test',**{k:v for k,v in record['student'].items() if v is None or isinstance(v,(str,int,float))}))
+    pd.DataFrame(experiment_rows).to_csv(METRICS/'experiments.csv',index=False)
+    from src.models.member2_report import generate_report
+    generate_report(records,selection,tuning)
+    return table
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data")
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--output-dir")
-    parser.add_argument("--student-test")
-    args = parser.parse_args()
-    print(run(args.data, args.seed, args.output_dir, args.student_test).to_string(index=False))
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--data')
+    parser.add_argument('--seed',type=int,default=42)
+    parser.add_argument('--output-dir')
+    parser.add_argument('--student-test')
+    parser.add_argument('--trials',type=int,default=10)
+    parser.add_argument('--baseline-only',action='store_true')
+    args=parser.parse_args()
+    print(run(args.data,args.seed,args.output_dir,args.student_test,args.trials,args.baseline_only).to_string(index=False))
