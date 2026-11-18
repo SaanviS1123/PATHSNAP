@@ -1,0 +1,122 @@
+[
+  {
+    "trip_id": "00000000",
+    "map": "pred_00000000.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000007",
+    "map": "pred_00000007.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": "hmm_failure_screenshot.png",
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000009",
+    "map": "pred_00000009.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000040",
+    "map": "pred_00000040.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 46,
+      "loaded": 46
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000052",
+    "map": "pred_00000052.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000056",
+    "map": "pred_00000056.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 30,
+      "loaded": 30
+    },
+    "screenshot": "hmm_folium_screenshot.png",
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000065",
+    "map": "pred_00000065.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000076",
+    "map": "pred_00000076.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 30,
+      "loaded": 30
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000077",
+    "map": "pred_00000077.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 24,
+      "loaded": 24
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  },
+  {
+    "trip_id": "00000091",
+    "map": "pred_00000091.html",
+    "javascript_errors": [],
+    "layer_control": true,
+    "tiles": {
+      "total": 30,
+      "loaded": 30
+    },
+    "screenshot": null,
+    "browser_version": "159.0.8154.6"
+  }
+]
