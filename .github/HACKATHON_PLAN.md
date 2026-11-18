@@ -2,6 +2,8 @@
 
 Plan for splitting the PathSnap map-matching hackathon across the team. It is derived from the five briefing PDFs in [`statement/pathsnap/`](statement/pathsnap/) and a first look at the data in `data/raw/` (local only, gitignored).
 
+**Who does what, task by task:** see [`TEAM_ASSIGNMENTS.md`](TEAM_ASSIGNMENTS.md).
+
 ---
 
 ## 1. What we are building
