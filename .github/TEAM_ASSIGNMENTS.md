@@ -10,7 +10,7 @@ Fill in the names. Everything below refers to members by number.
 |---|---|---|---|
 | **Member 1** | `<name>` | A: Data, candidates, features, EDA | `feat/data-features` |
 | **Member 2** | `<name>` | B: Models, evaluation, Bayesian tuning, artifacts | `feat/models` |
-| **Member 3** | `<name>` | C: HMM/Viterbi, route metrics, prediction maps | `feat/hmm` |
+| **Member 3** | `<name>` | C: HMM/Viterbi, route metrics, prediction maps | `main` (requested) |
 | **Member 4** | `<name>` | D: API, UI, deployment, integration, README, report | `feat/api-ui` |
 
 ## 2. At a glance
@@ -104,6 +104,18 @@ You can start with no model at all by using a distance-based stub scorer. Your f
 | C7 | **Speed on large trips.** The largest student-test trip has 3,958 points and the largest train trip 19,313. Measure, then optimise (candidate cap, cached path lookups). | `results/metrics/decode_timing.csv` | P3 to P4 |
 | C8 | Folium prediction maps with layers for raw GPS, road network, reference route (offline report only), classifier-only route and HMM route. Distinct colours, legend, `LayerControl`. Commit the HTML for at least one student-test trip, ideally all ten. | `src/visualization/folium_maps.py`, `maps/pred_*.html` | P2 to P3 |
 | C9 | Write report sections 5 and 6 | `report/` | P5 |
+
+**Delivery status — 18 November 2026 (on `main`):**
+
+- [x] **C1–C3:** direct continuity compatible with B, known-label point metrics, ordered LCS route metrics, directed graph/cached bounded paths, partial-arc distances and log-space Viterbi. Synthetic tests include exhaustive path comparison, parallel arcs, missing candidates, gaps and impossible transitions.
+- [x] **C4–C5:** final scorer integration and explicit segment restarts. A separate 48/16/16 training-trip fit/calibration/tuning split selected beta 10 m and restart gap 30 s from 12 configurations. `configs/hmm.json` was frozen before student-test evaluation.
+- [x] **C6:** raw classifier, classifier plus bridging and HMM plus bridging compared across all ten student trips and the decoder-tuning population. The report retains the one student trip with lower point accuracy and records 93 classifier-correct/HMM-wrong versus 9 reverse switches on that trip.
+- [x] **C7:** cold stage timings and warm Viterbi measured on all ten student trips and the 19,313-point training speed case. Largest student trip: about 1.91 s cold / 61 ms warm Viterbi; largest train: about 5.05 s cold. All student trips meet the provisional 10 s target; D still needs to confirm the deployment budget.
+- [x] **C8–C9:** all ten interactive prediction maps, verified browser renders, real Folium screenshots and sections 5–6 source are complete. Reference layers are explicitly offline-only.
+
+**Validation:** 41 project tests passed. Student known-label point accuracy: classifier 80.36%, HMM 88.46%; direct continuity: 90.38% → 97.92%; ordered route LCS F1: 0.5649 → 0.9046. All 19,160 student observations receive valid arc IDs. Source/data/model fingerprints match; the final Member 2 model is preserved.
+
+**Hand off to D:** [`report/member3/README.md`](../report/member3/README.md), `src/hmm/predict.py`, `src/evaluation/route_metrics.py`, `configs/hmm.json`, `hmm_comparison*.csv`, `decode_timing.csv` and `maps/pred_*.html`. `predict_trip()` and `decode()` do not read reference data; API/UI must omit the offline reference layer. [`report/member3/hmm_and_maps.md`](../report/member3/hmm_and_maps.md) contains the results, limitations and actual map screenshots for D's consolidated PDF. API/UI integration, the two-laptop demo and final PDF assembly remain Member 4's work.
 
 **Done when:** `decode()` meets the contract in `HACKATHON_PLAN.md` section 4.3, and the largest student-test trip decodes in a time the API can live with (measure it, then agree a target with Member 4).
 

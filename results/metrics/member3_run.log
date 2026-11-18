@@ -1,1 +1,48 @@
 Fit separate decoder-tuning scorer: 48 fit / 16 calibration / 16 tuning trips
+Prepare training transitions 00000014
+Prepare training transitions 00000020
+Prepare training transitions 00000031
+Prepare training transitions 00000033
+Prepare training transitions 00000034
+Prepare training transitions 00000039
+Prepare training transitions 00000050
+Prepare training transitions 00000053
+Prepare training transitions 00000057
+Prepare training transitions 00000060
+Prepare training transitions 00000071
+Prepare training transitions 00000072
+Prepare training transitions 00000090
+Prepare training transitions 00000095
+Prepare training transitions 00000097
+Prepare training transitions 00000098
+HMM beta=10 gap=10: point accuracy 0.8947
+HMM beta=10 gap=30: point accuracy 0.8947
+HMM beta=10 gap=60: point accuracy 0.8947
+HMM beta=30 gap=10: point accuracy 0.8831
+HMM beta=30 gap=30: point accuracy 0.8832
+HMM beta=30 gap=60: point accuracy 0.8832
+HMM beta=60 gap=10: point accuracy 0.8676
+HMM beta=60 gap=30: point accuracy 0.8677
+HMM beta=60 gap=60: point accuracy 0.8677
+HMM beta=120 gap=10: point accuracy 0.8549
+HMM beta=120 gap=30: point accuracy 0.8550
+HMM beta=120 gap=60: point accuracy 0.8550
+Evaluate student trip 00000000
+Evaluate student trip 00000007
+Evaluate student trip 00000009
+Evaluate student trip 00000040
+Evaluate student trip 00000052
+Evaluate student trip 00000056
+Evaluate student trip 00000065
+Evaluate student trip 00000076
+Evaluate student trip 00000077
+Evaluate student trip 00000091
+Measure largest training trip 00000054
+Generated Member 3 report and figures
+     partition            variant  n_trips  n_obs  n_known_obs  n_unknown_obs  n_correct  pointwise_accuracy  trip_mean_accuracy  route_continuity  sequence_precision  sequence_recall  sequence_f1  trip_mean_sequence_f1  decoder_restarts
+decoder_tuning         classifier       16  32418        29420           2998      23831            0.810027            0.809024          0.916888            0.447388         0.857325     0.587956               0.641128                 0
+decoder_tuning classifier_bridged       16  32418        29420           2998      23831            0.810027            0.809024          0.916888            0.273873         0.976524     0.427774               0.566419                 0
+decoder_tuning                hmm       16  32418        29420           2998      26323            0.894731            0.889500          0.979230            0.701890         0.993631     0.822661               0.862735                 6
+  student_test         classifier       10  19160        19143             17      15383            0.803584            0.820803          0.903812            0.422267         0.853034     0.564899               0.608794                 0
+  student_test classifier_bridged       10  19160        19143             17      15383            0.803584            0.820803          0.903812            0.302321         0.973828     0.461402               0.507417                 0
+  student_test                hmm       10  19160        19143             17      16934            0.884605            0.892454          0.979164            0.835526         0.986195     0.904630               0.907835                 5

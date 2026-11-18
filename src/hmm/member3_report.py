@@ -116,7 +116,8 @@ exhaustive enumeration on a small chain.
 This design follows the road-distance versus observed-displacement principle in
 [Newson and Krumm (2009)](https://www.microsoft.com/en-us/research/publication/hidden-markov-map-matching-noise-sparseness/),
 using our learned emissions, directed endpoint handling and explicit restart
-rules. We do not claim to reproduce their experiment or use their dataset.
+rules. We do not claim to reproduce their experiment. No data was downloaded
+from that paper; all runs used the organiser-provided development partitions.
 
 ### Missing candidates, gaps and disconnected roads
 

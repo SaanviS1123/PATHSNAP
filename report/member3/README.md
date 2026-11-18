@@ -43,7 +43,8 @@ result = predict_trip('data/raw/student_test/00000056', scorer, params)
 # One row for every GPS observation; actual student results have no -1 arcs.
 per_point = result.decoded                 # obs_idx, arc_id
 route_parts = result.segments              # directed arc sequences, split at breaks
-geometry = result.network.metric.trip.nodes[result.network.arcs[route_parts[0]]]
+geometries = [result.network.metric.trip.nodes[result.network.arcs[part]].tolist()
+              for part in route_parts]
 # Do not draw a straight line between separate route_parts.
 ```
 

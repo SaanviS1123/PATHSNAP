@@ -30,3 +30,7 @@ Concise decisions and outcomes only. Dates use Asia/Kolkata. No internal thought
 | D024 | 2026-11-18 | Allow at most 20 m backward movement within one arc as GPS jitter. | Larger reverse movement requires a valid directed loop. |
 | D025 | 2026-11-18 | Tune decoder parameters on 16 held-out training trips using a separate 48-trip base fit and 16-trip calibration split. | Avoids tuning against in-sample final-model predictions; freeze before student-test evaluation. |
 | D026 | 2026-11-18 | Compare classifier-only, classifier plus path bridging, and HMM plus bridging. | Separates Viterbi pointwise gains from filling intermediate road arcs. |
+| D027 | 2026-11-18 | Freeze beta 10 m, restart gap 30 s, 16 candidates and 20 m backward-jitter tolerance. | Best of 12 training-only configurations over 16 tuning trips; `configs/hmm.json` and `hmm_tuning.csv`. |
+| D028 | 2026-11-18 | Verify organiser file checksums before the offline batch and retain source/data/model fingerprints for decoder caches. | Inference stays reference-free; reference hashing and comparison belong to offline evaluation. |
+| D029 | 2026-11-18 | Keep reference-route layers explicit and offline-only; render all ten Folium maps in an isolated headless browser. | All pages loaded tiles without JavaScript errors; screenshot focus is recorded in `folium_render_checks.json`. |
+| D030 | 2026-11-18 | Deliver the measured HMM result with the failure case retained. | Student point accuracy 80.36% → 88.46%; direct continuity 90.38% → 97.92%; one trip worsened. All 41 project tests passed. |

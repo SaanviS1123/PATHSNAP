@@ -43,7 +43,8 @@ exhaustive enumeration on a small chain.
 This design follows the road-distance versus observed-displacement principle in
 [Newson and Krumm (2009)](https://www.microsoft.com/en-us/research/publication/hidden-markov-map-matching-noise-sparseness/),
 using our learned emissions, directed endpoint handling and explicit restart
-rules. We do not claim to reproduce their experiment or use their dataset.
+rules. We do not claim to reproduce their experiment. No data was downloaded
+from that paper; all runs used the organiser-provided development partitions.
 
 ### Missing candidates, gaps and disconnected roads
 
@@ -172,17 +173,17 @@ which input is physically correct in an ambiguous case.
 
 The largest student trip `00000056` has 3,958 points and
 27,631 directed arcs. Its cold end-to-end inference took
-1.956 s, including loading/projection, feature generation,
+1.906 s, including loading/projection, feature generation,
 scoring, transition preparation, Viterbi and route expansion. With transitions
-already prepared, Viterbi took 0.063 s. Model loading
+already prepared, Viterbi took 0.061 s. Model loading
 is excluded when the batch reuses the startup scorer, as the future API should.
 The provisional cold student target is 10 s, not an agreement invented with
-Member 4. Maximum observed student cold time was 2.087 s.
+Member 4. Maximum observed student cold time was 1.906 s.
 
 The largest training trip `00000054` has
 19,313 points. Its cold total was
-5.305 s and warm Viterbi
-0.324 s. It is used for speed only; its classifier
+5.053 s and warm Viterbi
+0.282 s. It is used for speed only; its classifier
 was fitted on training data, so its quality is not presented as generalisation.
 A separate warm-graph cap-8 diagnostic is recorded but does not change the frozen
 16-state configuration or student results. Detailed stages/cache counts are in
