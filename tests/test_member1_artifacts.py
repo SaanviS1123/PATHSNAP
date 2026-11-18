@@ -14,9 +14,10 @@ def test_model_roundtrip_in_fresh_process(name, tmp_path):
     if not (folder / 'model_card.json').exists():
         pytest.skip('Run the full model experiment first')
     output = tmp_path / 'predictions.npy'
-    # A new interpreter detects accidental references to __main__.CandidateScorer.
-    script = '''import joblib,numpy as np,pandas as pd,sys
-scorer=joblib.load(sys.argv[1])
+    # A new interpreter verifies the standard artifacts and scorer adapter.
+    script = '''import numpy as np,pandas as pd,sys
+from src.models.member1_harness import load_scorer
+scorer=load_scorer(sys.argv[1])
 table=pd.read_parquet('tests/fixtures/member1/candidates.parquet')
 probability=scorer.predict_proba(table)
 assert probability.shape==(len(table),)
@@ -24,7 +25,7 @@ assert np.isfinite(probability).all()
 assert ((probability>=0)&(probability<=1)).all()
 np.save(sys.argv[2],probability)
 '''
-    subprocess.run([sys.executable, '-c', script, str(folder / 'scorer.joblib'), str(output)], check=True)
+    subprocess.run([sys.executable, '-c', script, str(folder), str(output)], check=True)
     assert np.load(output).size > 0
     card = json.loads((folder / 'model_card.json').read_text())
     assert card['fit']['n_fit_trips'] == 80
