@@ -26,3 +26,9 @@ hist_gradient_boosting TPE trial 0: fold 0
 hist_gradient_boosting TPE trial 0: fold 1
 hist_gradient_boosting TPE trial 0: fold 2
 hist_gradient_boosting TPE trial 0: fold 3
+hist_gradient_boosting TPE trial 0: fold 4
+[I 2026-11-18 14:10:33,395] Trial 0 finished with value: 0.7677054619113884 and parameters: {'max_iter': 100, 'learning_rate': 0.07862589064613253, 'max_leaf_nodes': 15, 'min_samples_leaf': 20, 'l2_regularization': 0.011527987128232402}. Best is trial 0 with value: 0.7677054619113884.
+hist_gradient_boosting TPE trial 1: fold 0
+hist_gradient_boosting TPE trial 1: fold 1
+hist_gradient_boosting TPE trial 1: fold 2
+hist_gradient_boosting TPE trial 1: fold 3
