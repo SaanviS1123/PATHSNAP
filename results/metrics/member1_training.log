@@ -1,3 +1,14 @@
 knn: fold 0
 knn: fold 1
 knn: fold 2
+knn: fold 3
+knn: fold 4
+knn: refit and student-test evaluation
+knn: saved; student Top-1=0.7874
+mlp: fold 0
+mlp: fold 1
+mlp: fold 2
+mlp: fold 3
+mlp: fold 4
+mlp: refit and student-test evaluation
+mlp: saved; student Top-1=0.7969

@@ -1,0 +1,2 @@
+candidate_accuracy,precision,recall,f1,macro_f1,log_loss,brier_score,ece_10,top1_accuracy,trip_mean_top1,candidate_miss_rate,route_continuity,n_known_obs,n_unknown_obs,n_candidate_rows,n_known_candidate_rows,model_name,calibration_enabled
+0.9674341154494903,0.8238779274495557,0.7701954227191974,0.7961327608090956,0.8892182024329829,0.08285873095175417,0.024219579519561985,0.00447310671743495,0.8035835553466019,0.8208026733687012,0.0002611920806561145,0.9038120104438643,19143,17,231905,231807,hist_gradient_boosting_tuned,True

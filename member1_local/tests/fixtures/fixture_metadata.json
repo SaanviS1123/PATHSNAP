@@ -1,0 +1,42 @@
+{
+  "description": "First 100 observations from each of five training trips",
+  "trips": [
+    {
+      "trip_id": "00000001",
+      "observations": 100,
+      "candidate_rows": 1620,
+      "positive_labels": 100
+    },
+    {
+      "trip_id": "00000002",
+      "observations": 100,
+      "candidate_rows": 3000,
+      "positive_labels": 100
+    },
+    {
+      "trip_id": "00000003",
+      "observations": 100,
+      "candidate_rows": 2977,
+      "positive_labels": 100
+    },
+    {
+      "trip_id": "00000004",
+      "observations": 100,
+      "candidate_rows": 1294,
+      "positive_labels": 100
+    },
+    {
+      "trip_id": "00000005",
+      "observations": 100,
+      "candidate_rows": 579,
+      "positive_labels": 100
+    }
+  ],
+  "feature_columns": [
+    "distance_m",
+    "segment_length_m",
+    "bearing_difference",
+    "speed_mps",
+    "time_delta_s"
+  ]
+}

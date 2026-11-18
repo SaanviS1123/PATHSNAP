@@ -3,119 +3,117 @@
     "model": "mlp",
     "partition": "cv",
     "fold": 0,
-    "candidate_accuracy": 0.9556132816107878,
-    "precision": 0.791753896254943,
-    "recall": 0.69303402814894,
-    "f1": 0.7391121425566277,
-    "macro_f1": 0.8574276435763111,
-    "log_loss": 0.11251653350061958,
-    "top1_acc": 0.7564616868938201,
-    "trip_mean_top1": 0.80097166107518,
-    "candidate_miss_rate": 0.002412024577260974,
+    "candidate_accuracy": 0.9563845017086913,
+    "precision": 0.7875891623671375,
+    "recall": 0.7109951641639094,
+    "f1": 0.7473347690579061,
+    "macro_f1": 0.861733485026678,
+    "log_loss": 0.1114480048418045,
+    "top1_acc": 0.7630884070481897,
+    "trip_mean_top1": 0.8104135865392381,
+    "candidate_miss_rate": 0.002437414309653163,
     "n_known_obs": 39386,
     "n_unknown_obs": 74,
     "n_candidate_rows": 433861,
     "n_known_candidate_rows": 433080,
     "confusion_matrix": [
       [
-        386627,
-        7162
+        386256,
+        7534
       ],
       [
-        12061,
-        27230
+        11355,
+        27935
       ]
     ],
-    "train_time_s": 24.79091419999895,
-    "n_fit_rows": 120000,
+    "train_time_s": 61.352295082993805,
+    "n_fit_rows": 1701479,
     "n_fit_trips": 64,
     "fit_warnings": [
       "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
     ],
-    "inference_time_s": 0.19239829999969515
+    "inference_time_s": 0.06685212498996407
   },
   {
     "model": "mlp",
     "partition": "cv",
     "fold": 1,
-    "candidate_accuracy": 0.9543562279151944,
-    "precision": 0.8154658894252664,
-    "recall": 0.6820164162334076,
-    "f1": 0.7427949183303085,
-    "macro_f1": 0.8588754329002535,
-    "log_loss": 0.11146226604963626,
-    "top1_acc": 0.7694342926754987,
-    "trip_mean_top1": 0.7895597135263172,
+    "candidate_accuracy": 0.955616902237927,
+    "precision": 0.8130084885900122,
+    "recall": 0.7022415205012474,
+    "f1": 0.7535763917272951,
+    "macro_f1": 0.8645943071680235,
+    "log_loss": 0.10612429678440094,
+    "top1_acc": 0.7751256281407035,
+    "trip_mean_top1": 0.7978174069107146,
     "candidate_miss_rate": 0.0005139333028780779,
     "n_known_obs": 52536,
     "n_unknown_obs": 65,
-    "n_candidate_rows": 543930,
+    "n_candidate_rows": 543931,
     "n_known_candidate_rows": 543360,
     "confusion_matrix": [
       [
-        482747,
-        8104
+        482370,
+        8481
       ],
       [
-        16697,
-        35812
+        15635,
+        36874
       ]
     ],
-    "train_time_s": 8.333948900000905,
-    "n_fit_rows": 119998,
+    "train_time_s": 55.993276708060876,
+    "n_fit_rows": 1591199,
     "n_fit_trips": 64,
     "fit_warnings": [
       "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
     ],
-    "inference_time_s": 0.20900189999883878
+    "inference_time_s": 0.07014874997548759
   },
   {
     "model": "mlp",
     "partition": "cv",
     "fold": 2,
-    "candidate_accuracy": 0.961125317250551,
-    "precision": 0.826679274357358,
-    "recall": 0.6756253935542962,
-    "f1": 0.7435582435582435,
-    "macro_f1": 0.861263397923761,
-    "log_loss": 0.1040123675372381,
-    "top1_acc": 0.7540660701221228,
-    "trip_mean_top1": 0.7592888581974493,
+    "candidate_accuracy": 0.9622641959921974,
+    "precision": 0.810429308498556,
+    "recall": 0.7148377125193199,
+    "f1": 0.7596380503383773,
+    "macro_f1": 0.8695814459664049,
+    "log_loss": 0.10015630722045898,
+    "top1_acc": 0.7616072936012156,
+    "trip_mean_top1": 0.76336355068668,
     "candidate_miss_rate": 0.016883336147222705,
     "n_known_obs": 35538,
     "n_unknown_obs": 16663,
-    "n_candidate_rows": 491322,
+    "n_candidate_rows": 491318,
     "n_known_candidate_rows": 418833,
     "confusion_matrix": [
       [
-        378946,
-        4949
+        378053,
+        5842
       ],
       [
-        11333,
-        23605
+        9963,
+        24975
       ]
     ],
-    "train_time_s": 10.683035500000187,
-    "n_fit_rows": 119989,
+    "train_time_s": 54.31222987500951,
+    "n_fit_rows": 1715726,
     "n_fit_trips": 64,
-    "fit_warnings": [
-      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
-    ],
-    "inference_time_s": 1.202817600000344
+    "fit_warnings": [],
+    "inference_time_s": 0.043040874996222556
   },
   {
     "model": "mlp",
     "partition": "cv",
     "fold": 3,
-    "candidate_accuracy": 0.9704978366585477,
-    "precision": 0.8535694651692453,
-    "recall": 0.7637468816977618,
-    "f1": 0.8061638882192593,
-    "macro_f1": 0.8950988862463979,
-    "log_loss": 0.07961745671073217,
-    "top1_acc": 0.8004418762746431,
-    "trip_mean_top1": 0.7967888117972957,
+    "candidate_accuracy": 0.9712288287474634,
+    "precision": 0.8616225204893693,
+    "recall": 0.7646252766944239,
+    "f1": 0.8102312074165084,
+    "macro_f1": 0.8973328311661567,
+    "log_loss": 0.07667502015829086,
+    "top1_acc": 0.8064242012236573,
+    "trip_mean_top1": 0.8047767888693168,
     "candidate_miss_rate": 0.03259687287559487,
     "n_known_obs": 29420,
     "n_unknown_obs": 2998,
@@ -123,69 +121,65 @@
     "n_known_candidate_rows": 354313,
     "confusion_matrix": [
       [
-        322123,
-        3729
+        322357,
+        3495
       ],
       [
-        6724,
-        21737
+        6699,
+        21762
       ]
     ],
-    "train_time_s": 29.352499599999646,
-    "n_fit_rows": 120004,
+    "train_time_s": 48.503460208070464,
+    "n_fit_rows": 1780246,
     "n_fit_trips": 64,
-    "fit_warnings": [
-      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
-    ],
-    "inference_time_s": 0.9599267999983567
+    "fit_warnings": [],
+    "inference_time_s": 0.045592541922815144
   },
   {
     "model": "mlp",
     "partition": "cv",
     "fold": 4,
-    "candidate_accuracy": 0.9586854143017822,
-    "precision": 0.7778272319275992,
-    "recall": 0.678980767985495,
-    "f1": 0.7250505644199353,
-    "macro_f1": 0.8513575934475905,
-    "log_loss": 0.1024855715023156,
-    "top1_acc": 0.7426847759460593,
-    "trip_mean_top1": 0.7701901069896411,
+    "candidate_accuracy": 0.9594854704096132,
+    "precision": 0.7863430347979173,
+    "recall": 0.6796930648190118,
+    "f1": 0.729138808328847,
+    "macro_f1": 0.8536220360389033,
+    "log_loss": 0.09966810792684555,
+    "top1_acc": 0.7451366261251089,
+    "trip_mean_top1": 0.7742922765323941,
     "candidate_miss_rate": 0.0035809917088750476,
     "n_known_obs": 30997,
     "n_unknown_obs": 740,
-    "n_candidate_rows": 392748,
+    "n_candidate_rows": 392766,
     "n_known_candidate_rows": 384973,
     "confusion_matrix": [
       [
-        348097,
-        5990
+        348383,
+        5704
       ],
       [
-        9915,
-        20971
+        9893,
+        20993
       ]
     ],
-    "train_time_s": 24.659420699999828,
-    "n_fit_rows": 120000,
+    "train_time_s": 48.23222074995283,
+    "n_fit_rows": 1749586,
     "n_fit_trips": 64,
-    "fit_warnings": [
-      "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
-    ],
-    "inference_time_s": 0.17016969999895082
+    "fit_warnings": [],
+    "inference_time_s": 0.04529458296019584
   },
   {
     "model": "mlp",
     "partition": "student_test",
     "fold": -1,
-    "candidate_accuracy": 0.9656093215476668,
-    "precision": 0.8029628825700021,
-    "recall": 0.7731737903647194,
-    "f1": 0.7877868285151467,
-    "macro_f1": 0.8845376609152269,
-    "log_loss": 0.08747677632557863,
-    "top1_acc": 0.7977328527399049,
-    "trip_mean_top1": 0.8140103694633456,
+    "candidate_accuracy": 0.9670717450292701,
+    "precision": 0.8306984765737281,
+    "recall": 0.7550423241718048,
+    "f1": 0.7910656119125175,
+    "macro_f1": 0.8865965620119016,
+    "log_loss": 0.08343556523323059,
+    "top1_acc": 0.7969492764979366,
+    "trip_mean_top1": 0.8135066903180315,
     "candidate_miss_rate": 0.0002611920806561141,
     "n_known_obs": 19143,
     "n_unknown_obs": 17,
@@ -193,20 +187,20 @@
     "n_known_candidate_rows": 231807,
     "confusion_matrix": [
       [
-        209038,
-        3631
+        209724,
+        2945
       ],
       [
-        4341,
-        14797
+        4688,
+        14450
       ]
     ],
-    "train_time_s": 22.84533310000006,
-    "n_fit_rows": 119999,
+    "train_time_s": 76.16145900008269,
+    "n_fit_rows": 2134559,
     "n_fit_trips": 80,
     "fit_warnings": [
       "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
     ],
-    "inference_time_s": 0.5959961999997176
+    "inference_time_s": 0.030557499965652823
   }
 ]

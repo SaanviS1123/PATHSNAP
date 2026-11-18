@@ -30,22 +30,22 @@
     "verbose": false,
     "warm_start": false
   },
-  "max_train_rows": 120000,
+  "max_train_rows": 0,
   "sampling": "Proportional within training trip and class; no validation/student rows used in fitting",
-  "training_diagnostic_macro_f1": 0.869694323900916,
+  "training_diagnostic_macro_f1": 0.8816918071576456,
   "training_diagnostic_rows": 10000,
   "training_diagnostic_scope": "10k or fewer rows from the fitted sample; KNN includes self neighbours",
-  "cv_macro_f1_mean": 0.8648045908188629,
-  "cv_macro_f1_std": 0.017325417636505146,
+  "cv_macro_f1_mean": 0.8693728210732333,
+  "cv_macro_f1_std": 0.016666482594676246,
   "student_test": {
-    "candidate_accuracy": 0.9656093215476668,
-    "precision": 0.8029628825700021,
-    "recall": 0.7731737903647194,
-    "f1": 0.7877868285151467,
-    "macro_f1": 0.8845376609152269,
-    "log_loss": 0.08747677632557863,
-    "top1_acc": 0.7977328527399049,
-    "trip_mean_top1": 0.8140103694633456,
+    "candidate_accuracy": 0.9670717450292701,
+    "precision": 0.8306984765737281,
+    "recall": 0.7550423241718048,
+    "f1": 0.7910656119125175,
+    "macro_f1": 0.8865965620119016,
+    "log_loss": 0.08343556523323059,
+    "top1_acc": 0.7969492764979366,
+    "trip_mean_top1": 0.8135066903180315,
     "candidate_miss_rate": 0.0002611920806561141,
     "n_known_obs": 19143,
     "n_unknown_obs": 17,
@@ -53,18 +53,18 @@
     "n_known_candidate_rows": 231807,
     "confusion_matrix": [
       [
-        209038,
-        3631
+        209724,
+        2945
       ],
       [
-        4341,
-        14797
+        4688,
+        14450
       ]
     ]
   },
   "fit": {
-    "train_time_s": 22.84533310000006,
-    "n_fit_rows": 119999,
+    "train_time_s": 76.16145900008269,
+    "n_fit_rows": 2134559,
     "n_fit_trips": 80,
     "fit_warnings": [
       "Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet."
@@ -73,11 +73,11 @@
   "calibration": "Uncalibrated binary probabilities; C/B must assess HMM suitability",
   "route_continuity": "Pending C1 metric; not fabricated here",
   "input_sha256": {
-    "data\\processed\\train.parquet": "3fc6183bcab2197fed2c4dc0cd5dfa71afdd1baf0beaaa412d0a72dbbadcb62e",
-    "data\\processed\\student_test.parquet": "49a248de9cb4ae90e7bd5ffb5dd5da1fee94765bc1f9ba0976950926c94de7d8",
-    "data\\processed\\obs_labels.parquet": "7975114f7319ccad28d639502f76224bcad1ebd8cfda2a8a768e8facbead32b6",
-    "configs\\folds.json": "03309a86f50bd736709aceaaefa4448303c34afc8eb4676f5453dd5792c70a34",
-    "models\\feature_schema.json": "79e0f451aa669a87bef3b511ccd1293631ea9cbaab759a6fbb4e79a8a10df381",
-    "C:\\Users\\Rohith46\\Desktop\\ML_hackathon\\PATHSNAP\\src\\models\\member1_harness.py": "4dd5f9fc2b884825d5075d9149e745552b1dd01aba129a960f115af23c66d8e1"
+    "data/processed/train.parquet": "21ee734e31e1dc709e8cac88ce932b789cbd5e5017c64ab0b490fb309b34ec27",
+    "data/processed/student_test.parquet": "bfa6f7dc5aea34dd437bbd684380b2ee66a287be8c567b61e8e39b3bafc21a55",
+    "data/processed/obs_labels.parquet": "63541035140757095c2d75e2447d6b62ff094b69e602540eb2ffde5f0a87a1f4",
+    "configs/folds.json": "2aff739a1bc56f1fbaae23ec0f5c569916dbd3d6d8010982d1e28095e13006c3",
+    "models/feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8",
+    "/Users/sabiqueislam/Downloads/PATHSNAP/src/models/member1_harness.py": "d7664112cb494bdeec099644dbfff9869415ea8f4c514a735d160a3b8b354386"
   }
 }

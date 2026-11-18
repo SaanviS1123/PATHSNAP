@@ -283,3 +283,6 @@ Thumbs.db
 # --- Frontend (only if the UI ends up using Node) ----------------------------
 node_modules/
 .next/
+
+# Regenerable demo maps from scripts/demo.sh
+maps/demo_*.html

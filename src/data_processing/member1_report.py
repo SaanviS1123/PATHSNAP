@@ -31,6 +31,8 @@ def main():
                             inference_time_s=float(experiments.iloc[-1].inference_time_s)))
     summary = pd.DataFrame(summary)
     summary.to_csv(metrics / 'member1_model_comparison.csv', index=False)
+    highest_top1 = summary.sort_values('student_top1', ascending=False).iloc[0]
+    fastest = summary.sort_values('inference_time_s').iloc[0]
     import os
     os.environ.setdefault('MPLCONFIGDIR', '/private/tmp/pathsnap-matplotlib')
     import matplotlib
@@ -43,7 +45,7 @@ def main():
     axes[1].bar([v-.18 for v in x], summary.student_top1, width=.36, label='Top-1')
     axes[1].bar([v+.18 for v in x], summary.student_macro_f1, width=.36, label='Macro-F1')
     axes[1].set(title='Student test', xticks=list(x), xticklabels=summary.model, ylim=(0, 1))
-    axes[1].legend()
+    axes[1].legend(loc='upper center', bbox_to_anchor=(.5, -.1), ncol=2)
     axes[2].bar(summary.model, summary.log_loss)
     axes[2].set(title='Student-test candidate log loss')
     fig.tight_layout()
@@ -92,6 +94,12 @@ sequence handling. Actual interval frequencies, rather than averages of trip
 percentages, give this point-weighted sampling summary:
 
 {markdown_table(gap_summary)}
+
+The largest training interval is {int(quality.loc[quality.partition == 'train', 'max_gap_s'].max()):,} s
+({quality.loc[quality.partition == 'train', 'max_gap_s'].max()/3600:.1f} hours), versus
+{int(quality.loc[quality.partition == 'student_test', 'max_gap_s'].max()):,} s in student test. A displacement-derived speed across a large gap is an interval
+average, not a reliable instantaneous vehicle speed. The gap flag is available
+to the decoder; no points are deleted to hide these interruptions.
 
 Directed graph diagnostics include weak and strong components, isolated nodes,
 reverse-arc share and zero-length arcs for every trip in `quality_report.csv`.
@@ -198,6 +206,13 @@ themselves. C1's route-continuity metric is pending, shown as N/A explicitly.
 
 {markdown_table(summary)}
 
+Within these two measured configurations, {highest_top1.model} had the higher
+student-test Top-1 ({highest_top1.student_top1:.4%}), while {fastest.model} had the
+shorter student inference time ({fastest.inference_time_s:.3f} s). These are
+observations from the recorded run, not statistical significance claims or final
+team-model selection. The KNN fit-sample score includes self-neighbours; the MLP
+convergence record must be checked alongside its held-out metrics.
+
 ![Measured Member 1 comparison](../../results/plots/member1_model_comparison.png)
 '''
     for name, card in models.items():
@@ -208,6 +223,10 @@ themselves. C1's route-continuity metric is pending, shown as N/A explicitly.
         suitable = ('Nearby candidate feature patterns can vote for correct-road likelihood without a linear decision boundary.' if name == 'knn' else 'A compact nonlinear network can combine proximity, direction and junction features into candidate probabilities.')
         strengths = ('Distance weighting adapts locally with no iterative fitting, but irrelevant/scaled dimensions, class imbalance, stored training data and expensive neighbour queries are limitations.' if name == 'knn' else 'The compact network learns nonlinear combinations and has batched inference, but requires scaling, iterative optimisation and regularisation; the recorded convergence warnings must be considered.')
         loss = ('There is no gradient-trained loss: fitting stores examples and a KD-tree. Positive probability is a distance-weighted neighbour vote. No epoch loss curve exists.' if name == 'knn' else 'Adam minimises binary cross-entropy with L2 regularisation (alpha=0.001). No random observation-level internal validation split is used. The retained loss curve is the actual training objective, not validation loss.')
+        convergence_note = (' A warning at the epoch limit means convergence was not established; lower training loss alone does not establish better held-out route matching.' if name == 'mlp' else '')
+        diagnostic_note = (' This diagnostic includes KNN self-neighbours and is optimistic.' if name == 'knn' else ' This diagnostic uses fitted examples and is optimistic.')
+        gap = card['training_diagnostic_macro_f1'] - card['cv_macro_f1_mean']
+        fit_interpretation = (f'The diagnostic exceeds grouped CV by {gap:.4f}; this is consistent with memorisation or overfitting to fitted examples, with the self-neighbour caveat for KNN.' if gap > .05 else f'The diagnostic-to-CV gap is {gap:.4f}; these measurements do not show a large fitting gap at this configuration. They do not establish that optimisation has converged or rule out underfitting.')
         text += f'''
 ### 3.2 {name.upper()}
 
@@ -218,8 +237,8 @@ themselves. C1's route-continuity metric is pending, shown as N/A explicitly.
 5. **Initial hyperparameters.** The exact configuration below was run; no Member 1 Bayesian tuning or final team model selection is claimed.
 6. **Objective.** {loss}
 7. **Student-test performance.** Candidate accuracy {result['candidate_accuracy']:.4%}, positive precision {result['precision']:.4f}, recall {result['recall']:.4f}, F1 {result['f1']:.4f}. Known observations {result['n_known_obs']:,}; unknown observations excluded {result['n_unknown_obs']:,}; candidate miss rate {result['candidate_miss_rate']:.4%}.
-8. **Required comparison metrics.** Student Top-1 {result['top1_acc']:.4%}, candidate Macro-F1 {result['macro_f1']:.4f}, log loss {result['log_loss']:.4f}; CV candidate Macro-F1 {card['cv_macro_f1_mean']:.4f} ± {card['cv_macro_f1_std']:.4f} (sample standard deviation across five folds). Refit time {card['fit']['train_time_s']:.3f} s; student inference time {float(experiments.iloc[-1].inference_time_s):.3f} s for {result['n_candidate_rows']:,} candidate rows, excluding raw-data loading, features and decoding.
-9. **Fit/generalisation evidence.** The <=10k fit-sample diagnostic Macro-F1 was {card['training_diagnostic_macro_f1']:.4f}, versus held-out fold range {cv.macro_f1.min():.4f}–{cv.macro_f1.max():.4f}. This diagnostic uses fitted examples and is optimistic, especially KNN's self-neighbours; it is not independent evidence of generalisation. The fold spread and student results are the appropriate measured checks. Refit warnings: {card['fit']['fit_warnings'] or 'none'}. A warning at the epoch limit means convergence was not established; lower training loss alone does not establish better held-out route matching.
+8. **Required comparison metrics.** Student Top-1 {result['top1_acc']:.4%}, candidate Macro-F1 {result['macro_f1']:.4f}, log loss {result['log_loss']:.4f}; CV candidate Macro-F1 {card['cv_macro_f1_mean']:.4f} ± {card['cv_macro_f1_std']:.4f} (sample standard deviation across five folds). Model-only refit time (excluding scaler fitting) {card['fit']['train_time_s']:.3f} s; student inference time {float(experiments.iloc[-1].inference_time_s):.3f} s for {result['n_candidate_rows']:,} candidate rows, excluding raw-data loading, features and decoding.
+9. **Fit/generalisation evidence.** {fit_interpretation} The <=10k fit-sample diagnostic Macro-F1 was {card['training_diagnostic_macro_f1']:.4f}, versus held-out fold range {cv.macro_f1.min():.4f}–{cv.macro_f1.max():.4f}. {diagnostic_note} It is not independent evidence of generalisation. The fold spread and student results are the appropriate measured checks. Refit warnings: {card['fit']['fit_warnings'] or 'none'}.{convergence_note}
 
 ```json
 {config_text}

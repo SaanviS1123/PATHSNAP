@@ -23,7 +23,8 @@ python -m pytest -q
 
 Preparation regenerates all feature tables, independent observation labels,
 training-only candidate sweep, fixed five-fold trip assignments, synthetic
-fixtures, inventory, quality diagnostics, static plots, and a Folium map.
+fixtures, a real five-trip training-feature fixture for G1, inventory, quality
+diagnostics, static plots, and a Folium map.
 Model training defaults to **all known-label rows**, with each scaler fitted only
 on that fold's training rows. Optional `--max-train-rows 120000` enables an
 explicitly recorded proportional trip/class sample for a smaller machine.
@@ -106,6 +107,11 @@ agreement with this alignment procedure. Excluding unknown labels changes the
 reported population; unknown counts and independent nearest-reference distances
 are retained. Sequence metrics against the original route are Member 3's task.
 
+The G1 table sample is `tests/fixtures/development/candidates.parquet` with
+matching offline `obs_labels.parquet` and a manifest. It contains the five
+smallest training trips and no raw coordinates. `tests/fixtures/member1/` is a
+separate invented five-trip raw-network fixture for geometry regression tests.
+
 ## Model handoff to Members 2, 3 and 4
 
 B1's harness does not exist yet. To finish A9/A10 without implementing Member 2's
@@ -116,17 +122,17 @@ write into `src/evaluation/`, select a final team model, or perform Bayesian tun
 Route continuity is explicitly pending C1; it is not replaced with an invented
 number. Reevaluate with C1 before final report assembly.
 
-Each model has `model.joblib`, `preprocessor.joblib`, `scorer.joblib` and a model
+Each model has `model.joblib`, `preprocessor.joblib` and a model
 card under `models/member1/{knn,mlp}/`. Neither overwrites Member 2's final model.
 Only load joblib files from trusted sources.
 
 ```python
-import joblib
+from src.models.member1_harness import load_scorer
 from src.features.build import build_features
 from src.data_processing.loaders import load_trip
 from src.data_processing.geo import project_trip
 
-scorer = joblib.load('models/member1/knn/scorer.joblib')
+scorer = load_scorer('models/member1/knn')
 metric = project_trip(load_trip('data/raw/student_test/00000056'))
 # Read radius_m/k from configs/candidates.json in production.
 candidates = build_features(metric, radius_m=100, k=16)
@@ -150,7 +156,9 @@ accuracy; KNN includes its own neighbours and is especially optimistic.
 
 Member 2 still owns the shared harness, three other model families, consolidated
 comparison, Bayesian tuning and final-model selection. Member 3 owns route
-continuity, HMM and sequence metrics. Member 4 owns API/UI, two-laptop integration
+continuity, HMM and sequence metrics. The largest training time gap is 153,064 s;
+student test reaches 210 s. Use the saved gap flags when choosing decoder restart
+or bridging behavior. Member 4 owns API/UI, two-laptop integration
 and assembly of one final PDF. The team must review and explain this work during
 the viva. Code, analysis drafts and report prose were prepared with Codex AI
 assistance; every numerical result in this handoff comes from local executed code.

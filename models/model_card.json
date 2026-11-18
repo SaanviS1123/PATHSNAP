@@ -1,28 +1,266 @@
 {
-  "model_name": "random_forest_tuned",
-  "created_utc": "2026-11-18T08:43:48.671883+00:00",
-  "random_seed": 42,
-  "config": {
-    "bootstrap": true,
-    "ccp_alpha": 0.0,
-    "class_weight": "balanced_subsample",
-    "criterion": "gini",
-    "max_depth": 18,
-    "max_features": 0.5,
-    "max_leaf_nodes": null,
-    "max_samples": 0.1,
-    "min_impurity_decrease": 0.0,
-    "min_samples_leaf": 2,
-    "min_samples_split": 2,
-    "min_weight_fraction_leaf": 0.0,
-    "monotonic_cst": null,
-    "n_estimators": 100,
-    "n_jobs": 2,
-    "oob_score": false,
-    "random_state": 42,
-    "verbose": 0,
-    "warm_start": false
+  "status": "final",
+  "seed": 42,
+  "selection": {
+    "baseline_winner": "hist_gradient_boosting",
+    "selected_model": "hist_gradient_boosting_tuned",
+    "tuned_selected": true,
+    "calibration_enabled": true,
+    "metric": "mean observation Top-1 across frozen five trip folds; strict CV improvement required to replace baseline",
+    "student_test_used_for_selection": false,
+    "cv_top1_accuracy": 0.7735211055026154,
+    "cv_macro_f1": 0.8303809007920693,
+    "final_student_test": {
+      "candidate_accuracy": 0.9674341154494903,
+      "precision": 0.8238779274495557,
+      "recall": 0.7701954227191974,
+      "f1": 0.7961327608090956,
+      "macro_f1": 0.8892182024329829,
+      "log_loss": 0.08285873095175417,
+      "brier_score": 0.024219579519561985,
+      "ece_10": 0.00447310671743495,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "count": 198690,
+          "mean_probability": 0.006849862331892907,
+          "positive_fraction": 0.0052745482913080675
+        },
+        {
+          "bin": 1,
+          "count": 6642,
+          "mean_probability": 0.14335538661793046,
+          "positive_fraction": 0.12270400481782595
+        },
+        {
+          "bin": 2,
+          "count": 3629,
+          "mean_probability": 0.24696298192834873,
+          "positive_fraction": 0.2119041058142739
+        },
+        {
+          "bin": 3,
+          "count": 2715,
+          "mean_probability": 0.34740271300325165,
+          "positive_fraction": 0.3241252302025783
+        },
+        {
+          "bin": 4,
+          "count": 2240,
+          "mean_probability": 0.4491065215890863,
+          "positive_fraction": 0.39553571428571427
+        },
+        {
+          "bin": 5,
+          "count": 2243,
+          "mean_probability": 0.5508481062107252,
+          "positive_fraction": 0.5439144003566652
+        },
+        {
+          "bin": 6,
+          "count": 2288,
+          "mean_probability": 0.6513673270003887,
+          "positive_fraction": 0.6354895104895105
+        },
+        {
+          "bin": 7,
+          "count": 2602,
+          "mean_probability": 0.7509786894125213,
+          "positive_fraction": 0.7613374327440431
+        },
+        {
+          "bin": 8,
+          "count": 3588,
+          "mean_probability": 0.8539075359760314,
+          "positive_fraction": 0.866778149386845
+        },
+        {
+          "bin": 9,
+          "count": 7170,
+          "mean_probability": 0.9517026176913774,
+          "positive_fraction": 0.9728033472803347
+        }
+      ],
+      "top1_accuracy": 0.8035835553466019,
+      "trip_mean_top1": 0.8208026733687012,
+      "candidate_miss_rate": 0.0002611920806561145,
+      "route_continuity": 0.9038120104438643,
+      "n_known_obs": 19143,
+      "n_unknown_obs": 17,
+      "n_candidate_rows": 231905,
+      "n_known_candidate_rows": 231807,
+      "confusion_matrix": [
+        [
+          209518,
+          3151
+        ],
+        [
+          4398,
+          14740
+        ]
+      ]
+    },
+    "limitations": [
+      "Known-label surrogate alignment; unknown observations excluded from supervised metrics",
+      "CV conditional on training-wide candidate selection and model/search selection; not nested CV",
+      "Continuity is direct classifier adjacency; C1/HMM/sequence comparison remains Member 3 work"
+    ]
   },
+  "inputs": {
+    "inputs": {
+      "data/processed/train.parquet": "21ee734e31e1dc709e8cac88ce932b789cbd5e5017c64ab0b490fb309b34ec27",
+      "data/processed/student_test.parquet": "bfa6f7dc5aea34dd437bbd684380b2ee66a287be8c567b61e8e39b3bafc21a55",
+      "data/processed/obs_labels.parquet": "63541035140757095c2d75e2447d6b62ff094b69e602540eb2ffde5f0a87a1f4",
+      "configs/folds.json": "2aff739a1bc56f1fbaae23ec0f5c569916dbd3d6d8010982d1e28095e13006c3",
+      "models/feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8",
+      "results/metrics/data_manifest.csv": "7d0746181ae331be0d00865c9815afd4abf1a6dfd57b8e0ae4271b29d1981156",
+      "src/evaluation/harness.py": "09be9f9b5dc9bdbd3b2ff95f16a1ec22d14a8c3aa4d0ff71b26e1d0e5f1c5d46",
+      "src/evaluation/continuity.py": "3cd9231b3ce716e0ca50177377902ce46a64a59ae5fa3950ee06768cb1a6cf57",
+      "src/models/training.py": "00661aa2881215c5b56426eea3a209b37959f11148b3dde04b03138eabcf6d79",
+      "src/models/specs.py": "eee160eb47881d124fe0105b201958d8cb9b5cef9db01b1147a8312fbf18784d"
+    },
+    "features": [
+      "distance_m",
+      "position_frac",
+      "heading_diff_rad",
+      "heading_valid",
+      "speed_mps",
+      "arc_length_m",
+      "candidate_rank",
+      "in_degree",
+      "out_degree",
+      "time_gap_s",
+      "large_gap",
+      "outside_radius"
+    ],
+    "sklearn_version": "1.9.1",
+    "config": {
+      "categorical_features": "from_dtype",
+      "class_weight": "balanced",
+      "early_stopping": false,
+      "interaction_cst": null,
+      "l2_regularization": 3.127814156703438,
+      "learning_rate": 0.14390269073091197,
+      "loss": "log_loss",
+      "max_bins": 255,
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_iter": 160,
+      "max_leaf_nodes": 63,
+      "min_samples_leaf": 50,
+      "monotonic_cst": null,
+      "n_iter_no_change": 10,
+      "random_state": 42,
+      "scoring": "loss",
+      "tol": 1e-07,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "extra": {
+      "calibrated": true
+    }
+  },
+  "signature": "7a343e17f629b00cd297bed91fda2b59f7221e99f9ac9e1f120c6416020df180",
+  "train_rows": 2134559,
+  "train_trips": 80,
+  "calibration": {
+    "enabled": true,
+    "method": "OOF sigmoid on log odds",
+    "audit": "results/metrics/calibration_audit.json",
+    "slope": 0.8934008650251277
+  },
+  "metrics": {
+    "candidate_accuracy": 0.9674341154494903,
+    "precision": 0.8238779274495557,
+    "recall": 0.7701954227191974,
+    "f1": 0.7961327608090956,
+    "macro_f1": 0.8892182024329829,
+    "log_loss": 0.08285873095175417,
+    "brier_score": 0.024219579519561985,
+    "ece_10": 0.00447310671743495,
+    "calibration_bins": [
+      {
+        "bin": 0,
+        "count": 198690,
+        "mean_probability": 0.006849862331892907,
+        "positive_fraction": 0.0052745482913080675
+      },
+      {
+        "bin": 1,
+        "count": 6642,
+        "mean_probability": 0.14335538661793046,
+        "positive_fraction": 0.12270400481782595
+      },
+      {
+        "bin": 2,
+        "count": 3629,
+        "mean_probability": 0.24696298192834873,
+        "positive_fraction": 0.2119041058142739
+      },
+      {
+        "bin": 3,
+        "count": 2715,
+        "mean_probability": 0.34740271300325165,
+        "positive_fraction": 0.3241252302025783
+      },
+      {
+        "bin": 4,
+        "count": 2240,
+        "mean_probability": 0.4491065215890863,
+        "positive_fraction": 0.39553571428571427
+      },
+      {
+        "bin": 5,
+        "count": 2243,
+        "mean_probability": 0.5508481062107252,
+        "positive_fraction": 0.5439144003566652
+      },
+      {
+        "bin": 6,
+        "count": 2288,
+        "mean_probability": 0.6513673270003887,
+        "positive_fraction": 0.6354895104895105
+      },
+      {
+        "bin": 7,
+        "count": 2602,
+        "mean_probability": 0.7509786894125213,
+        "positive_fraction": 0.7613374327440431
+      },
+      {
+        "bin": 8,
+        "count": 3588,
+        "mean_probability": 0.8539075359760314,
+        "positive_fraction": 0.866778149386845
+      },
+      {
+        "bin": 9,
+        "count": 7170,
+        "mean_probability": 0.9517026176913774,
+        "positive_fraction": 0.9728033472803347
+      }
+    ],
+    "top1_accuracy": 0.8035835553466019,
+    "trip_mean_top1": 0.8208026733687012,
+    "candidate_miss_rate": 0.0002611920806561145,
+    "route_continuity": 0.9038120104438643,
+    "n_known_obs": 19143,
+    "n_unknown_obs": 17,
+    "n_candidate_rows": 231905,
+    "n_known_candidate_rows": 231807,
+    "confusion_matrix": [
+      [
+        209518,
+        3151
+      ],
+      [
+        4398,
+        14740
+      ]
+    ]
+  },
+  "model_name": "hist_gradient_boosting_tuned",
   "feature_schema_version": "member1-v1",
   "feature_columns": [
     "distance_m",
@@ -38,32 +276,10 @@
     "large_gap",
     "outside_radius"
   ],
-  "train_rows": 2134559,
-  "train_trips": 80,
-  "metrics": {
-    "cv_top1_accuracy": 0.7743346381713685,
-    "cv_macro_f1": 0.8666396586149853,
-    "cv_log_loss": 0.124376296549174,
-    "cv_brier_score": 0.0343170501643142,
-    "cv_ece_10": 0.029864485620993,
-    "cv_candidate_miss_rate": 0.0095381552824454,
-    "student_top1_accuracy": 0.8056208535757196,
-    "student_macro_f1": 0.8752605317928264,
-    "student_log_loss": 0.105382871985747,
-    "student_brier_score": 0.0308274582061216,
-    "student_ece_10": 0.0308272293318768,
-    "student_candidate_miss_rate": 0.0002611920806561
-  },
-  "probability_output": "predict_proba class 1; apply preprocessor.joblib first",
-  "probability_calibration": {
-    "posthoc_calibration": "none",
-    "cv_brier_score": 0.0343170501643142,
-    "cv_ece_10": 0.029864485620993,
-    "student_brier_score": 0.0308274582061216,
-    "student_ece_10": 0.0308272293318768,
-    "scorer_probability_clipping": [
-      1e-12,
-      0.999999999999
-    ]
+  "probability_output": "model.joblib accepts raw schema features and includes preprocessing/calibration; do not preprocess twice",
+  "artifacts_sha256": {
+    "preprocessor.joblib": "9ec1eb5f5b31ff5aa3e7c1ee7f3f9cacbea4e8dc324707aec4585dc8e26ab75d",
+    "model.joblib": "1b2db20467410ef2ef90d6d9a9540d598c6835088a81d47dd7cb9e16b6c1bb30",
+    "feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8"
   }
 }

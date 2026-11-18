@@ -34,11 +34,24 @@ class CandidateScorer:
         values = X[self.features]
         if not np.isfinite(values.to_numpy()).all():
             raise ValueError('Features must be finite')
+        if len(values) == 0:
+            return np.empty(0)
         transformed = self.preprocessor.transform(values)
         positive = int(np.flatnonzero(self.model.classes_ == 1)[0])
         # Bounded prediction batches keep KNN query memory predictable.
         return np.concatenate([self.model.predict_proba(transformed[i:i+10000])[:, positive]
-                               for i in range(0, len(transformed), 10000)]) if len(values) else np.empty(0)
+                               for i in range(0, len(transformed), 10000)])
+
+
+
+def load_scorer(model_dir: str | Path) -> CandidateScorer:
+    """Load standard sklearn artifacts without duplicating the fitted model."""
+    model_dir = Path(model_dir)
+    card = json.loads((model_dir / 'model_card.json').read_text())
+    if card['schema_version'] != SCHEMA_VERSION:
+        raise ValueError('Model/feature schema version mismatch')
+    return CandidateScorer(joblib.load(model_dir / 'model.joblib'),
+                           joblib.load(model_dir / 'preprocessor.joblib'))
 
 
 def evaluate(table, labels, probabilities):
@@ -151,7 +164,6 @@ def run_model(name, processed_dir=Path('data/processed'), max_train_rows=0):
     model_dir.mkdir(parents=True, exist_ok=True)
     joblib.dump(scorer.model, model_dir / 'model.joblib', compress=3)
     joblib.dump(scorer.preprocessor, model_dir / 'preprocessor.joblib', compress=3)
-    joblib.dump(scorer, model_dir / 'scorer.joblib', compress=3)
     if hasattr(scorer.model, 'loss_curve_'):
         histories.extend(dict(model=name, run='refit', epoch=i+1, train_loss=float(loss))
                          for i, loss in enumerate(scorer.model.loss_curve_))
@@ -194,7 +206,6 @@ def main(default=None):
 
 
 if __name__ == '__main__':
-    # Import the canonical module so exported scorer instances unpickle in a
-    # fresh API/CLI process rather than referring to __main__.CandidateScorer.
+    # Keep CLI and imported helpers on the same canonical module path.
     from src.models.member1_harness import main as run
     run()

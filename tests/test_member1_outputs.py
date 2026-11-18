@@ -50,3 +50,17 @@ def test_candidate_sweep_is_train_only_and_matches_export():
     known = labels[(labels.partition == 'train') & (labels.ref_arc >= 0)]
     hits = train[train.is_ref == 1]
     assert choice.candidate_miss_rate == pytest.approx(1-len(hits)/len(known))
+
+
+def test_g1_fixture_is_real_training_only():
+    manifest = json.loads(Path('tests/fixtures/development/manifest.json').read_text())
+    sample = pd.read_parquet('tests/fixtures/development/candidates.parquet')
+    labels = pd.read_parquet('tests/fixtures/development/obs_labels.parquet')
+    folds = json.loads(Path('configs/folds.json').read_text())['trip_to_fold']
+    assert sample.trip_id.nunique() == 5
+    assert set(sample.trip_id) == set(manifest['trip_ids']) <= set(folds)
+    assert set(labels.partition) == {'train'}
+    assert len(sample) == manifest['n_candidate_rows']
+    assert len(labels) == manifest['n_observations']
+    assert list(sample.columns) == ['trip_id', 'obs_idx', 'arc_id', *FEATURES, 'is_ref']
+    assert not {'lon', 'lat', 'longitude', 'latitude', 'ref_arc'} & set(sample.columns)

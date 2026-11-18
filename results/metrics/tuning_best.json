@@ -1,13 +1,69 @@
 {
-  "objective": "trip-fold mean observation Top-1 accuracy",
-  "best_trial": 3,
-  "best_top1_accuracy": 0.7743346381713685,
-  "best_params": {
-    "n_estimators": 100,
-    "max_depth": 18,
-    "min_samples_leaf": 2,
-    "max_features": 0.5
-  },
+  "model_name": "hist_gradient_boosting",
+  "objective": "mean observation Top-1 across all five frozen trip folds, with budgeted training rows and complete validation folds",
   "n_trials": 10,
-  "total_compute_seconds": 4028.4167913
+  "n_startup_trials": 3,
+  "n_tpe_trials": 7,
+  "best_trial": 3,
+  "best_top1_accuracy": 0.7730936860009785,
+  "search_max_train_rows": 250000,
+  "full_cv_top1_accuracy": 0.7735211055026154,
+  "full_cv_macro_f1": 0.8303809007920693,
+  "confirmation_compute_seconds": 118.42404933401849,
+  "best_params": {
+    "max_iter": 160,
+    "learning_rate": 0.14390269073091197,
+    "max_leaf_nodes": 63,
+    "min_samples_leaf": 50,
+    "l2_regularization": 3.127814156703438
+  },
+  "sampler": "Optuna TPESampler",
+  "seed": 42,
+  "total_compute_seconds": 264.08571879111696,
+  "current_invocation_seconds": 0.022537791985087097,
+  "signature": "1f5377834ca58782b4469b25c767aa24f70cde4cec8a21660a76c5813c1f30a1",
+  "inputs": {
+    "inputs": {
+      "data/processed/train.parquet": "21ee734e31e1dc709e8cac88ce932b789cbd5e5017c64ab0b490fb309b34ec27",
+      "data/processed/student_test.parquet": "bfa6f7dc5aea34dd437bbd684380b2ee66a287be8c567b61e8e39b3bafc21a55",
+      "data/processed/obs_labels.parquet": "63541035140757095c2d75e2447d6b62ff094b69e602540eb2ffde5f0a87a1f4",
+      "configs/folds.json": "2aff739a1bc56f1fbaae23ec0f5c569916dbd3d6d8010982d1e28095e13006c3",
+      "models/feature_schema.json": "667d33ae5d10cec28ca7d44989542e32b1c6a1d4f6206be2e49db221a98f3eb8",
+      "results/metrics/data_manifest.csv": "7d0746181ae331be0d00865c9815afd4abf1a6dfd57b8e0ae4271b29d1981156",
+      "src/evaluation/harness.py": "09be9f9b5dc9bdbd3b2ff95f16a1ec22d14a8c3aa4d0ff71b26e1d0e5f1c5d46",
+      "src/evaluation/continuity.py": "3cd9231b3ce716e0ca50177377902ce46a64a59ae5fa3950ee06768cb1a6cf57",
+      "src/models/training.py": "00661aa2881215c5b56426eea3a209b37959f11148b3dde04b03138eabcf6d79",
+      "src/models/specs.py": "eee160eb47881d124fe0105b201958d8cb9b5cef9db01b1147a8312fbf18784d"
+    },
+    "features": [
+      "distance_m",
+      "position_frac",
+      "heading_diff_rad",
+      "heading_valid",
+      "speed_mps",
+      "arc_length_m",
+      "candidate_rank",
+      "in_degree",
+      "out_degree",
+      "time_gap_s",
+      "large_gap",
+      "outside_radius"
+    ],
+    "sklearn_version": "1.9.1",
+    "config": null,
+    "extra": {
+      "family": "hist_gradient_boosting",
+      "seed": 42,
+      "search_max_train_rows": 250000,
+      "search_source": "6bf6296fdd1acd2735e9336b8a00dab9bebaf4d1d81fd79410d49c907795995c"
+    }
+  },
+  "search_space": {
+    "max_iter": "CategoricalDistribution(choices=(60, 100, 160))",
+    "learning_rate": "FloatDistribution(high=0.15, log=True, low=0.03, step=None)",
+    "max_leaf_nodes": "CategoricalDistribution(choices=(15, 31, 63))",
+    "min_samples_leaf": "CategoricalDistribution(choices=(20, 50, 100))",
+    "l2_regularization": "FloatDistribution(high=10.0, log=True, low=0.01, step=None)"
+  },
+  "oof_path": "data/processed/member2/hist_gradient_boosting-1f5377834ca58782_confirmation_oof.npy"
 }

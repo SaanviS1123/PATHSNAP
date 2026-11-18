@@ -64,5 +64,104 @@
     "n_fit_trips": 64,
     "fit_warnings": [],
     "inference_time_s": 333.37930537504144
+  },
+  {
+    "model": "knn",
+    "partition": "cv",
+    "fold": 2,
+    "candidate_accuracy": 0.957302791327331,
+    "precision": 0.7652823145123658,
+    "recall": 0.7041044135325434,
+    "f1": 0.7334197933902777,
+    "macro_f1": 0.8551063445794032,
+    "log_loss": 0.3581413358207153,
+    "top1_acc": 0.7401091789070854,
+    "trip_mean_top1": 0.7443571937874756,
+    "candidate_miss_rate": 0.016883336147222705,
+    "n_known_obs": 35538,
+    "n_unknown_obs": 16663,
+    "n_candidate_rows": 491318,
+    "n_known_candidate_rows": 418833,
+    "confusion_matrix": [
+      [
+        376350,
+        7545
+      ],
+      [
+        10338,
+        24600
+      ]
+    ],
+    "train_time_s": 1.6496971669839695,
+    "n_fit_rows": 1715726,
+    "n_fit_trips": 64,
+    "fit_warnings": [],
+    "inference_time_s": 319.7464465419762
+  },
+  {
+    "model": "knn",
+    "partition": "cv",
+    "fold": 3,
+    "candidate_accuracy": 0.966952948381798,
+    "precision": 0.8172727272727273,
+    "recall": 0.7580900179192579,
+    "f1": 0.7865696943183682,
+    "macro_f1": 0.8843297945026485,
+    "log_loss": 0.20870641054616018,
+    "top1_acc": 0.7847042828008157,
+    "trip_mean_top1": 0.7871344225540715,
+    "candidate_miss_rate": 0.03259687287559487,
+    "n_known_obs": 29420,
+    "n_unknown_obs": 2998,
+    "n_candidate_rows": 401571,
+    "n_known_candidate_rows": 354313,
+    "confusion_matrix": [
+      [
+        321028,
+        4824
+      ],
+      [
+        6885,
+        21576
+      ]
+    ],
+    "train_time_s": 1.3276860000332817,
+    "n_fit_rows": 1780246,
+    "n_fit_trips": 64,
+    "fit_warnings": [],
+    "inference_time_s": 225.61278049997054
+  },
+  {
+    "model": "knn",
+    "partition": "cv",
+    "fold": 4,
+    "candidate_accuracy": 0.9568541170419743,
+    "precision": 0.7580995082441423,
+    "recall": 0.678818882341514,
+    "f1": 0.7162720781661029,
+    "macro_f1": 0.8464619411021573,
+    "log_loss": 0.3016149531798885,
+    "top1_acc": 0.7330064199761267,
+    "trip_mean_top1": 0.7606404150705848,
+    "candidate_miss_rate": 0.0035809917088750476,
+    "n_known_obs": 30997,
+    "n_unknown_obs": 740,
+    "n_candidate_rows": 392766,
+    "n_known_candidate_rows": 384973,
+    "confusion_matrix": [
+      [
+        347397,
+        6690
+      ],
+      [
+        9920,
+        20966
+      ]
+    ],
+    "train_time_s": 1.3483150409301743,
+    "n_fit_rows": 1749586,
+    "n_fit_trips": 64,
+    "fit_warnings": [],
+    "inference_time_s": 234.6970462499885
   }
 ]

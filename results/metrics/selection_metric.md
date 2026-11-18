@@ -1,7 +1,18 @@
-# Primary model-selection metric
+# Model-selection policy
 
-**Proposed primary metric: observation-level Top-1 accuracy, averaged across the frozen trip-grouped validation folds.** At inference, the system must select one road arc for each GPS observation, so this metric directly measures the decision the user sees. A candidate-level score can look strong while still ranking the correct arc second within many observations.
+Primary: mean observation-level Top-1 across the five frozen trip-grouped folds.
+This measures the choice of one road arc per GPS observation. All known labels
+count, including absent reference candidates. Unknown alignment labels are
+excluded and counted separately.
 
-Use candidate-level Macro-F1 and log loss as required secondary metrics. Macro-F1 exposes missed positive candidates despite the large number of negative candidate rows; log loss checks probability quality because the HMM consumes scorer probabilities. Candidate miss rate is a feature-generation ceiling and must be reported separately. Route continuity is a sequence-level diagnostic from Member 3, not a substitute for point accuracy.
+Ties between model CV Top-1 values use candidate Macro-F1, then model name for a
+deterministic order. Tuned parameters replace the winning baseline only on strict
+CV Top-1 improvement. Macro-F1, log loss, Brier score, reliability, continuity and
+runtime remain recorded diagnostics. Student-test outcomes never choose a family,
+search parameters, or calibration. This policy is recorded as a project decision,
+not as an invented team meeting or agreement.
 
-Select only from held-out trip folds, using the same frozen `configs/folds.json` split for every model. Student-test results are a final held-out check and must not be used to tune the selection decision. The team should confirm this proposed primary metric at the P0/P1 sync; no agreement record or fold configuration is present in this checkout yet.
+Calibration uses a separate training-trip fit/calibration/audit split and accepts
+only an increasing sigmoid that improves audit log loss without worse Brier score.
+Final student metrics are measured after these choices. Family/search selection
+reuse makes the selected CV score optimistic; it is not a nested-CV estimate.

@@ -1,0 +1,13 @@
+# Raw dataset and generated feature tables
+Student folder/
+data/processed/
+*.parquet
+
+# Large generated CSV datasets
+all_training_candidates.csv
+candidate_training_trip*.csv
+
+# Python cache and local environments
+__pycache__/
+.ipynb_checkpoints/
+.venv/

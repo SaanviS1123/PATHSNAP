@@ -1,0 +1,116 @@
+logistic_regression: CV fold 0
+logistic_regression: CV fold 1
+logistic_regression: CV fold 2
+logistic_regression: CV fold 3
+logistic_regression: CV fold 4
+Provisional Logistic Regression exported to models/
+random_forest: CV fold 0
+random_forest: CV fold 1
+random_forest: CV fold 2
+random_forest: CV fold 3
+random_forest: CV fold 4
+hist_gradient_boosting: CV fold 0
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 264, in _count_physical_cores
+    cpu_count_physical = _count_physical_cores_darwin()
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 420, in _count_physical_cores_darwin
+    return int(cpu_info)
+hist_gradient_boosting: CV fold 1
+hist_gradient_boosting: CV fold 2
+hist_gradient_boosting: CV fold 3
+hist_gradient_boosting: CV fold 4
+knn: score saved Member 1 model for continuity/calibration diagnostics
+mlp: score saved Member 1 model for continuity/calibration diagnostics
+Baseline CV winner: hist_gradient_boosting
+[I 2026-11-18 14:10:13,578] A new study created in RDB with name: hist_gradient_boosting-1f5377834ca58782
+hist_gradient_boosting TPE trial 0: fold 0
+hist_gradient_boosting TPE trial 0: fold 1
+hist_gradient_boosting TPE trial 0: fold 2
+hist_gradient_boosting TPE trial 0: fold 3
+hist_gradient_boosting TPE trial 0: fold 4
+[I 2026-11-18 14:10:33,395] Trial 0 finished with value: 0.7677054619113884 and parameters: {'max_iter': 100, 'learning_rate': 0.07862589064613253, 'max_leaf_nodes': 15, 'min_samples_leaf': 20, 'l2_regularization': 0.011527987128232402}. Best is trial 0 with value: 0.7677054619113884.
+hist_gradient_boosting TPE trial 1: fold 0
+hist_gradient_boosting TPE trial 1: fold 1
+hist_gradient_boosting TPE trial 1: fold 2
+hist_gradient_boosting TPE trial 1: fold 3
+hist_gradient_boosting TPE trial 1: fold 4
+[I 2026-11-18 14:10:50,576] Trial 1 finished with value: 0.7644967851115141 and parameters: {'max_iter': 60, 'learning_rate': 0.040198648566549054, 'max_leaf_nodes': 63, 'min_samples_leaf': 100, 'l2_regularization': 0.02621087878265441}. Best is trial 0 with value: 0.7677054619113884.
+hist_gradient_boosting TPE trial 2: fold 0
+hist_gradient_boosting TPE trial 2: fold 1
+hist_gradient_boosting TPE trial 2: fold 2
+hist_gradient_boosting TPE trial 2: fold 3
+hist_gradient_boosting TPE trial 2: fold 4
+[I 2026-11-18 14:11:23,078] Trial 2 finished with value: 0.7728415030455746 and parameters: {'max_iter': 160, 'learning_rate': 0.10615383778576548, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 0.015673095467235415}. Best is trial 2 with value: 0.7728415030455746.
+hist_gradient_boosting TPE trial 3: fold 0
+hist_gradient_boosting TPE trial 3: fold 1
+hist_gradient_boosting TPE trial 3: fold 2
+hist_gradient_boosting TPE trial 3: fold 3
+hist_gradient_boosting TPE trial 3: fold 4
+[I 2026-11-18 14:11:54,583] Trial 3 finished with value: 0.7730936860009785 and parameters: {'max_iter': 160, 'learning_rate': 0.14390269073091197, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 3.127814156703438}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 4: fold 0
+hist_gradient_boosting TPE trial 4: fold 1
+hist_gradient_boosting TPE trial 4: fold 2
+hist_gradient_boosting TPE trial 4: fold 3
+hist_gradient_boosting TPE trial 4: fold 4
+[I 2026-11-18 14:12:28,312] Trial 4 finished with value: 0.7726415320582809 and parameters: {'max_iter': 160, 'learning_rate': 0.1247843754906871, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 7.988577249533197}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 5: fold 0
+hist_gradient_boosting TPE trial 5: fold 1
+hist_gradient_boosting TPE trial 5: fold 2
+hist_gradient_boosting TPE trial 5: fold 3
+hist_gradient_boosting TPE trial 5: fold 4
+[I 2026-11-18 14:13:05,636] Trial 5 finished with value: 0.7721236200756547 and parameters: {'max_iter': 160, 'learning_rate': 0.03507180785888477, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 2.435727704039888}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 6: fold 0
+hist_gradient_boosting TPE trial 6: fold 1
+hist_gradient_boosting TPE trial 6: fold 2
+hist_gradient_boosting TPE trial 6: fold 3
+hist_gradient_boosting TPE trial 6: fold 4
+[I 2026-11-18 14:13:32,573] Trial 6 finished with value: 0.7684429931259814 and parameters: {'max_iter': 160, 'learning_rate': 0.05802613251876312, 'max_leaf_nodes': 15, 'min_samples_leaf': 50, 'l2_regularization': 0.1800074423448762}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 7: fold 0
+hist_gradient_boosting TPE trial 7: fold 1
+hist_gradient_boosting TPE trial 7: fold 2
+hist_gradient_boosting TPE trial 7: fold 3
+hist_gradient_boosting TPE trial 7: fold 4
+[I 2026-11-18 14:13:50,194] Trial 7 finished with value: 0.7706095324765625 and parameters: {'max_iter': 60, 'learning_rate': 0.07156297198490347, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 8.967513808332201}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 8: fold 0
+hist_gradient_boosting TPE trial 8: fold 1
+hist_gradient_boosting TPE trial 8: fold 2
+hist_gradient_boosting TPE trial 8: fold 3
+hist_gradient_boosting TPE trial 8: fold 4
+[I 2026-11-18 14:14:22,277] Trial 8 finished with value: 0.7726227188060663 and parameters: {'max_iter': 160, 'learning_rate': 0.093689258112994, 'max_leaf_nodes': 63, 'min_samples_leaf': 50, 'l2_regularization': 0.23751949860646562}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting TPE trial 9: fold 0
+hist_gradient_boosting TPE trial 9: fold 1
+hist_gradient_boosting TPE trial 9: fold 2
+hist_gradient_boosting TPE trial 9: fold 3
+hist_gradient_boosting TPE trial 9: fold 4
+[I 2026-11-18 14:14:38,077] Trial 9 finished with value: 0.7703889556396109 and parameters: {'max_iter': 60, 'learning_rate': 0.13017383232804303, 'max_leaf_nodes': 31, 'min_samples_leaf': 100, 'l2_regularization': 1.4974927637447881}. Best is trial 3 with value: 0.7730936860009785.
+hist_gradient_boosting full-row tuning confirmation: CV fold 0
+hist_gradient_boosting full-row tuning confirmation: CV fold 1
+hist_gradient_boosting full-row tuning confirmation: CV fold 2
+hist_gradient_boosting full-row tuning confirmation: CV fold 3
+hist_gradient_boosting full-row tuning confirmation: CV fold 4
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/src/models/run_all.py", line 239, in <module>
+    parser.add_argument('--trials',type=int,default=10)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/src/models/run_all.py", line 223, in run
+    for record in records:
+    
+TypeError: dict() got multiple values for keyword argument 'model_name'
+logistic_regression: reuse matching completed run
+random_forest: reuse matching completed run
+hist_gradient_boosting: reuse matching completed run
+Baseline CV winner: hist_gradient_boosting
+[I 2026-11-18 14:18:58,708] Using an existing study with `study_name='hist_gradient_boosting-1f5377834ca58782'` instead of creating a new one.
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 264, in _count_physical_cores
+    cpu_count_physical = _count_physical_cores_darwin()
+  File "/Users/sabiqueislam/Downloads/PATHSNAP/.venv/lib/python3.13/site-packages/joblib/externals/loky/backend/context.py", line 420, in _count_physical_cores_darwin
+    return int(cpu_info)
+Generated Member 2 report, plots and final decision record
+                  model_name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        configuration  training_diagnostic_macro_f1  cv_candidate_accuracy  cv_precision  cv_recall    cv_f1  cv_macro_f1  cv_macro_f1_std  cv_top1_accuracy  cv_trip_mean_top1  cv_candidate_miss_rate  cv_route_continuity  cv_log_loss  cv_brier_score  cv_ece_10  cv_train_time_sec  cv_inference_time_sec  student_candidate_accuracy  student_precision  student_recall  student_f1  student_macro_f1  student_top1_accuracy  student_trip_mean_top1  student_candidate_miss_rate  student_route_continuity  student_log_loss  student_brier_score  student_ece_10  student_train_time_sec  student_inference_time_sec  student_n_known_obs  student_n_unknown_obs  student_n_candidate_rows  student_n_known_candidate_rows
+hist_gradient_boosting_tuned                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {"categorical_features": "from_dtype", "class_weight": "balanced", "early_stopping": false, "interaction_cst": null, "l2_regularization": 3.127814156703438, "learning_rate": 0.14390269073091197, "loss": "log_loss", "max_bins": 255, "max_depth": null, "max_features": 1.0, "max_iter": 160, "max_leaf_nodes": 63, "min_samples_leaf": 50, "monotonic_cst": null, "n_iter_no_change": 10, "random_state": 42, "scoring": "loss", "tol": 1e-07, "validation_fraction": 0.1, "verbose": 0, "warm_start": false}                           NaN               0.931328      0.562796   0.924541 0.699569     0.830381         0.011480          0.773521           0.794913                0.011203             0.904183     0.168204        0.050636   0.068399          20.780799               1.555075                    0.936089           0.568478        0.937611    0.707808          0.835964               0.803584                0.820803                     0.000261                  0.903812          0.154517             0.046788        0.068379               25.601197                    0.848910                19143                     17                    231905                          231807
+      hist_gradient_boosting                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  {"categorical_features": "from_dtype", "class_weight": "balanced", "early_stopping": false, "interaction_cst": null, "l2_regularization": 1.0, "learning_rate": 0.1, "loss": "log_loss", "max_bins": 255, "max_depth": null, "max_features": 1.0, "max_iter": 100, "max_leaf_nodes": 31, "min_samples_leaf": 20, "monotonic_cst": null, "n_iter_no_change": 10, "random_state": 42, "scoring": "loss", "tol": 1e-07, "validation_fraction": 0.1, "verbose": 0, "warm_start": false}                      0.835997               0.927009      0.545566   0.933846 0.688655     0.823634         0.010369          0.772413           0.792493                0.011203             0.901584     0.178824        0.053920   0.077735          14.159188               0.916789                    0.932741           0.554390        0.944561    0.698696          0.830421               0.804054                0.820872                     0.000261                  0.903029          0.165090             0.049609        0.076560               17.398719                    0.472829                19143                     17                    231905                          231807
+               random_forest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              {"bootstrap": true, "ccp_alpha": 0.0, "class_weight": "balanced_subsample", "criterion": "gini", "max_depth": 14, "max_features": "sqrt", "max_leaf_nodes": null, "max_samples": 0.5, "min_impurity_decrease": 0.0, "min_samples_leaf": 10, "min_samples_split": 2, "min_weight_fraction_leaf": 0.0, "monotonic_cst": null, "n_estimators": 80, "n_jobs": 2, "oob_score": false, "random_state": 42, "verbose": 0, "warm_start": false}                      0.850196               0.935225      0.579280   0.921316 0.711169     0.837324         0.011006          0.772384           0.792093                0.011203             0.901680     0.163413        0.048435   0.072279          77.680349               1.465210                    0.939851           0.585094        0.933222    0.719248          0.842782               0.801024                0.818573                     0.000261                  0.901723          0.151860             0.044734        0.072319              105.176184                    0.805635                19143                     17                    231905                          231807
+                         mlp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {"activation": "relu", "alpha": 0.001, "batch_size": 512, "beta_1": 0.9, "beta_2": 0.999, "early_stopping": false, "epsilon": 1e-08, "hidden_layer_sizes": [32, 16], "learning_rate": "constant", "learning_rate_init": 0.001, "max_fun": 15000, "max_iter": 40, "momentum": 0.9, "n_iter_no_change": 8, "nesterovs_momentum": true, "power_t": 0.5, "random_state": 42, "shuffle": true, "solver": "adam", "tol": 0.0001, "validation_fraction": 0.1, "verbose": false, "warm_start": false}                      0.881692               0.960996      0.811799   0.714479 0.759984     0.869373         0.016666          0.770276                NaN                0.011203                  NaN     0.098814             NaN        NaN          53.678697               0.054186                    0.967072           0.830698        0.755042    0.791066          0.886597               0.796949                0.813507                     0.000261                  0.902350          0.083436             0.024461        0.002006               76.161459                    0.043586                19143                     17                    231905                          231807
+         logistic_regression {"memory": null, "steps": [["standardscaler", "StandardScaler()"], ["logisticregression", "LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42)"]], "transform_input": null, "verbose": false, "standardscaler": "StandardScaler()", "logisticregression": "LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42)", "standardscaler__copy": true, "standardscaler__with_mean": true, "standardscaler__with_std": true, "logisticregression__C": 1.0, "logisticregression__class_weight": "balanced", "logisticregression__dual": false, "logisticregression__fit_intercept": true, "logisticregression__intercept_scaling": 1, "logisticregression__l1_ratio": 0.0, "logisticregression__max_iter": 1000, "logisticregression__n_jobs": null, "logisticregression__penalty": "deprecated", "logisticregression__random_state": 42, "logisticregression__solver": "lbfgs", "logisticregression__tol": 0.0001, "logisticregression__verbose": 0, "logisticregression__warm_start": false}                      0.755298               0.879143      0.412517   0.933552 0.571826     0.750675         0.009838          0.760701           0.780027                0.011203             0.889521     0.247357        0.080626   0.117567           0.942155               0.015411                    0.882057           0.407326        0.941843    0.568702          0.750195               0.792561                0.807602                     0.000261                  0.894047          0.234485             0.077677        0.116169                1.074903                    0.007242                19143                     17                    231905                          231807
+                         knn                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               {"algorithm": "kd_tree", "leaf_size": 40, "metric": "minkowski", "metric_params": null, "n_jobs": 2, "n_neighbors": 15, "p": 2, "weights": "distance"}                      1.000000               0.957580      0.778329   0.710769 0.742990     0.859930         0.014780          0.753946                NaN                0.011203                  NaN     0.308962             NaN        NaN           1.401245             266.997897                    0.964186           0.799106        0.756349    0.777139          0.878834               0.787390                0.801287                     0.000261                  0.890914          0.245476             0.027288        0.008937                1.590345                  150.066942                19143                     17                    231905                          231807

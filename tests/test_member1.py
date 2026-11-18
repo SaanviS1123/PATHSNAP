@@ -95,6 +95,7 @@ def test_scaler_fit_on_training_only_and_scorer_contract(fixture):
     assert np.all((probabilities >= 0) & (probabilities <= 1))
     assert np.array_equal(scorer.preprocessor.mean_, old_mean)
     assert metadata['n_fit_trips'] == 4
+    assert scorer.predict_proba(validation.iloc[:0]).shape == (0,)
 
 
 def test_invalid_ids_and_evaluator_partition_rejected(fixture):
