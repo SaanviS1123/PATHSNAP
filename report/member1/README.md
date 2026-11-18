@@ -23,7 +23,8 @@ python -m pytest -q
 
 Preparation regenerates all feature tables, independent observation labels,
 training-only candidate sweep, fixed five-fold trip assignments, synthetic
-fixtures, inventory, quality diagnostics, static plots, and a Folium map.
+fixtures, a real five-trip training-feature fixture for G1, inventory, quality
+diagnostics, static plots, and a Folium map.
 Model training defaults to **all known-label rows**, with each scaler fitted only
 on that fold's training rows. Optional `--max-train-rows 120000` enables an
 explicitly recorded proportional trip/class sample for a smaller machine.
@@ -105,6 +106,11 @@ and heading also enter model features, so high pointwise scores partly measure
 agreement with this alignment procedure. Excluding unknown labels changes the
 reported population; unknown counts and independent nearest-reference distances
 are retained. Sequence metrics against the original route are Member 3's task.
+
+The G1 table sample is `tests/fixtures/development/candidates.parquet` with
+matching offline `obs_labels.parquet` and a manifest. It contains the five
+smallest training trips and no raw coordinates. `tests/fixtures/member1/` is a
+separate invented five-trip raw-network fixture for geometry regression tests.
 
 ## Model handoff to Members 2, 3 and 4
 
