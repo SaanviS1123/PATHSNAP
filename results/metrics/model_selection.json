@@ -1,0 +1,5 @@
+{
+  "baseline_winner": "hist_gradient_boosting",
+  "metric": "mean five-fold observation Top-1",
+  "student_test_used_for_selection": false
+}

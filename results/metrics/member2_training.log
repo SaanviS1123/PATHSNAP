@@ -19,3 +19,8 @@ hist_gradient_boosting: CV fold 2
 hist_gradient_boosting: CV fold 3
 hist_gradient_boosting: CV fold 4
 knn: score saved Member 1 model for continuity/calibration diagnostics
+mlp: score saved Member 1 model for continuity/calibration diagnostics
+Baseline CV winner: hist_gradient_boosting
+[I 2026-11-18 14:10:13,578] A new study created in RDB with name: hist_gradient_boosting-1f5377834ca58782
+hist_gradient_boosting TPE trial 0: fold 0
+hist_gradient_boosting TPE trial 0: fold 1
